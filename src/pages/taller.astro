@@ -4,127 +4,139 @@ import MainLayout from "../layouts/MainLayout.astro";
 
 <MainLayout title="Servicio Técnico | Airsoft Nation">
 
-<section class="contact-wrapper">
+  <section class="contact-wrapper">
 
-  <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" class="contact-logo" />
+    <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" class="contact-logo" />
 
-  <div class="brand-claim">
-    ENCUENTRA TUS LÍMITES, CON CRITERIO.<br />
-    DECISIONES QUE FUNCIONAN EN CAMPO.
-  </div>
+    <div class="brand-claim">
+      ENCUENTRA TUS LÍMITES, CON CRITERIO.<br />
+      DECISIONES QUE FUNCIONAN EN CAMPO.
+    </div>
 
-  <h1 class="form-title">Servicio Técnico</h1>
+    <h1 class="form-title">SERVICIO TÉCNICO</h1>
 
-  <p class="subtitle">
-    Envíanos los datos de tu réplica y crearemos tu orden de trabajo.
-  </p>
+    <p class="subtitle">
+      Envíanos los datos de tu réplica y crearemos tu orden de trabajo.
+    </p>
 
-  <form id="ticket-form" class="ticket-form">
+    <form method="POST" action="/api/ticket" class="form-grid">
 
-    <input type="text" name="name" placeholder="Nombre y apellidos" required />
-    <input type="email" name="email" placeholder="Email" required />
-    <input type="tel" name="phone" placeholder="Teléfono" required />
+      <input type="text" name="name" placeholder="Nombre y apellidos" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="tel" name="phone" placeholder="Teléfono" required />
 
-    <select name="brand" required>
-      <option value="">Marca de la réplica</option>
-      <option>Tokyo Marui</option>
-      <option>Specna Arms</option>
-      <option>VFC</option>
-      <option>G&G</option>
-      <option>ICS</option>
-      <option>LCT</option>
-      <option>E&L</option>
-      <option>Cyma</option>
-      <option>Ares</option>
-      <option>KWA</option>
-      <option>WE</option>
-      <option>Krytac</option>
-      <option>Classic Army</option>
-      <option>Umarex</option>
-      <option>ASG</option>
-      <option>Arcturus</option>
-      <option>Double Eagle</option>
-      <option>Jing Gong</option>
-      <option>A&K</option>
-      <option>Army Armament</option>
-      <option>KWC</option>
-      <option>Lancer Tactical</option>
-      <option>Bo Manufactures</option>
-      <option>Gate</option>
-      <option>Saigo</option>
-      <option>Secutor</option>
-      <option>Evolution</option>
-      <option>Otra</option>
-    </select>
+      <select name="brand" required>
+        <option value="">Marca de la réplica</option>
+        <option>Tokyo Marui</option>
+        <option>Specna Arms</option>
+        <option>VFC</option>
+        <option>G&G</option>
+        <option>ICS</option>
+        <option>LCT</option>
+        <option>E&L</option>
+        <option>Cyma</option>
+        <option>Ares</option>
+        <option>KWA</option>
+        <option>WE</option>
+        <option>Krytac</option>
+        <option>Classic Army</option>
+        <option>Umarex</option>
+        <option>ASG</option>
+        <option>Arcturus</option>
+        <option>Double Eagle</option>
+        <option>Jing Gong</option>
+        <option>A&K</option>
+        <option>Army Armament</option>
+        <option>KWC</option>
+        <option>Lancer Tactical</option>
+        <option>Bo Manufactures</option>
+        <option>Gate</option>
+        <option>Saigo</option>
+        <option>Secutor</option>
+        <option>Evolution</option>
+        <option>Otra</option>
+      </select>
 
-    <input type="text" name="model" placeholder="Modelo (ej: M4 / AR15)" />
-    <input type="text" name="serialNumber" placeholder="Número de serie" />
+      <input type="text" name="model" placeholder="Modelo (ej: M4 / AR15)" />
+      <input type="text" name="serialNumber" placeholder="Número de serie" />
 
-    <textarea name="message" placeholder="Describe el problema o servicio que necesitas" required></textarea>
+      <textarea
+        name="message"
+        placeholder="Describe el problema o servicio que necesitas"
+        required
+      ></textarea>
 
-    <label class="privacy">
-      <input type="checkbox" required />
-      He leído y acepto la
-      <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
-        política de privacidad
-      </a>
-    </label>
+      <label class="privacy">
+        <input type="checkbox" required />
+        He leído y acepto la
+        <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
+          política de privacidad
+        </a>
+      </label>
 
-    <button type="submit" class="btn-submit">
-      CREAR ORDEN DE SERVICIO
-    </button>
+      <button type="submit" class="btn-submit">
+        CREAR ORDEN DE SERVICIO
+      </button>
 
-  </form>
+    </form>
 
-  <footer class="ticket-footer">
-    Registro de marca de la Unión Europea nº 19040186<br>
-    © 2025 Airsoft Nation · Celrà (Girona)
-  </footer>
+    <footer class="form-footer">
+      Registro de marca de la Unión Europea nº 19040186<br />
+      © 2026 Airsoft Nation · Celrà (Girona)
+    </footer>
 
-</section>
+  </section>
+
+</MainLayout>
 
 <style>
 .contact-wrapper {
-  padding: 40px 20px 220px;
-  text-align: center;
   max-width: 480px;
   margin: 0 auto;
+  padding: 60px 20px 220px;
+  text-align: center;
 }
 
+/* Logo equilibrado */
 .contact-logo {
-  width: 180px;
-  margin-bottom: 20px;
-  filter: brightness(1.3);
+  width: 240px;
+  margin-bottom: 25px;
+  filter: brightness(1.35) drop-shadow(0 0 25px rgba(0,150,255,0.25));
 }
 
+/* Claim */
 .brand-claim {
-  font-family: var(--font-title);
-  font-size: 0.75rem;
-  letter-spacing: 1px;
-  opacity: 0.6;
-  margin-bottom: 30px;
-}
-
-.form-title {
-  font-size: 2rem;
-  margin-bottom: 15px;
-}
-
-.subtitle {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   opacity: 0.7;
   margin-bottom: 30px;
+  line-height: 1.4;
 }
 
-.ticket-form {
-  display: flex;
-  flex-direction: column;
+/* Título */
+.form-title {
+  font-family: var(--font-title);
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+/* Subtítulo */
+.subtitle {
+  font-size: 0.95rem;
+  opacity: 0.8;
+  margin-bottom: 40px;
+}
+
+/* Form */
+.form-grid {
+  display: grid;
   gap: 16px;
+  text-align: left;
 }
 
-.ticket-form input,
-.ticket-form select,
-.ticket-form textarea {
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
   width: 100%;
   padding: 14px;
   border-radius: 12px;
@@ -132,41 +144,61 @@ import MainLayout from "../layouts/MainLayout.astro";
   background: #111827;
   color: white;
   font-family: var(--font-text);
+  font-size: 0.9rem;
 }
 
-.ticket-form textarea {
+.form-grid textarea {
   min-height: 120px;
   resize: vertical;
 }
 
-.privacy {
-  font-size: 0.75rem;
-  text-align: left;
-  opacity: 0.7;
+.form-grid input::placeholder,
+.form-grid textarea::placeholder {
+  color: rgba(255,255,255,0.5);
 }
 
+/* Checkbox */
+.privacy {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.privacy input {
+  margin-top: 3px;
+}
+
+.privacy a {
+  color: #00b894;
+  text-decoration: none;
+}
+
+/* Botón */
 .btn-submit {
+  margin-top: 10px;
   padding: 16px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #00b894, #0984e3);
+  border-radius: 30px;
   border: none;
-  font-family: var(--font-title);
-  font-size: 1rem;
+  background: linear-gradient(135deg, #00b894, #0096ff);
   color: white;
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
 
 .btn-submit:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
 }
 
-.ticket-footer {
-  margin-top: 50px;
-  font-size: 0.7rem;
+/* Footer visible */
+.form-footer {
+  margin-top: 60px;
+  font-size: 0.65rem;
   opacity: 0.5;
   line-height: 1.4;
 }
 </style>
-
-</MainLayout>
