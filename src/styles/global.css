@@ -12,6 +12,10 @@ html, body {
   justify-content: center;
 }
 
+.logo {
+  filter: invert(1) brightness(1.2);
+}
+
 .app {
   width: 100%;
   max-width: 480px;
