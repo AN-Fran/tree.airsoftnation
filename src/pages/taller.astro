@@ -4,7 +4,7 @@ import MainLayout from "../layouts/MainLayout.astro";
 
 <MainLayout title="Servicio Técnico | Airsoft Nation">
 
-<section class="contact-container">
+<section class="contact-wrapper">
 
   <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" class="contact-logo" />
 
@@ -19,7 +19,7 @@ import MainLayout from "../layouts/MainLayout.astro";
     Envíanos los datos de tu réplica y crearemos tu orden de trabajo.
   </p>
 
-  <form id="ticket-form">
+  <form id="ticket-form" class="ticket-form">
 
     <input type="text" name="name" placeholder="Nombre y apellidos" required />
     <input type="email" name="email" placeholder="Email" required />
@@ -43,4 +43,130 @@ import MainLayout from "../layouts/MainLayout.astro";
       <option>Umarex</option>
       <option>ASG</option>
       <option>Arcturus</option>
-      <optio
+      <option>Double Eagle</option>
+      <option>Jing Gong</option>
+      <option>A&K</option>
+      <option>Army Armament</option>
+      <option>KWC</option>
+      <option>Lancer Tactical</option>
+      <option>Bo Manufactures</option>
+      <option>Gate</option>
+      <option>Saigo</option>
+      <option>Secutor</option>
+      <option>Evolution</option>
+      <option>Otra</option>
+    </select>
+
+    <input type="text" name="model" placeholder="Modelo (ej: M4 / AR15)" />
+    <input type="text" name="serialNumber" placeholder="Número de serie" />
+
+    <textarea name="message" placeholder="Describe el problema o servicio que necesitas" required></textarea>
+
+    <label class="privacy">
+      <input type="checkbox" required />
+      He leído y acepto la
+      <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
+        política de privacidad
+      </a>
+    </label>
+
+    <button type="submit" class="btn-submit">
+      CREAR ORDEN DE SERVICIO
+    </button>
+
+  </form>
+
+  <footer class="ticket-footer">
+    Registro de marca de la Unión Europea nº 19040186<br>
+    © 2025 Airsoft Nation · Celrà (Girona)
+  </footer>
+
+</section>
+
+<style>
+.contact-wrapper {
+  padding: 40px 20px 220px;
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.contact-logo {
+  width: 180px;
+  margin-bottom: 20px;
+  filter: brightness(1.3);
+}
+
+.brand-claim {
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  opacity: 0.6;
+  margin-bottom: 30px;
+}
+
+.form-title {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  opacity: 0.7;
+  margin-bottom: 30px;
+}
+
+.ticket-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ticket-form input,
+.ticket-form select,
+.ticket-form textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: #111827;
+  color: white;
+  font-family: var(--font-text);
+}
+
+.ticket-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.privacy {
+  font-size: 0.75rem;
+  text-align: left;
+  opacity: 0.7;
+}
+
+.btn-submit {
+  padding: 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #00b894, #0984e3);
+  border: none;
+  font-family: var(--font-title);
+  font-size: 1rem;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.btn-submit:active {
+  transform: scale(0.96);
+}
+
+.ticket-footer {
+  margin-top: 50px;
+  font-size: 0.7rem;
+  opacity: 0.5;
+  line-height: 1.4;
+}
+</style>
+
+</MainLayout>
