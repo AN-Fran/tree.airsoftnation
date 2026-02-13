@@ -1,266 +1,96 @@
-/* ============================= */
-/* RESET */
-/* ============================= */
-
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  margin: 0;
-  height: 100%;
-  background: #07142a;
-  display: flex;
-  justify-content: center;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ============================= */
-/* DESIGN SYSTEM */
-/* ============================= */
+/* =========================
+   VARIABLES
+========================= */
 
 :root {
-
-  /* Tipografías */
   --font-title: 'Oswald', sans-serif;
   --font-text: 'Open Sans', sans-serif;
 
-  /* Escala tipográfica móvil */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-md: 1rem;
-  --text-lg: 1.2rem;
-  --text-xl: 1.6rem;
-  --text-xxl: 2rem;
-
-  /* Paleta táctica premium */
   --bg-main: #07142a;
   --bg-soft: #0b1220;
-  --bg-card: #0f1c33;
+  --bg-card: #111827;
 
-  --primary: #00b4ff;
-  --primary-soft: #0077b6;
-  --accent: #6cffb3; /* verde táctico sutil */
+  --primary: #00b894;
+  --primary-gradient: linear-gradient(90deg,#00b894,#0984e3);
 
   --text-main: #ffffff;
-  --text-soft: #cbd5e1;
-  --text-muted: #94a3b8;
+  --text-soft: rgba(255,255,255,0.75);
 
-  --border: rgba(255,255,255,0.08);
+  --border-soft: rgba(255,255,255,0.08);
 }
 
-/* ============================= */
-/* BASE */
-/* ============================= */
+/* =========================
+   RESET
+========================= */
 
-body {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
   font-family: var(--font-text);
-  font-size: var(--text-md);
+  background: var(--bg-main);
   color: var(--text-main);
-  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ============================= */
-/* TIPOGRAFÍA */
-/* ============================= */
+/* =========================
+   TIPOGRAFÍA
+========================= */
 
-h1 {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-title);
-  font-size: var(--text-xxl);
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-h2 {
-  font-family: var(--font-title);
-  font-size: var(--text-xl);
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-
-h3 {
-  font-family: var(--font-title);
-  font-size: var(--text-lg);
-  font-weight: 500;
   letter-spacing: 1px;
+  font-weight: 600;
 }
 
-.small-text {
-  font-size: var(--text-sm);
-  color: var(--text-soft);
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-.caption {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-}
-
-/* ============================= */
-/* APP CONTAINER */
-/* ============================= */
+/* =========================
+   APP CONTAINER (modo móvil)
+========================= */
 
 .app {
   width: 100%;
   max-width: 480px;
-  height: 100vh;
+  margin: 0 auto;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  position: relative;
-  background: var(--bg-main);
-  overflow: hidden;
+  background: var(--bg-soft);
 }
 
-/* Scroll solo en contenido */
 .app-content {
   flex: 1;
   overflow-y: auto;
-  padding: 80px 20px 180px;
+  padding: 40px 20px 160px;
   background:
-    radial-gradient(circle at 50% -120px, rgba(0,180,255,0.18), transparent 60%),
-    var(--bg-main);
+    radial-gradient(circle at 50% -100px, rgba(0,150,255,0.15), transparent 60%),
+    var(--bg-soft);
 }
 
-/* ============================= */
-/* LOGO */
-/* ============================= */
+/* =========================
+   HERO LOGO
+========================= */
 
-.logo {
-  filter:
-    brightness(1.4)
-    contrast(1.15)
-    drop-shadow(0 0 8px rgba(0,180,255,0.3));
-}
-
-/* ============================= */
-/* LINKTREE BUTTONS */
-/* ============================= */
-
-.link-button {
+.hero-logo {
+  width: 240px;
+  margin: 0 auto 24px;
   display: block;
-  padding: 18px;
-  margin-bottom: 18px;
+  filter: brightness(1.15) contrast(1.1);
+}
+
+.hero-claim {
   text-align: center;
-  text-decoration: none;
-  font-family: var(--font-title);
-  font-size: var(--text-lg);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text-main);
-  background: var(--bg-card);
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  transition: all 0.25s ease;
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  color: var(--text-soft);
+  margin-bottom: 40px;
 }
 
-/* Hover premium */
-.link-button:hover {
-  border-color: var(--primary);
-  box-shadow: 0 0 18px rgba(0,180,255,0.25);
-  transform: translateY(-3px);
-}
-
-/* Active móvil */
-.link-button:active {
-  transform: scale(0.98);
-}
-
-/* ============================= */
-/* BOTTOM NAV */
-/* ============================= */
-
-.bottom-nav {
-  position: absolute;
-  bottom: 40px;
-  width: 100%;
-  height: 60px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid var(--border);
-}
-
-.bottom-nav a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-}
-
-.bottom-nav svg {
-  width: 22px;
-  height: 22px;
-  fill: white;
-  opacity: 0.75;
-  transition: all 0.25s ease;
-}
-
-/* Hover glow táctico */
-.bottom-nav a:hover svg {
-  opacity: 1;
-  filter: drop-shadow(0 0 6px rgba(0,180,255,0.6));
-}
-
-.bottom-nav a:active svg {
-  transform: scale(0.9);
-}
-
-/* ============================= */
-/* LEGAL BAR */
-/* ============================= */
-
-.legal-bar {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 8px 12px;
-  font-size: var(--text-xs);
-  text-align: center;
-  background: #0f172a;
-  border-top: 1px solid var(--border);
-  line-height: 1.3;
-  color: var(--text-muted);
-  padding-bottom: calc(8px + env(safe-area-inset-bottom));
-}
-
-
-/* ============================= */
-/* MAS ESPACIO EN LOS BOTONES */
-/* ============================= */
-
-.link-button {
-  display: block;
-  padding: 18px;
-  margin-bottom: 18px;
-  text-align: center;
-  text-decoration: none;
-  font-family: var(--font-title);
-  font-size: var(--text-lg);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text-main);
-  background: var(--bg-card);
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  transition: all 0.25s ease;
-}
-
-.link-button:hover {
-  border-color: var(--primary);
-  box-shadow: 0 0 18px rgba(0,180,255,0.25);
-  transform: translateY(-3px);
-}
-
-.link-button:active {
-  transform: scale(0.98);
-}
-
-/* Ajuste icono ubicación */
-.link-button span,
-.link-button::first-letter {
-  margin-right: 6px;
-}
