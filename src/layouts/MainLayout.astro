@@ -1,5 +1,12 @@
 ---
-const { title = "Airsoft Nation" } = Astro.props;
+import "../styles/global.css";
+
+const {
+  title = "Airsoft Nation",
+  description = "Comunidad, eventos y juego de airsoft.",
+  image = "/logo_airsoft_nation.svg",
+  noIndex = false
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -7,25 +14,54 @@ const { title = "Airsoft Nation" } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>{title}</title>
+    <meta name="description" content={description} />
+
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:type" content="website" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- Preconnect opcional futuro -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
   </head>
+
   <body>
-    <slot />
+
+    <main>
+      <slot />
+    </main>
 
     <nav class="bottom-nav">
       <a href="/">Home</a>
       <a href="/saber/">Saber</a>
       <a href="/taller/">Taller</a>
-      <a href="https://wa.me/34614212918" target="_blank">WhatsApp</a>
-      <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank">Instagram</a>
+      <a href="https://wa.me/34614212918" target="_blank" rel="noopener">
+        WhatsApp
+      </a>
+      <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank" rel="noopener">
+        Instagram
+      </a>
     </nav>
 
     <style>
       body {
         margin: 0;
-        font-family: system-ui, sans-serif;
+        font-family: system-ui, -apple-system, sans-serif;
         background: #0b1220;
         color: white;
+        line-height: 1.6;
+      }
+
+      main {
+        padding-bottom: 80px; /* espacio para bottom nav */
       }
 
       .bottom-nav {
@@ -34,20 +70,36 @@ const { title = "Airsoft Nation" } = Astro.props;
         width: 100%;
         display: flex;
         justify-content: space-around;
-        padding: 12px 0;
-        background: #111827;
+        align-items: center;
+        padding: 14px 0;
+        background: rgba(17, 24, 39, 0.95);
+        backdrop-filter: blur(8px);
+        border-top: 1px solid rgba(255,255,255,0.08);
         font-size: 0.9rem;
+        z-index: 1000;
       }
 
       .bottom-nav a {
         color: white;
         text-decoration: none;
         opacity: 0.8;
+        transition: opacity 0.2s ease;
       }
 
       .bottom-nav a:hover {
         opacity: 1;
       }
+
+      @media (min-width: 768px) {
+        .bottom-nav {
+          display: none; /* solo móvil */
+        }
+
+        main {
+          padding-bottom: 0;
+        }
+      }
     </style>
+
   </body>
 </html>
