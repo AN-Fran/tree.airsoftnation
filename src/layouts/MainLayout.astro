@@ -1,4 +1,3 @@
----
 import "../styles/global.css";
 import Header from "../components/header.astro";
 import Footer from "../components/footer.astro";
@@ -10,17 +9,6 @@ const {
   noIndex = false,
   url = "https://tree.airsoftnation.eu"
 } = Astro.props;
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Airsoft Nation",
-  url,
-  logo: `${url}/logo_airsoft_nation.svg`,
-  sameAs: [
-    "https://www.instagram.com/airsoftnation.eu/"
-  ]
-};
 ---
 
 <!DOCTYPE html>
@@ -29,67 +17,76 @@ const jsonLd = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- SEO -->
     <title>{title}</title>
     <meta name="description" content={description} />
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
-    <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={url} />
 
-    <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" />
-
-    <!-- Preload logo -->
-    <link rel="preload" href="/logo_airsoft_nation.svg" as="image" type="image/svg+xml" />
-
-    <!-- JSON-LD -->
-    <script type="application/ld+json">
-      {JSON.stringify(jsonLd)}
-    </script>
   </head>
 
   <body>
 
-    <Header />
+    <!-- Desktop -->
+    <div class="desktop-only">
+      <Header />
+    </div>
 
-    <main class="page">
+    <main>
       <slot />
     </main>
 
-    <Footer />
+    <div class="desktop-only">
+      <Footer />
+    </div>
 
-    <!-- Bottom Nav (Mobile App Style) -->
+    <!-- Mobile Bottom Nav -->
     <nav class="bottom-nav">
-      <a href="/">
-        <span>🏠</span>
-        Home
+      <a href="/" aria-label="Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <path d="M3 12l9-9 9 9"/>
+          <path d="M9 21V9h6v12"/>
+        </svg>
       </a>
 
-      <a href="/saber/">
-        <span>📘</span>
-        Saber
+      <a href="/saber/" aria-label="Saber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 16v-4"/>
+          <path d="M12 8h.01"/>
+        </svg>
       </a>
 
-      <a href="/taller/">
-        <span>🛠</span>
-        Taller
+      <a href="/taller/" aria-label="Taller">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <path d="M14.7 6.3a4 4 0 01-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4z"/>
+        </svg>
       </a>
 
-      <a href="https://wa.me/34614212918" target="_blank" rel="noopener">
-        <span>💬</span>
-        WhatsApp
+      <a href="https://wa.me/34614212918" target="_blank" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="white">
+          <path d="M20 3.5A11 11 0 003 19l-1 4 4-1A11 11 0 1020 3.5z"/>
+        </svg>
       </a>
 
-      <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank" rel="noopener">
-        <span>📷</span>
-        Instagram
+      <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="white">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="5" fill="#0b1220"/>
+          <circle cx="18" cy="6" r="1.5"/>
+        </svg>
       </a>
     </nav>
+
+    <!-- Legal bar -->
+    <div class="legal-bar">
+      Derechos de autor © Registro marca de la Unión Europea nº 19040186 | Airsoft Nation
+    </div>
 
     <style>
       body {
@@ -98,65 +95,73 @@ const jsonLd = {
         background: #0b1220;
         color: white;
         line-height: 1.6;
-        -webkit-font-smoothing: antialiased;
       }
 
-      .page {
-        padding-bottom: 90px; /* espacio bottom nav */
-        animation: pageFade 0.4s ease forwards;
+      main {
+        padding-bottom: 120px;
       }
 
-      /* Transición suave de página */
-      @keyframes pageFade {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+      /* Desktop visibility */
+      .desktop-only {
+        display: none;
       }
 
-      /* Bottom nav estilo app */
+      @media (min-width: 768px) {
+        .desktop-only {
+          display: block;
+        }
+
+        .bottom-nav,
+        .legal-bar {
+          display: none;
+        }
+
+        main {
+          padding-bottom: 0;
+        }
+      }
+
+      /* Bottom Nav */
       .bottom-nav {
         position: fixed;
-        bottom: 0;
+        bottom: 28px;
         width: 100%;
         display: flex;
         justify-content: space-around;
         align-items: center;
-        padding: 10px 0 12px;
-        background: rgba(17, 24, 39, 0.96);
-        backdrop-filter: blur(12px);
+        padding: 12px 0;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(10px);
         border-top: 1px solid rgba(255,255,255,0.08);
         z-index: 1000;
       }
 
       .bottom-nav a {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        font-size: 0.7rem;
-        text-decoration: none;
-        color: white;
-        opacity: 0.75;
+        opacity: 0.85;
         transition: opacity 0.2s ease, transform 0.2s ease;
-      }
-
-      .bottom-nav a span {
-        font-size: 1.1rem;
       }
 
       .bottom-nav a:hover {
         opacity: 1;
-        transform: translateY(-2px);
+        transform: scale(1.1);
       }
 
-      /* Desktop */
-      @media (min-width: 768px) {
-        .bottom-nav {
-          display: none;
-        }
+      .bottom-nav svg {
+        width: 22px;
+        height: 22px;
+      }
 
-        .page {
-          padding-bottom: 0;
-        }
+      /* Legal sub-bar */
+      .legal-bar {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: #0f172a;
+        font-size: 0.65rem;
+        text-align: center;
+        padding: 6px 10px;
+        border-top: 1px solid rgba(255,255,255,0.05);
+        z-index: 999;
       }
     </style>
 
