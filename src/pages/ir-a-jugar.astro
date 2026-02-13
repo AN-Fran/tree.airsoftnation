@@ -1,10 +1,98 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import Hero from "../components/hero.astro";
+
+const campos = [
+  {
+    name: "Las Ardenas",
+    href: "https://lasardenasairsoft.es/",
+    external: true
+  },
+  {
+    name: "Napalm Airsoft",
+    href: "https://www.instagram.com/napalmairsoft/?hl=es",
+    external: true
+  },
+  {
+    name: "Mont Aventura Cervelló",
+    href: "https://www.mont-aventura.com/",
+    external: true
+  }
+];
 ---
 
-<MainLayout title="Jugar · Airsoft Nation">
-  <main class="page">
-    <h1>Donde puedes ir a jugar</h1>
-    <p>Sección en desarrollo.</p>
-  </main>
+<MainLayout title="Airsoft Nation | Campos donde jugar">
+
+  <Hero />
+
+  <section class="linktree">
+
+    <div class="section-title">
+      Campos donde jugar
+    </div>
+
+    {campos.map((campo, i) => (
+      <a
+        href={campo.href}
+        class="link-card"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={`animation-delay:${i * 0.1}s`}
+      >
+        <span>{campo.name}</span>
+        <span class="external-icon">↗</span>
+      </a>
+    ))}
+
+  </section>
+
 </MainLayout>
+
+<style>
+.linktree {
+  padding: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+.section-title {
+  text-align: center;
+  font-family: var(--font-title);
+  font-size: 1rem;
+  letter-spacing: 2px;
+  opacity: 0.6;
+  margin: 10px 0 20px;
+}
+
+.link-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: #111827;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.05);
+  animation: fadeUp 0.5s ease forwards;
+  opacity: 0;
+  transition: transform 0.2s ease, border 0.2s ease, background 0.2s ease;
+}
+
+.link-card:hover {
+  transform: translateY(-3px);
+  border-color: #00b894;
+  background: #162033;
+}
+
+.external-icon {
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
