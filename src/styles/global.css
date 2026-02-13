@@ -1,6 +1,36 @@
 * {
   box-sizing: border-box;
 }
+:root {
+  --font-title: 'Oswald', sans-serif;
+  --font-text: 'Open Sans', sans-serif;
+}
+
+/* Reset base */
+body {
+  margin: 0;
+  font-family: var(--font-text);
+  background: #07142a;
+  color: #ffffff;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+/* Botones y enlaces importantes */
+.button,
+.cta,
+a {
+  font-family: var(--font-title);
+}
+
+
 
 html, body {
   margin: 0;
