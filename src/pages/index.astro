@@ -8,7 +8,13 @@ const routes = [
   { name: "Eventos", href: "/eventos/" },
   { name: "Taller", href: "/taller/" },
   { name: "Novedades", href: "/novedades/" },
-  { name: "Comprar", href: "/comprar/" }
+  { name: "Comprar", href: "/comprar/" },
+  { 
+    name: "Tienda Física", 
+    href: "https://maps.app.goo.gl/vLG19SnL58wq81L27",
+    external: true,
+    icon: "location"
+  }
 ];
 ---
 
@@ -22,7 +28,13 @@ const routes = [
         href={route.href}
         class="link-card"
         style={`animation-delay:${i * 0.1}s`}
+        {...(route.external && { target: "_blank", rel: "noopener" })}
       >
+        {route.icon === "location" && (
+          <svg class="link-icon" viewBox="0 0 24 24">
+            <path d="M12 2C8.1 2 5 5.1 5 9c0 5.3 7 13 7 13s7-7.7 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/>
+          </svg>
+        )}
         {route.name}
       </a>
     ))}
@@ -38,23 +50,41 @@ const routes = [
 }
 
 .link-card {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   padding: 18px;
   border-radius: 14px;
   background: #111827;
   text-decoration: none;
   color: white;
+  font-family: var(--font-title);
   font-weight: 500;
   text-align: center;
   border: 1px solid rgba(255,255,255,0.05);
   animation: fadeUp 0.5s ease forwards;
   opacity: 0;
-  transition: transform 0.2s ease, border 0.2s ease;
+  transition: all 0.25s ease;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .link-card:hover {
   transform: translateY(-3px);
-  border-color: #00b894;
+  border-color: var(--primary);
+  box-shadow: 0 0 18px rgba(0,180,255,0.25);
+}
+
+.link-card:active {
+  transform: scale(0.98);
+}
+
+.link-icon {
+  width: 18px;
+  height: 18px;
+  fill: var(--primary);
+  opacity: 0.9;
 }
 
 @keyframes fadeUp {
@@ -62,4 +92,3 @@ const routes = [
   to { opacity: 1; transform: translateY(0); }
 }
 </style>
-
