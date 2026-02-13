@@ -2,9 +2,68 @@
 import MainLayout from "../layouts/MainLayout.astro";
 ---
 
-<MainLayout title="Taller · Airsoft Nation">
-  <main class="page">
-    <h1>Taller</h1>
-    <p>Sección en desarrollo.</p>
-  </main>
-</MainLayout>
+<MainLayout title="Servicio Técnico | Airsoft Nation">
+
+<section class="form-section">
+
+  <h2>Solicitar Servicio</h2>
+
+  <form id="ticket-form">
+    <input type="text" name="name" placeholder="Nombre completo" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="tel" name="phone" placeholder="Teléfono" />
+
+    <input type="text" name="brand" placeholder="Marca" />
+    <input type="text" name="model" placeholder="Modelo" />
+    <input type="text" name="serial" placeholder="Número de serie" />
+
+    <textarea name="problem" placeholder="Describe el problema" required></textarea>
+
+    <button type="submit">Crear Ticket</button>
+  </form>
+
+  <p id="ticket-message"></p>
+
+</section>
+
+<script>
+  const form = document.getElementById("ticket-form");
+  const messageBox = document.getElementById("ticket-message");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const data = new FormData(form);
+
+    const payload = {
+      email: data.get("email"),
+      attributes: {
+        FIRSTNAME: data.get("name"),
+        PHONE: data.get("phone"),
+        MARCA: data.get("brand"),
+        MODELO: data.get("model"),
+        NUMERO_SERIE: data.get("serial"),
+        PROBLEMA: data.get("problem"),
+        ORIGEN: "Web Taller"
+      },
+      listIds: [3], // ID lista Tickets Taller
+      updateEnabled: true
+    };
+
+    const response = await fetch("https://api.brevo.com/v3/contacts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": "PUBLIC_BREVO_KEY_AQUI"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      messageBox.innerText = "Ticket enviado correctamente.";
+      form.reset();
+    } else {
+      messageBox.innerText = "Error enviando el ticket.";
+    }
+  });
+</script>
