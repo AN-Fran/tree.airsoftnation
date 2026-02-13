@@ -4,175 +4,158 @@ import MainLayout from "../layouts/MainLayout.astro";
 
 <MainLayout title="Servicio Técnico | Airsoft Nation">
 
-  <section class="contact-wrapper">
+<section class="contact-wrapper">
 
-    <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" class="contact-logo" />
+  <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" class="contact-logo" />
 
-    <div class="brand-claim">
-      ENCUENTRA TUS LÍMITES, CON CRITERIO.<br />
-      DECISIONES QUE FUNCIONAN EN CAMPO.
-    </div>
+  <div class="brand-claim">
+    ENCUENTRA TUS LÍMITES, CON CRITERIO.<br />
+    DECISIONES QUE FUNCIONAN EN CAMPO.
+  </div>
 
-    <h1 class="form-title">SERVICIO TÉCNICO</h1>
+  <h1 class="form-title">SERVICIO TÉCNICO</h1>
+  <p class="subtitle">
+    Envíanos los datos de tu réplica y crearemos tu orden de trabajo.
+  </p>
 
-    <p class="subtitle">
-      Envíanos los datos de tu réplica y crearemos tu orden de trabajo.
-    </p>
+  <form method="POST" action="/api/ticket" class="form-grid">
 
-    <form method="POST" action="/api/ticket" class="form-grid">
+    <input type="text" name="name" placeholder="Nombre y apellidos" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="tel" name="phone" placeholder="Teléfono" required />
 
-      <input type="text" name="name" placeholder="Nombre y apellidos" required />
-      <input type="email" name="email" placeholder="Email" required />
-      <input type="tel" name="phone" placeholder="Teléfono" required />
+    <select name="brand" required>
+      <option value="">Marca de la réplica</option>
+      <option>Tokyo Marui</option>
+      <option>Specna Arms</option>
+      <option>VFC</option>
+      <option>G&G</option>
+      <option>ICS</option>
+      <option>LCT</option>
+      <option>E&L</option>
+      <option>Cyma</option>
+      <option>Ares</option>
+      <option>KWA</option>
+      <option>WE</option>
+      <option>Krytac</option>
+      <option>Classic Army</option>
+      <option>Umarex</option>
+      <option>ASG</option>
+      <option>Arcturus</option>
+      <option>Double Eagle</option>
+      <option>Jing Gong</option>
+      <option>A&K</option>
+      <option>Army Armament</option>
+      <option>KWC</option>
+      <option>Lancer Tactical</option>
+      <option>Bo Manufactures</option>
+      <option>Gate</option>
+      <option>Saigo</option>
+      <option>Secutor</option>
+      <option>Evolution</option>
+      <option>Otra</option>
+    </select>
 
-      <select name="brand" required>
-        <option value="">Marca de la réplica</option>
-        <option>Tokyo Marui</option>
-        <option>Specna Arms</option>
-        <option>VFC</option>
-        <option>G&G</option>
-        <option>ICS</option>
-        <option>LCT</option>
-        <option>E&L</option>
-        <option>Cyma</option>
-        <option>Ares</option>
-        <option>KWA</option>
-        <option>WE</option>
-        <option>Krytac</option>
-        <option>Classic Army</option>
-        <option>Umarex</option>
-        <option>ASG</option>
-        <option>Arcturus</option>
-        <option>Double Eagle</option>
-        <option>Jing Gong</option>
-        <option>A&K</option>
-        <option>Army Armament</option>
-        <option>KWC</option>
-        <option>Lancer Tactical</option>
-        <option>Bo Manufactures</option>
-        <option>Gate</option>
-        <option>Saigo</option>
-        <option>Secutor</option>
-        <option>Evolution</option>
-        <option>Otra</option>
-      </select>
+    <input type="text" name="model" placeholder="Modelo (ej: M4 / AR15)" />
+    <input type="text" name="serialNumber" placeholder="Número de serie" />
 
-      <input type="text" name="model" placeholder="Modelo (ej: M4 / AR15)" />
-      <input type="text" name="serialNumber" placeholder="Número de serie" />
+    <textarea name="message" placeholder="Describe el problema o servicio que necesitas" required></textarea>
 
-      <textarea
-        name="message"
-        placeholder="Describe el problema o servicio que necesitas"
-        required
-      ></textarea>
+    <label class="privacy">
+      <input type="checkbox" required />
+      He leído y acepto la
+      <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
+        política de privacidad
+      </a>
+    </label>
 
-      <label class="privacy">
-        <input type="checkbox" required />
-        <span>
-          He leído y acepto la
-          <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
-            política de privacidad
-          </a>
-        </span>
-      </label>
+    <button type="submit" class="btn-submit">
+      CREAR ORDEN DE SERVICIO
+    </button>
 
-      <button type="submit" class="btn-submit">
-        CREAR ORDEN DE SERVICIO
-      </button>
+  </form>
 
-    </form>
+  <div class="powered">
+    <img src="/Wolverine Airsoft Claws White.svg" alt="Wolverine Airsoft" />
+    <span>HPA · CNC · PRECISIÓN · POWERED BY WOLVERINE AIRSOFT</span>
+  </div>
 
-    <div class="powered">
-      <img src="/Wolverine Airsoft Claws White.svg" alt="Wolverine Airsoft" />
-      <span>HPA · CNC · PRECISIÓN · POWERED BY WOLVERINE AIRSOFT</span>
-    </div>
+  <div class="form-footer">
+    Registro de marca de la Unión Europea nº 19040186<br />
+    © 2026 Airsoft Nation · Celrà (Girona)
+  </div>
 
-  </section>
-
-</MainLayout>
+</section>
 
 <style>
 .contact-wrapper {
   max-width: 480px;
   margin: 0 auto;
-  padding: 40px 20px 240px; /* más espacio inferior */
+  padding: 50px 20px 180px;
   text-align: center;
 }
 
+/* LOGO */
 .contact-logo {
-  width: 240px; /* más equilibrado con título */
-  margin-bottom: 22px;
+  width: 220px;
+  margin-bottom: 18px;
+  filter: brightness(1.2);
 }
 
+/* CLAIM */
 .brand-claim {
   font-size: 0.8rem;
-  opacity: 0.7;
   letter-spacing: 1px;
+  opacity: 0.75;
   margin-bottom: 24px;
 }
 
+/* TITULOS */
 .form-title {
-  font-size: 1.9rem;
-  margin-bottom: 10px;
+  font-size: 1.7rem;
+  margin-bottom: 8px;
 }
 
 .subtitle {
-  font-size: 0.95rem;
-  opacity: 0.85;
-  margin-bottom: 34px;
+  font-size: 0.9rem;
+  margin-bottom: 30px;
+  opacity: 0.8;
 }
 
+/* FORM */
 .form-grid {
   display: grid;
-  gap: 18px; /* más aire entre campos */
+  gap: 16px;
 }
 
 .form-grid input,
 .form-grid select,
 .form-grid textarea {
-  width: 100%;
   padding: 14px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.06);
   background: #111827;
   color: white;
   font-size: 0.9rem;
-  font-family: var(--font-text);
 }
 
 .form-grid textarea {
-  min-height: 120px;
-  resize: vertical;
+  min-height: 110px;
+  resize: none;
 }
 
-.form-grid input:focus,
-.form-grid select:focus,
-.form-grid textarea:focus {
-  outline: none;
-  border-color: #00b894;
-}
-
-/* PRIVACIDAD BIEN ALINEADA */
+/* PRIVACY */
 .privacy {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 0.78rem;
-  opacity: 0.8;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  opacity: 0.75;
   text-align: left;
-  line-height: 1.4;
-  margin-top: 6px;
 }
 
 .privacy input {
-  margin-top: 3px;
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-}
-
-.privacy span {
-  display: block;
+  margin: 0;
 }
 
 .privacy a {
@@ -180,40 +163,46 @@ import MainLayout from "../layouts/MainLayout.astro";
   text-decoration: none;
 }
 
-/* BOTÓN CON ESPACIO */
+/* BUTTON */
 .btn-submit {
-  margin-top: 18px;
+  margin-top: 8px;
   padding: 16px;
-  border-radius: 40px;
+  border-radius: 30px;
   border: none;
   background: linear-gradient(135deg, #00b894, #0984e3);
   color: white;
-  font-size: 0.9rem;
   font-weight: 600;
+  letter-spacing: 1px;
   cursor: pointer;
-  transition: transform 0.2s ease;
 }
 
-.btn-submit:active {
-  transform: scale(0.96);
-}
-
+/* POWERED */
 .powered {
-  margin-top: 40px;
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   opacity: 0.6;
-  font-size: 0.7rem;
 }
 
 .powered img {
-  width: 110px;
-  margin-bottom: 8px;
+  width: 130px;
+  height: auto;
 }
 
-/* FOOTER MÁS LIMPIO Y SEPARADO */
+.powered span {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+/* FOOTER */
 .form-footer {
-  margin-top: 28px;
+  margin-top: 18px;
   font-size: 0.7rem;
   opacity: 0.55;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 </style>
+
+</MainLayout>
