@@ -68,10 +68,12 @@ import MainLayout from "../layouts/MainLayout.astro";
 
       <label class="privacy">
         <input type="checkbox" required />
-        He leído y acepto la
-        <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
-          política de privacidad
-        </a>
+        <span>
+          He leído y acepto la
+          <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
+            política de privacidad
+          </a>
+        </span>
       </label>
 
       <button type="submit" class="btn-submit">
@@ -79,6 +81,16 @@ import MainLayout from "../layouts/MainLayout.astro";
       </button>
 
     </form>
+
+    <div class="powered">
+      <img src="/Wolverine Airsoft Claws White.svg" alt="Wolverine Airsoft" />
+      <span>HPA · CNC · PRECISIÓN · POWERED BY WOLVERINE AIRSOFT</span>
+    </div>
+
+    <footer class="form-footer">
+      Registro de marca de la Unión Europea nº 19040186<br />
+      © 2026 Airsoft Nation · Celrà (Girona)
+    </footer>
 
   </section>
 
@@ -88,81 +100,75 @@ import MainLayout from "../layouts/MainLayout.astro";
 .contact-wrapper {
   max-width: 480px;
   margin: 0 auto;
-  padding: 60px 20px 220px;
+  padding: 40px 20px 200px;
   text-align: center;
 }
 
-/* Logo equilibrado */
 .contact-logo {
-  width: 240px;
-  margin-bottom: 25px;
-  filter: brightness(1.35) drop-shadow(0 0 25px rgba(0,150,255,0.25));
+  width: 220px;
+  margin-bottom: 18px;
 }
 
-/* Claim */
 .brand-claim {
-  font-size: 0.85rem;
-  opacity: 0.7;
-  margin-bottom: 30px;
-  line-height: 1.4;
-}
-
-/* Título */
-.form-title {
-  font-family: var(--font-title);
-  font-size: 1.8rem;
+  font-size: 0.78rem;
+  opacity: 0.75;
   letter-spacing: 1px;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
-/* Subtítulo */
+.form-title {
+  font-size: 1.7rem;
+  margin-bottom: 8px;
+}
+
 .subtitle {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   opacity: 0.8;
-  margin-bottom: 40px;
+  margin-bottom: 28px;
 }
 
-/* Form */
 .form-grid {
   display: grid;
-  gap: 16px;
-  text-align: left;
+  gap: 14px;
 }
 
 .form-grid input,
 .form-grid select,
 .form-grid textarea {
   width: 100%;
-  padding: 14px;
-  border-radius: 12px;
+  padding: 12px;
+  border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.1);
   background: #111827;
   color: white;
+  font-size: 0.85rem;
   font-family: var(--font-text);
-  font-size: 0.9rem;
 }
 
 .form-grid textarea {
-  min-height: 120px;
+  min-height: 100px;
   resize: vertical;
 }
 
-.form-grid input::placeholder,
-.form-grid textarea::placeholder {
-  color: rgba(255,255,255,0.5);
+.form-grid input:focus,
+.form-grid select:focus,
+.form-grid textarea:focus {
+  outline: none;
+  border-color: #00b894;
 }
 
-/* Checkbox */
 .privacy {
-  font-size: 0.75rem;
-  opacity: 0.7;
   display: flex;
+  align-items: center;
   gap: 8px;
-  align-items: flex-start;
+  font-size: 0.72rem;
+  opacity: 0.75;
+  text-align: left;
 }
 
 .privacy input {
-  margin-top: 3px;
+  margin: 0;
+  flex-shrink: 0;
 }
 
 .privacy a {
@@ -170,28 +176,36 @@ import MainLayout from "../layouts/MainLayout.astro";
   text-decoration: none;
 }
 
-/* Botón */
 .btn-submit {
-  margin-top: 10px;
-  padding: 16px;
+  margin-top: 4px;
+  padding: 14px;
   border-radius: 30px;
   border: none;
-  background: linear-gradient(135deg, #00b894, #0096ff);
+  background: linear-gradient(135deg, #00b894, #0984e3);
   color: white;
-  font-family: var(--font-title);
-  font-size: 0.9rem;
-  letter-spacing: 1px;
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
 
 .btn-submit:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 
-/* Footer visible */
+.powered {
+  margin-top: 30px;
+  opacity: 0.6;
+  font-size: 0.7rem;
+}
+
+.powered img {
+  width: 100px;
+  margin-bottom: 6px;
+}
+
 .form-footer {
-  margin-top: 60px;
+  margin-top: 24px;
   font-size: 0.65rem;
   opacity: 0.5;
   line-height: 1.4;
