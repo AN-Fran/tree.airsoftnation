@@ -1,44 +1,64 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import Hero from "../components/hero.astro";
-import FeatureGrid from "../components/FeatureGrid.astro";
-import CTASection from "../components/CTASection.astro";
 
-const features = [
-  {
-    title: "Comunidad",
-    text: "Únete a jugadores apasionados y vive el airsoft como debe ser."
-  },
-  {
-    title: "Eventos",
-    text: "Organizamos partidas, milsim y experiencias tácticas únicas."
-  },
-  {
-    title: "Formación",
-    text: "Aprende técnica, mantenimiento y estrategia."
-  }
+const routes = [
+  { name: "Saber", href: "/saber/" },
+  { name: "Ir a jugar", href: "/ir-a-jugar/" },
+  { name: "Eventos", href: "/eventos/" },
+  { name: "Taller", href: "/taller/" },
+  { name: "Novedades", href: "/novedades/" },
+  { name: "Comprar", href: "/comprar/" }
 ];
 ---
 
-<MainLayout
-  title="Airsoft Nation | Comunidad de Airsoft"
-  description="Eventos, juego, formación y tienda especializada en airsoft."
->
+<MainLayout title="Airsoft Nation | Comunidad táctica">
 
-  <Hero 
-    title="Más que Airsoft"
-    subtitle="Juego, comunidad y formación en un mismo lugar."
-    primaryText="Ver próximos eventos"
-    primaryHref="/eventos/"
-  />
+  <Hero />
 
-  <FeatureGrid items={features} />
-
-  <CTASection
-    title="¿Preparado para jugar?"
-    text="Descubre nuestros próximos eventos y vive la experiencia."
-    buttonText="Ir a eventos"
-    buttonHref="/eventos/"
-  />
+  <section class="linktree">
+    {routes.map((route, i) => (
+      <a
+        href={route.href}
+        class="link-card"
+        style={`animation-delay:${i * 0.1}s`}
+      >
+        {route.name}
+      </a>
+    ))}
+  </section>
 
 </MainLayout>
+
+<style>
+.linktree {
+  padding: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+.link-card {
+  display: block;
+  padding: 18px;
+  border-radius: 14px;
+  background: #111827;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.05);
+  animation: fadeUp 0.5s ease forwards;
+  opacity: 0;
+  transition: transform 0.2s ease, border 0.2s ease;
+}
+
+.link-card:hover {
+  transform: translateY(-3px);
+  border-color: #00b894;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
