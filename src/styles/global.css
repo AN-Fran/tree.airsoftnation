@@ -30,6 +30,12 @@ html, body {
   padding: 60px 20px 160px;
 }
 
+.app-content {
+  background:
+    radial-gradient(circle at 50% -100px, rgba(0,150,255,0.15), transparent 60%),
+    #0b1220;
+}
+
 /* Bottom Nav */
 .bottom-nav {
   position: absolute;
