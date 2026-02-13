@@ -1,70 +1,67 @@
----
-const {
-  title = "Airsoft Nation",
-  subtitle = "Comunidad, juego y evolución táctica",
-  primaryCTA = { label: "Ir a jugar", href: "/ir-a-jugar/" }
-} = Astro.props;
----
-
 <section class="hero">
-  <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" class="logo" />
 
-  <h1>{title}</h1>
-  <p>{subtitle}</p>
+  <div class="logo-wrapper">
+    <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" />
+  </div>
 
-  <a href={primaryCTA.href} class="cta">
-    {primaryCTA.label}
-  </a>
+  <p class="tagline">
+    Comunidad, juego y evolución táctica
+  </p>
+
 </section>
 
 <style>
 .hero {
-  padding: 60px 20px 40px;
   text-align: center;
-  animation: fadeIn 0.8s ease forwards;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
-.logo {
-  width: 110px;
-  margin-bottom: 24px;
-  animation: float 4s ease-in-out infinite;
+/* Logo más grande */
+.logo-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
 }
 
-h1 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  font-weight: 600;
+/* Glow suave detrás */
+.logo-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -30px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 180, 255, 0.25) 0%,
+    rgba(0, 180, 255, 0.15) 40%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  z-index: -1;
 }
 
-p {
+/* Logo */
+.logo-wrapper img {
+  width: 240px;   /* Más grande */
+  max-width: 80%;
+  opacity: 0;
+  animation: fadeInLogo 0.8s ease forwards;
+}
+
+/* Subtítulo */
+.tagline {
   font-size: 0.95rem;
   opacity: 0.7;
-  margin-bottom: 28px;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+  animation: fadeInText 1s ease forwards;
+  opacity: 0;
 }
 
-.cta {
-  display: inline-block;
-  padding: 14px 28px;
-  background: linear-gradient(135deg, #00b894, #0984e3);
-  border-radius: 999px;
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+@keyframes fadeInLogo {
+  to { opacity: 1; }
 }
 
-.cta:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+@keyframes fadeInText {
+  to { opacity: 0.7; }
 }
 </style>
