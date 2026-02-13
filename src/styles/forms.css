@@ -1,0 +1,96 @@
+/* =========================
+   FORM LAYOUT
+========================= */
+
+.contact-container {
+  padding: 40px 20px 140px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-soft);
+  margin-bottom: 30px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border-soft);
+  background: #0f172a;
+  color: white;
+  font-family: var(--font-text);
+  font-size: 0.95rem;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* =========================
+   PRIVACY
+========================= */
+
+.privacy {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.privacy input {
+  width: 18px;
+  height: 18px;
+}
+
+.privacy a {
+  color: var(--primary);
+}
+
+/* =========================
+   BOTÓN SUBMIT
+========================= */
+
+.btn-submit {
+  margin-top: 10px;
+}
+
+/* =========================
+   POWERED
+========================= */
+
+.powered {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.powered img {
+  width: 120px;
+  opacity: 0.8;
+  display: block;
+  margin: 0 auto 12px;
+}
+
+.powered span {
+  font-size: 0.7rem;
+  color: var(--text-soft);
+}
