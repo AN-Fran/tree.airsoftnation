@@ -10,6 +10,17 @@ const {
   noIndex = false,
   url = "https://tree.airsoftnation.eu"
 } = Astro.props;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Airsoft Nation",
+  url,
+  logo: `${url}/logo_airsoft_nation.svg`,
+  sameAs: [
+    "https://www.instagram.com/airsoftnation.eu/"
+  ]
+};
 ---
 
 <!DOCTYPE html>
@@ -18,7 +29,7 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- SEO básico -->
+    <!-- SEO -->
     <title>{title}</title>
     <meta name="description" content={description} />
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
@@ -38,16 +49,7 @@ const {
 
     <!-- JSON-LD -->
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Airsoft Nation",
-        "url": "https://tree.airsoftnation.eu",
-        "logo": "https://tree.airsoftnation.eu/logo_airsoft_nation.svg",
-        "sameAs": [
-          "https://www.instagram.com/airsoftnation.eu/"
-        ]
-      }
+      {JSON.stringify(jsonLd)}
     </script>
   </head>
 
@@ -55,21 +57,36 @@ const {
 
     <Header />
 
-    <main>
+    <main class="page">
       <slot />
     </main>
 
     <Footer />
 
-    <!-- Bottom Nav solo móvil -->
+    <!-- Bottom Nav (Mobile App Style) -->
     <nav class="bottom-nav">
-      <a href="/">Home</a>
-      <a href="/saber/">Saber</a>
-      <a href="/taller/">Taller</a>
+      <a href="/">
+        <span>🏠</span>
+        Home
+      </a>
+
+      <a href="/saber/">
+        <span>📘</span>
+        Saber
+      </a>
+
+      <a href="/taller/">
+        <span>🛠</span>
+        Taller
+      </a>
+
       <a href="https://wa.me/34614212918" target="_blank" rel="noopener">
+        <span>💬</span>
         WhatsApp
       </a>
+
       <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank" rel="noopener">
+        <span>📷</span>
         Instagram
       </a>
     </nav>
@@ -81,13 +98,21 @@ const {
         background: #0b1220;
         color: white;
         line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
       }
 
-      main {
-        padding-bottom: 80px;
+      .page {
+        padding-bottom: 90px; /* espacio bottom nav */
+        animation: pageFade 0.4s ease forwards;
       }
 
-      /* Bottom nav móvil */
+      /* Transición suave de página */
+      @keyframes pageFade {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Bottom nav estilo app */
       .bottom-nav {
         position: fixed;
         bottom: 0;
@@ -95,31 +120,41 @@ const {
         display: flex;
         justify-content: space-around;
         align-items: center;
-        padding: 14px 0;
-        background: rgba(17, 24, 39, 0.95);
-        backdrop-filter: blur(8px);
+        padding: 10px 0 12px;
+        background: rgba(17, 24, 39, 0.96);
+        backdrop-filter: blur(12px);
         border-top: 1px solid rgba(255,255,255,0.08);
-        font-size: 0.9rem;
         z-index: 1000;
       }
 
       .bottom-nav a {
-        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.7rem;
         text-decoration: none;
-        opacity: 0.8;
-        transition: opacity 0.2s ease;
+        color: white;
+        opacity: 0.75;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+
+      .bottom-nav a span {
+        font-size: 1.1rem;
       }
 
       .bottom-nav a:hover {
         opacity: 1;
+        transform: translateY(-2px);
       }
 
+      /* Desktop */
       @media (min-width: 768px) {
         .bottom-nav {
           display: none;
         }
 
-        main {
+        .page {
           padding-bottom: 0;
         }
       }
@@ -127,4 +162,3 @@ const {
 
   </body>
 </html>
-
