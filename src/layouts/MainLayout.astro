@@ -1,0 +1,53 @@
+---
+const { title = "Airsoft Nation" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+
+    <nav class="bottom-nav">
+      <a href="/">Home</a>
+      <a href="/saber/">Saber</a>
+      <a href="/taller/">Taller</a>
+      <a href="https://wa.me/34614212918" target="_blank">WhatsApp</a>
+      <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank">Instagram</a>
+    </nav>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background: #0b1220;
+        color: white;
+      }
+
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        padding: 12px 0;
+        background: #111827;
+        font-size: 0.9rem;
+      }
+
+      .bottom-nav a {
+        color: white;
+        text-decoration: none;
+        opacity: 0.8;
+      }
+
+      .bottom-nav a:hover {
+        opacity: 1;
+      }
+    </style>
+  </body>
+</html>

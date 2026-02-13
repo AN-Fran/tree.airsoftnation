@@ -1,0 +1,55 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout title="Airsoft Nation">
+
+  <main class="home">
+    <h1>¿Qué quieres hacer ahora?</h1>
+
+    <a href="/saber/" class="route">Saber</a>
+    <a href="/ir-a-jugar/" class="route">Ir a jugar</a>
+    <a href="/evento/" class="route">Asistir a evento</a>
+    <a href="/taller/" class="route">Taller</a>
+    <a href="/novedades/" class="route">Novedades</a>
+    <a href="/comprar/" class="route">Comprar</a>
+  </main>
+
+  <style>
+    .home {
+      padding: 80px 20px 120px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+      font-weight: 600;
+    }
+
+    .route {
+      display: block;
+      margin: 12px 0;
+      font-size: 1.1rem;
+      text-decoration: none;
+      color: white;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.5s forwards;
+    }
+
+    .route:nth-of-type(1) { animation-delay: 0.1s; }
+    .route:nth-of-type(2) { animation-delay: 0.2s; }
+    .route:nth-of-type(3) { animation-delay: 0.3s; }
+    .route:nth-of-type(4) { animation-delay: 0.4s; }
+    .route:nth-of-type(5) { animation-delay: 0.5s; }
+    .route:nth-of-type(6) { animation-delay: 0.6s; }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+</MainLayout>
