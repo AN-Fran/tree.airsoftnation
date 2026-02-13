@@ -1,8 +1,10 @@
 <section class="hero">
 
-  <div class="logo-wrapper">
-    <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" />
-  </div>
+  <img 
+    src="/logo_airsoft_nation.svg" 
+    alt="Airsoft Nation"
+    class="logo"
+  />
 
   <p class="tagline">
     Comunidad, juego y evolución táctica
@@ -13,55 +15,33 @@
 <style>
 .hero {
   text-align: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: 60px 20px 40px;
 }
 
-/* Logo más grande */
-.logo-wrapper {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 20px;
-}
-
-/* Glow suave detrás */
-.logo-wrapper::before {
-  content: "";
-  position: absolute;
-  inset: -30px;
-  background: radial-gradient(
-    circle,
-    rgba(0, 180, 255, 0.25) 0%,
-    rgba(0, 180, 255, 0.15) 40%,
-    transparent 70%
-  );
-  filter: blur(40px);
-  z-index: -1;
-}
-
-/* Logo */
-.logo-wrapper img {
-  width: 240px;   /* Más grande */
-  max-width: 80%;
+/* Logo visible y con profundidad real */
+.logo {
+  width: 260px;
+  max-width: 85%;
+  filter:
+    brightness(1.25)
+    contrast(1.1)
+    drop-shadow(0 0 20px rgba(0,180,255,0.35))
+    drop-shadow(0 10px 40px rgba(0,0,0,0.6));
+  animation: fadeIn 0.8s ease forwards;
   opacity: 0;
-  animation: fadeInLogo 0.8s ease forwards;
 }
 
 /* Subtítulo */
 .tagline {
+  margin-top: 18px;
   font-size: 0.95rem;
-  opacity: 0.7;
-  margin-top: 8px;
+  opacity: 0.75;
   letter-spacing: 0.5px;
-  animation: fadeInText 1s ease forwards;
+  animation: fadeIn 1.2s ease forwards;
   opacity: 0;
 }
 
-@keyframes fadeInLogo {
+@keyframes fadeIn {
   to { opacity: 1; }
-}
-
-@keyframes fadeInText {
-  to { opacity: 0.7; }
 }
 </style>
