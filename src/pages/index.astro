@@ -1,29 +1,31 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import Header from "../components/Header.astro";
 
 const routes = [
   { name: "Saber", href: "/saber/" },
   { name: "Ir a jugar", href: "/ir-a-jugar/" },
-  { name: "Asistir a evento", href: "/eventos/" },
+  { name: "Eventos", href: "/eventos/" },
   { name: "Taller", href: "/taller/" },
   { name: "Novedades", href: "/novedades/" },
   { name: "Comprar", href: "/comprar/" }
 ];
 ---
 
-<MainLayout title="Airsoft Nation - Comunidad y Juego">
+<MainLayout
+  title="Airsoft Nation | Comunidad de Airsoft"
+  description="Eventos, juego, formación y tienda especializada."
+>
 
-  <section class="hero">
+  <Header />
+
+  <section class="hero container">
     <h1>¿Qué quieres hacer ahora?</h1>
 
-    <div class="routes">
-      {routes.map((route, index) => (
-        <a
-          href={route.href}
-          class="route"
-          style={`animation-delay: ${index * 0.1}s`}
-        >
-          {route.name}
+    <div class="grid">
+      {routes.map(route => (
+        <a href={route.href} class="card">
+          <span>{route.name}</span>
         </a>
       ))}
     </div>
@@ -31,55 +33,51 @@ const routes = [
 
   <style>
     .hero {
-      padding: 100px 20px 140px;
+      padding: 120px 0 160px;
       text-align: center;
-      max-width: 900px;
-      margin: 0 auto;
     }
 
     h1 {
-      margin-bottom: 60px;
+      font-size: 2.4rem;
+      margin-bottom: 70px;
       font-weight: 600;
-      font-size: 2rem;
+      letter-spacing: -0.5px;
     }
 
-    .routes {
+    .grid {
       display: grid;
-      gap: 18px;
+      gap: 24px;
     }
 
-    .route {
-      display: block;
-      padding: 14px 0;
-      font-size: 1.1rem;
+    .card {
+      padding: 28px;
+      border-radius: 14px;
       text-decoration: none;
-      color: white;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 0.5s forwards;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      transition: opacity 0.2s ease, transform 0.2s ease;
+      color: var(--text);
+      background: linear-gradient(
+        145deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.02)
+      );
+      border: 1px solid var(--border);
+      transition: all 0.25s ease;
+      font-size: 1.15rem;
+      font-weight: 500;
     }
 
-    .route:hover {
-      opacity: 0.7;
-      transform: translateY(-2px);
-    }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--primary);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
 
     @media (min-width: 768px) {
-      .routes {
-        grid-template-columns: repeat(2, 1fr);
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
       }
 
       h1 {
-        font-size: 2.4rem;
+        font-size: 2.8rem;
       }
     }
   </style>
