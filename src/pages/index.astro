@@ -1,85 +1,44 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
-import Header from "../components/Header.astro";
+import Hero from "../components/hero.astro";
+import FeatureGrid from "../components/FeatureGrid.astro";
+import CTASection from "../components/CTASection.astro";
 
-const routes = [
-  { name: "Saber", href: "/saber/" },
-  { name: "Ir a jugar", href: "/ir-a-jugar/" },
-  { name: "Eventos", href: "/eventos/" },
-  { name: "Taller", href: "/taller/" },
-  { name: "Novedades", href: "/novedades/" },
-  { name: "Comprar", href: "/comprar/" }
+const features = [
+  {
+    title: "Comunidad",
+    text: "Únete a jugadores apasionados y vive el airsoft como debe ser."
+  },
+  {
+    title: "Eventos",
+    text: "Organizamos partidas, milsim y experiencias tácticas únicas."
+  },
+  {
+    title: "Formación",
+    text: "Aprende técnica, mantenimiento y estrategia."
+  }
 ];
 ---
 
 <MainLayout
   title="Airsoft Nation | Comunidad de Airsoft"
-  description="Eventos, juego, formación y tienda especializada."
+  description="Eventos, juego, formación y tienda especializada en airsoft."
 >
 
-  <Header />
+  <Hero 
+    title="Más que Airsoft"
+    subtitle="Juego, comunidad y formación en un mismo lugar."
+    primaryText="Ver próximos eventos"
+    primaryHref="/eventos/"
+  />
 
-  <section class="hero container">
-    <h1>¿Qué quieres hacer ahora?</h1>
+  <FeatureGrid items={features} />
 
-    <div class="grid">
-      {routes.map(route => (
-        <a href={route.href} class="card">
-          <span>{route.name}</span>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <style>
-    .hero {
-      padding: 120px 0 160px;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 2.4rem;
-      margin-bottom: 70px;
-      font-weight: 600;
-      letter-spacing: -0.5px;
-    }
-
-    .grid {
-      display: grid;
-      gap: 24px;
-    }
-
-    .card {
-      padding: 28px;
-      border-radius: 14px;
-      text-decoration: none;
-      color: var(--text);
-      background: linear-gradient(
-        145deg,
-        rgba(255,255,255,0.04),
-        rgba(255,255,255,0.02)
-      );
-      border: 1px solid var(--border);
-      transition: all 0.25s ease;
-      font-size: 1.15rem;
-      font-weight: 500;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      border-color: var(--primary);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    @media (min-width: 768px) {
-      .grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      h1 {
-        font-size: 2.8rem;
-      }
-    }
-  </style>
+  <CTASection
+    title="¿Preparado para jugar?"
+    text="Descubre nuestros próximos eventos y vive la experiencia."
+    buttonText="Ir a eventos"
+    buttonHref="/eventos/"
+  />
 
 </MainLayout>
