@@ -2,9 +2,87 @@
 import MainLayout from "../layouts/MainLayout.astro";
 ---
 
-<MainLayout title="Tienda · Airsoft Nation">
-  <main class="page">
-    <h1>Catalogo</h1>
-    <p>Sección en desarrollo.</p>
-  </main>
+<MainLayout title="Airsoft Nation Store">
+
+  <section class="store-section">
+
+    <div class="section-title">
+      Por dónde comenzar
+    </div>
+
+    <div class="store-links">
+
+      <a 
+        href="https://airsoftnation.store/shop/category/kits-iniciacion-airsoft"
+        target="_blank"
+        rel="noopener"
+        class="link-card"
+      >
+        <svg class="link-icon" viewBox="0 0 24 24">
+          <path d="M20 6H4l1 14h14l1-14zM9 6V4h6v2"/>
+        </svg>
+        Kits de iniciación
+      </a>
+
+      <a 
+        href="https://airsoftnation.store/shop/category/bases-upgrade"
+        target="_blank"
+        rel="noopener"
+        class="link-card"
+      >
+        <svg class="link-icon" viewBox="0 0 24 24">
+          <path d="M12 2l4 4-8 8-4-4 8-8zm6 6l4 4-4 4-4-4 4-4z"/>
+        </svg>
+        Bases para upgrade
+      </a>
+
+      <a 
+        href="https://airsoftnation.store/shop/category/mejorar-precision"
+        target="_blank"
+        rel="noopener"
+        class="link-card"
+      >
+        <svg class="link-icon" viewBox="0 0 24 24">
+          <path d="M12 2l3 7h7l-5.5 4.5L18 22l-6-4-6 4 1.5-8.5L2 9h7z"/>
+        </svg>
+        Mejorar precisión
+      </a>
+
+      <a 
+        href="https://airsoftnation.store/shop/category/mejorar-respuesta"
+        target="_blank"
+        rel="noopener"
+        class="link-card"
+      >
+        <svg class="link-icon" viewBox="0 0 24 24">
+          <path d="M13 2L3 14h7v8l10-12h-7z"/>
+        </svg>
+        Mejorar respuesta
+      </a>
+
+    </div>
+
+  </section>
+
 </MainLayout>
+
+<style>
+.store-section {
+  padding: 20px;
+}
+
+.section-title {
+  font-family: var(--font-title);
+  font-size: var(--text-lg);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+
+.store-links {
+  display: grid;
+  gap: 16px;
+}
+</style>
+
