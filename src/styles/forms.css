@@ -130,18 +130,27 @@
 ========================= */
 
 .form-message {
+  width: 100%;
   text-align: center;
   font-size: 0.85rem;
   margin-top: 12px;
-  min-height: 20px;
+  padding: 12px;
+  border-radius: 14px;
+  display: none;
 }
 
 .form-message.success {
+  display: block;
+  background: rgba(0, 230, 118, 0.15);
   color: #00e676;
+  border: 1px solid rgba(0, 230, 118, 0.4);
 }
 
 .form-message.error {
+  display: block;
+  background: rgba(255, 82, 82, 0.15);
   color: #ff5252;
+  border: 1px solid rgba(255, 82, 82, 0.4);
 }
 
 /* =========================
