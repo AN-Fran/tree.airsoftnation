@@ -12,7 +12,9 @@ import Hero from "../components/hero.astro";
     Envíanos los datos de tu réplica y crearemos tu orden de trabajo.
   </p>
 
-  <form method="POST" action="/api/ticket" class="form-grid">
+  <form id="ticket-form" class="form-grid" autocomplete="off">
+
+    <input type="text" name="company" style="display:none" />
 
     <input type="text" name="name" placeholder="Nombre y apellidos" required />
     <input type="email" name="email" placeholder="Email" required />
@@ -71,9 +73,74 @@ import Hero from "../components/hero.astro";
 
   </form>
 
+  <p id="form-message" class="form-message"></p>
+
   <div class="powered">
     <img src="/Wolverine Airsoft Claws White.svg" alt="Wolverine Airsoft" />
     <span>HPA · CNC · PRECISIÓN · POWERED BY WOLVERINE AIRSOFT</span>
   </div>
 
 </FormLayout>
+
+<script>
+  const form = document.getElementById("ticket-form");
+  const messageBox = document.getElementById("form-message");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const button = form.querySelector("button");
+    button.disabled = true;
+    button.innerText = "Enviando...";
+
+    messageBox.className = "form-message";
+    messageBox.innerText = "";
+
+    const data = new FormData(form);
+
+    // Honeypot anti-spam
+    if (data.get("company")) {
+      button.disabled = false;
+      button.innerText = "Crear orden de servicio";
+      return;
+    }
+
+    const payload = {
+      name: data.get("name")?.toString().trim(),
+      email: data.get("email")?.toString().trim(),
+      phone: data.get("phone")?.toString().trim(),
+      brand: data.get("brand")?.toString().trim(),
+      model: data.get("model")?.toString().trim(),
+      serialNumber: data.get("serialNumber")?.toString().trim(),
+      message: data.get("message")?.toString().trim()
+    };
+
+    try {
+      const response = await fetch("/api/ticket", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        messageBox.innerText = "Orden creada correctamente.";
+        messageBox.classList.add("success");
+        form.reset();
+      } else {
+        messageBox.innerText = result.error || "Error creando la orden.";
+        messageBox.classList.add("error");
+      }
+
+    } catch (error) {
+      messageBox.innerText = "Error de conexión.";
+      messageBox.classList.add("error");
+    }
+
+    button.disabled = false;
+    button.innerText = "Crear orden de servicio";
+  });
+</script>
