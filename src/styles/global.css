@@ -6,6 +6,7 @@
   font-family: 'Oswald';
   src: url('/fonts/oswald-500.woff2') format('woff2');
   font-weight: 500;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -13,6 +14,7 @@
   font-family: 'Oswald';
   src: url('/fonts/oswald-600.woff2') format('woff2');
   font-weight: 600;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -20,6 +22,7 @@
   font-family: 'Open Sans';
   src: url('/fonts/open-sans-400.woff2') format('woff2');
   font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -27,12 +30,8 @@
   font-family: 'Open Sans';
   src: url('/fonts/open-sans-600.woff2') format('woff2');
   font-weight: 600;
+  font-style: normal;
   font-display: swap;
-}
-
-:root {
-  --font-title: 'Oswald', sans-serif;
-  --font-text: 'Open Sans', sans-serif;
 }
 
 /* =========================
@@ -57,21 +56,25 @@
 }
 
 /* =========================
-   RESET
+   RESET BASE
 ========================= */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html, body {
+  margin: 0;
+  padding: 0;
   height: 100%;
   font-family: var(--font-text);
+  font-weight: 400;
   background: var(--bg-main);
   color: var(--text-main);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 /* =========================
@@ -80,8 +83,14 @@ html, body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-title);
-  letter-spacing: 1px;
   font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  color: var(--text-soft);
 }
 
 a {
@@ -101,11 +110,14 @@ a {
   display: flex;
   flex-direction: column;
   background: var(--bg-soft);
+  position: relative;
+  overflow: hidden;
 }
 
 .app-content {
   flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 40px 20px 160px;
   background:
     radial-gradient(circle at 50% -100px, rgba(0,150,255,0.15), transparent 60%),
@@ -113,14 +125,15 @@ a {
 }
 
 /* =========================
-   HERO LOGO
+   HERO
 ========================= */
 
 .hero-logo {
-  width: 240px;
+  width: 260px;
   margin: 0 auto 24px;
   display: block;
   filter: brightness(1.15) contrast(1.1);
+  will-change: transform;
 }
 
 .hero-claim {
@@ -131,3 +144,83 @@ a {
   margin-bottom: 40px;
 }
 
+/* =========================
+   LINK CARDS (estilo linktree)
+========================= */
+
+.linktree {
+  display: grid;
+  gap: 14px;
+}
+
+.link-card {
+  display: block;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--bg-card);
+  text-align: center;
+  font-family: var(--font-title);
+  font-weight: 500;
+  border: 1px solid var(--border-soft);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.link-card:active {
+  transform: scale(0.97);
+  border-color: var(--primary);
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(17, 24, 39, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border-soft);
+}
+
+.bottom-nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+}
+
+.bottom-nav svg {
+  width: 22px;
+  height: 22px;
+  fill: white;
+  opacity: 0.85;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.bottom-nav a:active svg {
+  transform: scale(0.9);
+  opacity: 1;
+}
+
+/* =========================
+   LEGAL BAR
+========================= */
+
+.legal-bar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 0.65rem;
+  text-align: center;
+  background: #0f172a;
+  border-top: 1px solid var(--border-soft);
+  line-height: 1.3;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom));
+}

@@ -1,19 +1,13 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
+import FormLayout from "../layouts/FormLayout.astro";
+import Hero from "../components/hero.astro";
 ---
 
-<MainLayout title="Servicio Técnico | Airsoft Nation">
+<FormLayout title="Servicio Técnico | Airsoft Nation">
 
-<section class="contact-wrapper">
+  <Hero />
 
-  <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" class="contact-logo" />
-
-  <div class="brand-claim">
-    ENCUENTRA TUS LÍMITES, CON CRITERIO.<br />
-    DECISIONES QUE FUNCIONAN EN CAMPO.
-  </div>
-
-  <h1 class="form-title">SERVICIO TÉCNICO</h1>
+  <h1 class="form-title">Servicio Técnico</h1>
   <p class="subtitle">
     Envíanos los datos de tu réplica y crearemos tu orden de trabajo.
   </p>
@@ -63,14 +57,16 @@ import MainLayout from "../layouts/MainLayout.astro";
 
     <label class="privacy">
       <input type="checkbox" required />
-      He leído y acepto la
-      <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
-        política de privacidad
-      </a>
+      <span>
+        He leído y acepto la
+        <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
+          política de privacidad
+        </a>
+      </span>
     </label>
 
     <button type="submit" class="btn-submit">
-      CREAR ORDEN DE SERVICIO
+      Crear orden de servicio
     </button>
 
   </form>
@@ -80,124 +76,4 @@ import MainLayout from "../layouts/MainLayout.astro";
     <span>HPA · CNC · PRECISIÓN · POWERED BY WOLVERINE AIRSOFT</span>
   </div>
 
-</section>
-
-<style>
-.contact-wrapper {
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 50px 20px 180px;
-  text-align: center;
-}
-
-/* LOGO */
-.contact-logo {
-  width: 220px;
-  margin-bottom: 18px;
-  filter: brightness(1.2);
-}
-
-/* CLAIM */
-.brand-claim {
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-  opacity: 0.75;
-  margin-bottom: 24px;
-}
-
-/* TITULOS */
-.form-title {
-  font-size: 1.7rem;
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  font-size: 0.9rem;
-  margin-bottom: 30px;
-  opacity: 0.8;
-}
-
-/* FORM */
-.form-grid {
-  display: grid;
-  gap: 16px;
-}
-
-.form-grid input,
-.form-grid select,
-.form-grid textarea {
-  padding: 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.06);
-  background: #111827;
-  color: white;
-  font-size: 0.9rem;
-}
-
-.form-grid textarea {
-  min-height: 110px;
-  resize: none;
-}
-
-/* PRIVACY */
-.privacy {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.75rem;
-  opacity: 0.75;
-  text-align: left;
-}
-
-.privacy input {
-  margin: 0;
-}
-
-.privacy a {
-  color: #00b894;
-  text-decoration: none;
-}
-
-/* BUTTON */
-.btn-submit {
-  margin-top: 8px;
-  padding: 16px;
-  border-radius: 30px;
-  border: none;
-  background: linear-gradient(135deg, #00b894, #0984e3);
-  color: white;
-  font-weight: 600;
-  letter-spacing: 1px;
-  cursor: pointer;
-}
-
-/* POWERED */
-.powered {
-  margin-top: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  opacity: 0.6;
-}
-
-.powered img {
-  width: 130px;
-  height: auto;
-}
-
-.powered span {
-  font-size: 0.75rem;
-  letter-spacing: 1px;
-}
-
-/* FOOTER */
-.form-footer {
-  margin-top: 18px;
-  font-size: 0.7rem;
-  opacity: 0.55;
-  line-height: 1.4;
-}
-</style>
-
-</MainLayout>
+</FormLayout>

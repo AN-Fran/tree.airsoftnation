@@ -1,96 +1,175 @@
 /* =========================
-   FORM LAYOUT
+   FORM MODO APP
 ========================= */
 
 .contact-container {
-  padding: 40px 20px 140px;
+  padding: 20px 20px 120px;
   max-width: 480px;
   margin: 0 auto;
 }
 
+/* Logo superior más equilibrado */
+.contact-logo {
+  width: 200px;
+  display: block;
+  margin: 0 auto 16px;
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* Claim compacto */
+.brand-claim {
+  text-align: center;
+  font-size: 0.75rem;
+  letter-spacing: 1.2px;
+  color: var(--text-soft);
+  margin-bottom: 24px;
+}
+
+/* Título */
 .form-title {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+  font-family: var(--font-title);
+  letter-spacing: 1px;
 }
 
 .subtitle {
   text-align: center;
   color: var(--text-soft);
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
 }
 
+
 /* =========================
-   INPUTS
+   FORM STRUCTURE
 ========================= */
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
-input, select, textarea {
+
+/* =========================
+   INPUTS COMPACTOS
+========================= */
+
+input,
+select,
+textarea {
   width: 100%;
-  padding: 16px;
-  border-radius: 14px;
+  padding: 13px;
+  border-radius: 12px;
   border: 1px solid var(--border-soft);
-  background: #0f172a;
+  background: var(--bg-card);
   color: white;
   font-family: var(--font-text);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary);
 }
 
 textarea {
-  min-height: 120px;
+  min-height: 100px;
   resize: vertical;
 }
 
+
 /* =========================
-   PRIVACY
+   PRIVACY CHECKBOX
 ========================= */
 
 .privacy {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.85rem;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.75rem;
   color: var(--text-soft);
+  line-height: 1.3;
+  margin-top: 4px;
 }
 
 .privacy input {
-  width: 18px;
-  height: 18px;
+  margin-top: 2px;
+  width: 15px;
+  height: 15px;
+  accent-color: var(--primary);
+  flex-shrink: 0;
 }
 
 .privacy a {
   color: var(--primary);
+  text-decoration: none;
 }
 
+.privacy a:hover {
+  text-decoration: underline;
+}
+
+
 /* =========================
-   BOTÓN SUBMIT
+   BOTÓN SUBMIT PREMIUM
 ========================= */
 
 .btn-submit {
-  margin-top: 10px;
+  margin-top: 8px;
+  padding: 14px;
+  border-radius: 50px;
+  border: none;
+  font-family: var(--font-title);
+  letter-spacing: 1px;
+  background: var(--primary-gradient);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  will-change: transform;
 }
 
+.btn-submit:active {
+  transform: scale(0.97);
+}
+
+
 /* =========================
-   POWERED
+   POWERED SECTION
 ========================= */
 
 .powered {
   text-align: center;
-  margin-top: 40px;
+  margin-top: 26px;
 }
 
 .powered img {
-  width: 120px;
-  opacity: 0.8;
+  width: 130px;
+  opacity: 0.85;
   display: block;
-  margin: 0 auto 12px;
+  margin: 0 auto 6px;
 }
 
 .powered span {
-  font-size: 0.7rem;
+  display: block;
+  font-size: 0.65rem;
   color: var(--text-soft);
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================
+   FOOTER LEGAL COMPACTO
+========================= */
+
+.contact-container footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.6rem;
+  color: var(--text-soft);
+  line-height: 1.3;
 }

@@ -1,9 +1,10 @@
 ---
 import "../styles/global.css";
+import "../styles/forms.css";
 
 const {
   title = "Airsoft Nation",
-  description = "Comunidad, eventos y juego de airsoft."
+  description = ""
 } = Astro.props;
 ---
 
@@ -14,22 +15,15 @@ const {
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>{title}</title>
   <meta name="description" content={description} />
-
-  <!-- Preload fuentes locales -->
-  <link rel="preload" href="/fonts/oswald-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/open-sans-400.woff2" as="font" type="font/woff2" crossorigin>
-  
-  <link rel="preload" as="image" href="/logo_airsoft_nation.svg" type="image/svg+xml">
-
 </head>
 
 <body>
-
   <div class="app">
-    <div class="app-content">
+    <div class="app-content form-page">
       <slot />
     </div>
 
+    <!-- Bottom Nav -->
     <nav class="bottom-nav">
       <a href="/" aria-label="Home">
         <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
@@ -58,6 +52,5 @@ const {
     </div>
 
   </div>
-
 </body>
 </html>
