@@ -1,18 +1,12 @@
 import type { APIRoute } from "astro";
 
-/* -------------------------------- */
-/* CORS HEADERS                     */
-/* -------------------------------- */
+/* ------------------ CORS ------------------ */
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
-
-/* -------------------------------- */
-/* OPTIONS (preflight CORS)         */
-/* -------------------------------- */
 
 export const OPTIONS: APIRoute = async () => {
   return new Response(null, {
@@ -21,26 +15,17 @@ export const OPTIONS: APIRoute = async () => {
   });
 };
 
-/* -------------------------------- */
-/* POST                             */
-/* -------------------------------- */
+/* ------------------ POST ------------------ */
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
     const { name, email, phone, message } = body;
 
-    console.log("CONTACT REQUEST RECEIVED:", { name, email });
-
-    /* -------- VALIDACIÓN -------- */
-
     if (!name || !email || !message) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
@@ -48,27 +33,21 @@ export const POST: APIRoute = async ({ request }) => {
     if (!emailRegex.test(email)) {
       return new Response(
         JSON.stringify({ error: "Invalid email format" }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    /* =========================
+       1️⃣ ENVÍO BREVO
+    ========================= */
 
     if (!process.env.BREVO_API_KEY) {
       console.error("BREVO_API_KEY missing");
       return new Response(
         JSON.stringify({ error: "Email service unavailable" }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
-
-    /* -------- ENVÍO BREVO -------- */
-
-    console.log("SENDING EMAIL VIA BREVO...");
 
     const brevoResponse = await fetch(
       "https://api.brevo.com/v3/smtp/email",
@@ -96,71 +75,67 @@ export const POST: APIRoute = async ({ request }) => {
       }
     );
 
-    const brevoText = await brevoResponse.text();
-
-    console.log("BREVO STATUS:", brevoResponse.status);
-    console.log("BREVO RESPONSE:", brevoText);
-
     if (!brevoResponse.ok) {
+      const errText = await brevoResponse.text();
+      console.error("BREVO ERROR:", errText);
       return new Response(
         JSON.stringify({ error: "Email delivery failed" }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    /* -------- ESPOCRM (no bloqueante) -------- */
+/* =========================
+   ENVÍO ESPOCRM
+========================= */
 
-    if (process.env.ESPO_URL && process.env.ESPO_API_KEY) {
-      try {
-        console.log("CREATING LEAD IN ESPOCRM...");
+if (process.env.ESPO_URL && process.env.ESPO_API_KEY) {
+  try {
+    const espoUrl = process.env.ESPO_URL.replace(/\/$/, "");
 
-        const espoResponse = await fetch(
-          `${process.env.ESPO_URL.replace(/\/$/, "")}/api/v1/Lead`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-Api-Key": process.env.ESPO_API_KEY,
-            },
-            body: JSON.stringify({
-              firstName: name,
-              emailAddress: email,
-              phoneNumber: phone,
-              description: message,
-              assignedUserId: process.env.ESPO_ASSIGNED_USER_ID,
-            }),
-          }
-        );
+    const espoResponse = await fetch(`${espoUrl}/api/v1/Lead`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Api-Key": process.env.ESPO_API_KEY,
+      },
+      body: JSON.stringify({
+        firstName: name,
+        lastName: "Web",
+        emailAddress: email,
+        phoneNumber: phone,
+        description: message,
+        assignedUserId: process.env.ESPO_ASSIGNED_USER_ID,
+      }),
+    });
 
-        console.log("ESPO STATUS:", espoResponse.status);
-
-      } catch (err) {
-        console.error("ESPO ERROR:", err);
-      }
+    if (!espoResponse.ok) {
+      const errText = await espoResponse.text();
+      console.error("ESPO ERROR:", errText);
+    } else {
+      console.log("ESPO Lead creado correctamente");
     }
 
-    /* -------- SUCCESS -------- */
+  } catch (error) {
+    console.error("ESPO FETCH ERROR:", error);
+  }
+} else {
+  console.warn("ESPO variables not configured");
+}
+
+    /* =========================
+       SUCCESS
+    ========================= */
 
     return new Response(
       JSON.stringify({ success: true }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
 
-  } catch (err) {
-    console.error("SERVER ERROR:", err);
-
+  } catch (error) {
+    console.error("SERVER ERROR:", error);
     return new Response(
       JSON.stringify({ error: "Server error" }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 };
