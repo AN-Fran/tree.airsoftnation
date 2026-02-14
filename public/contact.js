@@ -1,12 +1,14 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-  const form = document.getElementById("contact-form");
-  if (!form) return;
+const form = document.getElementById("contact-form");
+if (!form) {
+  console.log("FORM NO ENCONTRADO");
+} else {
 
   const messageBox = document.getElementById("form-message");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    console.log("SUBMIT REAL EJECUTADO");
 
     const button = form.querySelector("button");
     button.disabled = true;
@@ -14,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const data = new FormData(form);
 
-    // Honeypot anti-spam
     if (data.get("company")) {
       button.disabled = false;
       button.textContent = "Enviar mensaje";
@@ -22,6 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
+      console.log("ANTES FETCH");
+
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -32,6 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
           message: data.get("message")
         })
       });
+
+      console.log("DESPUES FETCH");
 
       const result = await response.json();
 
@@ -52,5 +57,5 @@ document.addEventListener("DOMContentLoaded", () => {
     button.disabled = false;
     button.textContent = "Enviar mensaje";
   });
+}
 
-});
