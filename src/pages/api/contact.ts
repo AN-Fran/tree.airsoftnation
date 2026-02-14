@@ -92,21 +92,23 @@ if (process.env.ESPO_URL && process.env.ESPO_API_KEY) {
   try {
     const espoUrl = process.env.ESPO_URL.replace(/\/$/, "");
 
-    const espoResponse = await fetch(`${espoUrl}/api/v1/Lead`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Api-Key": process.env.ESPO_API_KEY,
-      },
-      body: JSON.stringify({
-        firstName: name,
-        lastName: "Web",
-        emailAddress: email,
-        phoneNumber: phone,
-        description: message,
-        assignedUserId: process.env.ESPO_ASSIGNED_USER_ID,
-      }),
-    });
+   
+const espoResponse = await fetch(`${espoUrl}/api/v1/Lead`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "X-Api-Key": process.env.ESPO_API_KEY!,
+  },
+  body: JSON.stringify({
+    firstName: name,
+    lastName: "(Web)",
+    emailAddress: email,
+    phoneNumber: phone,
+    description: message,
+    assignedUserId: process.env.ESPO_ASSIGNED_USER_ID,
+  }),
+});
+
 
     if (!espoResponse.ok) {
       const errText = await espoResponse.text();
