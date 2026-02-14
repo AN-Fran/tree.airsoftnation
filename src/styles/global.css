@@ -1,4 +1,41 @@
 /* =========================
+   FUENTES LOCALES
+========================= */
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/fonts/oswald-500.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/fonts/oswald-600.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/open-sans-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/open-sans-600.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --font-title: 'Oswald', sans-serif;
+  --font-text: 'Open Sans', sans-serif;
+}
+
+/* =========================
    VARIABLES
 ========================= */
 

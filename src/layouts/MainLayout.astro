@@ -1,103 +1,53 @@
 ---
 import "../styles/global.css";
-import "../styles/components.css";
-import "../styles/forms.css";
 
 const {
   title = "Airsoft Nation",
-  description = "Comunidad, eventos y juego de airsoft.",
-  url = "https://tree.airsoftnation.eu",
-  image = "/logo_airsoft_nation.svg",
-  noIndex = false
+  description = "Comunidad, eventos y juego de airsoft."
 } = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-
   <title>{title}</title>
   <meta name="description" content={description} />
-  {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:url" content={url} />
-  <meta property="og:image" content={image} />
-
-  <link rel="icon" href="/favicon.ico" />
-
-  <!-- 🔥 FUENTES OPTIMIZADAS -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    rel="preload"
-    as="style"
-    href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Open+Sans:wght@400;500;600&display=swap"
-  />
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Open+Sans:wght@400;500;600&display=swap"
-    rel="stylesheet"
-    media="print"
-    onload="this.media='all'"
-  />
-
-  <noscript>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Open+Sans:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-  </noscript>
+  <!-- Preload fuentes locales -->
+  <link rel="preload" href="/fonts/oswald-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/open-sans-400.woff2" as="font" type="font/woff2" crossorigin>
 
 </head>
 
 <body>
 
   <div class="app">
-
-    <main class="app-content">
+    <div class="app-content">
       <slot />
-    </main>
+    </div>
 
     <nav class="bottom-nav">
-
-      <a href="/" aria-label="Inicio">
-        <svg viewBox="0 0 24 24">
-          <path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>
-        </svg>
+      <a href="/" aria-label="Home">
+        <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
       </a>
 
       <a href="/saber/" aria-label="Saber">
-        <svg viewBox="0 0 24 24">
-          <path d="M4 6h16v12H4z"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/></svg>
       </a>
 
       <a href="/taller/" aria-label="Taller">
-        <svg viewBox="0 0 24 24">
-          <path d="M14.7 6.3l3 3-7.4 7.4-3-3z"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M14.7 6.3l3 3-7.4 7.4-3-3z"/></svg>
       </a>
 
-      <a href="https://wa.me/34614212918" target="_blank" rel="noopener" aria-label="WhatsApp">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 2a10 10 0 0 0-8.5 15l-1 5 5-1A10 10 0 1 0 12 2z"/>
-        </svg>
+      <a href="https://wa.me/34614212918" target="_blank" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.5 15l-1 5 5-1A10 10 0 1 0 12 2z"/></svg>
       </a>
 
-      <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24">
-          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z"/>
-        </svg>
+      <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z"/></svg>
       </a>
-
     </nav>
 
     <div class="legal-bar">
