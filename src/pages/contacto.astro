@@ -50,53 +50,58 @@ import Hero from "../components/hero.astro";
 
 </FormLayout>
 
-<script>
+<script is:inline>
   const form = document.getElementById("contact-form");
   const messageBox = document.getElementById("form-message");
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const button = form.querySelector("button");
-    button.disabled = true;
-    button.innerText = "Enviando...";
+      const button = form.querySelector("button");
+      button.disabled = true;
+      button.innerText = "Enviando...";
 
-    const data = new FormData(form);
+      const data = new FormData(form);
 
-    // Honeypot
-    if (data.get("company")) return;
-
-    const payload = {
-      name: data.get("name"),
-      email: data.get("email"),
-      phone: data.get("phone"),
-      message: data.get("message"),
-    };
-
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        messageBox.innerText = "Mensaje enviado correctamente.";
-        messageBox.classList.add("success");
-        form.reset();
-      } else {
-        messageBox.innerText = "Error enviando el mensaje.";
-        messageBox.classList.add("error");
+      if (data.get("company")) {
+        button.disabled = false;
+        button.innerText = "Enviar mensaje";
+        return;
       }
 
-    } catch {
-      messageBox.innerText = "Error de conexión.";
-      messageBox.classList.add("error");
-    }
+      const payload = {
+        name: data.get("name"),
+        email: data.get("email"),
+        phone: data.get("phone"),
+        message: data.get("message"),
+      };
 
-    button.disabled = false;
-    button.innerText = "Enviar mensaje";
-  });
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          messageBox.innerText = "Mensaje enviado correctamente.";
+          messageBox.className = "form-message success";
+          form.reset();
+        } else {
+          messageBox.innerText = result.error || "Error enviando el mensaje.";
+          messageBox.className = "form-message error";
+        }
+
+      } catch (err) {
+        messageBox.innerText = "Error de conexión.";
+        messageBox.className = "form-message error";
+      }
+
+      button.disabled = false;
+      button.innerText = "Enviar mensaje";
+    });
+  }
 </script>
