@@ -1,35 +1,35 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
+import FormLayout from "../layouts/FormLayout.astro";
 import Hero from "../components/hero.astro";
 ---
 
-<MainLayout title="Contacto | Airsoft Nation">
+<FormLayout title="Contacto | Airsoft Nation">
 
   <Hero />
 
-  <section class="form-section">
+  <h1 class="form-title">Contacto</h1>
+  <p class="subtitle">
+    Escríbenos y te responderemos lo antes posible.
+  </p>
 
-    <h2 class="form-title">Contacto</h2>
-    <p class="form-subtitle">
-      Escríbenos y te responderemos lo antes posible.
-    </p>
+  <form id="contact-form" class="form-grid" autocomplete="off">
 
-    <form id="contact-form" class="contact-form">
-      <input type="text" name="name" placeholder="Nombre completo" required />
-      <input type="email" name="email" placeholder="Email" required />
-      <input type="tel" name="phone" placeholder="Teléfono" />
-      <textarea name="message" placeholder="Mensaje" required></textarea>
+    <input type="text" name="company" style="display:none" />
 
-      <button type="submit" class="btn-discreet">
-        Enviar mensaje
-      </button>
-    </form>
+    <input type="text" name="name" placeholder="Nombre completo" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="tel" name="phone" placeholder="Teléfono" />
+    <textarea name="message" placeholder="Mensaje" required></textarea>
 
-    <p id="form-message" class="form-message"></p>
+    <button type="submit" class="btn-submit">
+      Enviar mensaje
+    </button>
 
-  </section>
+  </form>
 
-</MainLayout>
+  <p id="form-message" class="form-message"></p>
+
+</FormLayout>
 
 <script>
   const form = document.getElementById("contact-form");
@@ -38,143 +38,25 @@ import Hero from "../components/hero.astro";
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const button = form.querySelector("button");
-    button.disabled = true;
-    button.innerText = "Enviando...";
-
     const data = new FormData(form);
 
-    const payload = {
-      email: data.get("email"),
-      attributes: {
-        FIRSTNAME: data.get("name"),
-        PHONE: data.get("phone"),
-        MENSAJE: data.get("message"),
-        ORIGEN: "Web Contacto"
-      },
-      listIds: [2],
-      updateEnabled: true
-    };
+    if (data.get("company")) return;
 
-    try {
-      const response = await fetch("https://api.brevo.com/v3/contacts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "api-key": "PUBLIC_BREVO_KEY_AQUI"
-        },
-        body: JSON.stringify(payload)
-      });
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(Object.fromEntries(data))
+    });
 
-      if (response.ok) {
-        messageBox.innerText = "Mensaje enviado correctamente.";
-        messageBox.classList.add("success");
-        form.reset();
-      } else {
-        messageBox.innerText = "Error enviando el formulario.";
-        messageBox.classList.add("error");
-      }
+    const result = await response.json();
 
-    } catch {
-      messageBox.innerText = "Error de conexión.";
-      messageBox.classList.add("error");
-    }
+    messageBox.innerText = response.ok && result.success
+      ? "Mensaje enviado correctamente."
+      : "Error enviando el formulario.";
 
-    button.disabled = false;
-    button.innerText = "Enviar mensaje";
+    messageBox.className =
+      "form-message " + (response.ok ? "success" : "error");
+
+    if (response.ok) form.reset();
   });
 </script>
-
-<style>
-.form-section {
-  padding: 10px 20px 120px;
-  max-width: 480px;
-  margin: 0 auto;
-}
-
-.form-title {
-  text-align: center;
-  font-family: var(--font-title);
-  font-size: 1.6rem;
-  margin-bottom: 6px;
-}
-
-.form-subtitle {
-  text-align: center;
-  color: var(--text-soft);
-  font-size: 0.9rem;
-  margin-bottom: 30px;
-}
-
-.contact-form {
-  display: grid;
-  gap: 14px;
-}
-
-input,
-textarea {
-  padding: 15px;
-  border-radius: 14px;
-  border: 1px solid var(--border-soft);
-  background: #111827;
-  color: white;
-  font-family: var(--font-text);
-  font-size: 0.95rem;
-  transition: border 0.2s ease, box-shadow 0.2s ease;
-}
-
-input:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(0,184,148,0.2);
-}
-
-textarea {
-  min-height: 110px;
-  resize: vertical;
-}
-
-/* Botón moderno y discreto */
-.btn-discreet {
-  margin-top: 6px;
-  padding: 14px;
-  border-radius: 50px;
-  border: 1px solid var(--border-soft);
-  background: transparent;
-  color: var(--text-main);
-  font-family: var(--font-title);
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.btn-discreet:hover {
-  border-color: var(--primary);
-  background: rgba(0,184,148,0.08);
-}
-
-.btn-discreet:active {
-  transform: scale(0.98);
-}
-
-.btn-discreet:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Mensaje feedback */
-.form-message {
-  text-align: center;
-  font-size: 0.85rem;
-  margin-top: 14px;
-}
-
-.form-message.success {
-  color: #00e676;
-}
-
-.form-message.error {
-  color: #ff5252;
-}
-</style>

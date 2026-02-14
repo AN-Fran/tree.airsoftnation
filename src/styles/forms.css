@@ -8,7 +8,7 @@
   margin: 0 auto;
 }
 
-/* Logo superior más equilibrado */
+/* Logo superior */
 .contact-logo {
   width: 200px;
   display: block;
@@ -16,7 +16,6 @@
   filter: brightness(1.2) contrast(1.1);
 }
 
-/* Claim compacto */
 .brand-claim {
   text-align: center;
   font-size: 0.75rem;
@@ -25,7 +24,6 @@
   margin-bottom: 24px;
 }
 
-/* Título */
 .form-title {
   text-align: center;
   margin-bottom: 6px;
@@ -45,7 +43,7 @@
    FORM STRUCTURE
 ========================= */
 
-form {
+.form-grid {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -53,12 +51,12 @@ form {
 
 
 /* =========================
-   INPUTS COMPACTOS
+   INPUTS
 ========================= */
 
-input,
-select,
-textarea {
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
   width: 100%;
   padding: 13px;
   border-radius: 12px;
@@ -70,14 +68,14 @@ textarea {
   transition: border-color 0.2s ease;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
+.form-grid input:focus,
+.form-grid select:focus,
+.form-grid textarea:focus {
   outline: none;
   border-color: var(--primary);
 }
 
-textarea {
+.form-grid textarea {
   min-height: 100px;
   resize: vertical;
 }
@@ -116,7 +114,7 @@ textarea {
 
 
 /* =========================
-   BOTÓN SUBMIT PREMIUM
+   BOTÓN SUBMIT
 ========================= */
 
 .btn-submit {
@@ -130,7 +128,6 @@ textarea {
   color: white;
   cursor: pointer;
   transition: transform 0.15s ease;
-  will-change: transform;
 }
 
 .btn-submit:active {
@@ -163,13 +160,19 @@ textarea {
 
 
 /* =========================
-   FOOTER LEGAL COMPACTO
+   FEEDBACK MENSAJE
 ========================= */
 
-.contact-container footer {
+.form-message {
   text-align: center;
-  margin-top: 20px;
-  font-size: 0.6rem;
-  color: var(--text-soft);
-  line-height: 1.3;
+  font-size: 0.8rem;
+  margin-top: 10px;
+}
+
+.form-message.success {
+  color: #00e676;
+}
+
+.form-message.error {
+  color: #ff5252;
 }
