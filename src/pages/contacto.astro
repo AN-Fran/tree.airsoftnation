@@ -16,34 +16,12 @@ import Hero from "../components/hero.astro";
 
     <form id="contact-form" class="form-grid">
 
-      <!-- Honeypot anti-spam -->
       <input type="text" name="company" class="hidden-field" />
 
-      <input
-        type="text"
-        name="name"
-        placeholder="Nombre completo"
-        required
-      />
-
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        required
-      />
-
-      <input
-        type="tel"
-        name="phone"
-        placeholder="Teléfono"
-      />
-
-      <textarea
-        name="message"
-        placeholder="Mensaje"
-        required
-      ></textarea>
+      <input type="text" name="name" placeholder="Nombre completo" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="tel" name="phone" placeholder="Teléfono" />
+      <textarea name="message" placeholder="Mensaje" required></textarea>
 
       <label class="privacy">
         <input type="checkbox" required />
@@ -67,65 +45,60 @@ import Hero from "../components/hero.astro";
 
 </FormLayout>
 
-<script is:inline>
-document.addEventListener("DOMContentLoaded", () => {
+<script>
+window.addEventListener("load", function () {
 
-  const form = document.getElementById("contact-form");
-  const messageBox = document.getElementById("form-message");
-
+  const form = document.querySelector("#contact-form");
   if (!form) return;
 
-  form.addEventListener("submit", async (e) => {
+  const messageBox = document.querySelector("#form-message");
+
+  form.onsubmit = async function (e) {
     e.preventDefault();
 
     const button = form.querySelector("button");
     button.disabled = true;
-    button.innerText = "Enviando...";
+    button.textContent = "Enviando...";
 
     const data = new FormData(form);
 
-    // Honeypot
     if (data.get("company")) {
       button.disabled = false;
-      button.innerText = "Enviar mensaje";
+      button.textContent = "Enviar mensaje";
       return;
     }
-
-    const payload = {
-      name: data.get("name")?.toString().trim(),
-      email: data.get("email")?.toString().trim(),
-      phone: data.get("phone")?.toString().trim(),
-      message: data.get("message")?.toString().trim(),
-    };
 
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          email: data.get("email"),
+          phone: data.get("phone"),
+          message: data.get("message")
+        })
       });
 
       const result = await response.json();
 
       if (response.ok && result.success) {
-        messageBox.innerText = "Mensaje enviado correctamente.";
+        messageBox.textContent = "Mensaje enviado correctamente.";
         messageBox.className = "form-message success";
         form.reset();
       } else {
-        messageBox.innerText = result.error || "Error enviando el mensaje.";
+        messageBox.textContent = result.error || "Error enviando.";
         messageBox.className = "form-message error";
       }
 
     } catch (err) {
-      messageBox.innerText = "Error de conexión.";
+      messageBox.textContent = "Error de conexión.";
       messageBox.className = "form-message error";
     }
 
     button.disabled = false;
-    button.innerText = "Enviar mensaje";
-  });
+    button.textContent = "Enviar mensaje";
+  };
 
 });
 </script>
