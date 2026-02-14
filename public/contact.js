@@ -1,20 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.getElementById("contact-form");
-
-  if (!form) {
-    console.log("FORM NO ENCONTRADO");
-    return;
-  }
+  if (!form) return;
 
   const messageBox = document.getElementById("form-message");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    console.log("SUBMIT REAL EJECUTADO");
-
     const button = form.querySelector("button");
+
     if (button) {
       button.disabled = true;
       button.textContent = "Enviando...";
@@ -22,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const data = new FormData(form);
 
+    // Honeypot anti-spam
     if (data.get("company")) {
       if (button) {
         button.disabled = false;
@@ -31,8 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      console.log("ANTES FETCH");
-
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -44,8 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
         })
       });
 
-      console.log("DESPUES FETCH");
-
       const result = await response.json();
 
       if (response.ok && result.success) {
@@ -53,7 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
         form.reset();
 
         if (messageBox) {
-          messageBox.textContent = "Mensaje enviado correctamente. Te responderemos pronto.";
+          messageBox.textContent =
+            "Mensaje enviado correctamente. Te responderemos pronto.";
           messageBox.className = "form-message success";
           messageBox.style.display = "block";
         }
@@ -63,26 +56,28 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
 
         if (messageBox) {
-          messageBox.textContent = result.error || "Error enviando el mensaje.";
+          messageBox.textContent =
+            result.error || "Error enviando el mensaje.";
           messageBox.className = "form-message error";
           messageBox.style.display = "block";
         }
       }
 
-    } catch (err) {
+    } catch {
 
       if (messageBox) {
         messageBox.textContent = "Error de conexión.";
         messageBox.className = "form-message error";
         messageBox.style.display = "block";
       }
-    }
 
-    if (button) {
-      button.disabled = false;
-      button.textContent = "Enviar mensaje";
-    }
+    } finally {
 
+      if (button) {
+        button.disabled = false;
+        button.textContent = "Enviar mensaje";
+      }
+
+    }
   });
-
 });
