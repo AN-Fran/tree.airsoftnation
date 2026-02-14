@@ -30,7 +30,7 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const { name, email, phone, message } = body;
 
-    console.log("📩 NUEVO CONTACTO:", { name, email });
+    console.log("CONTACT REQUEST RECEIVED:", { name, email });
 
     /* -------- VALIDACIÓN -------- */
 
@@ -56,7 +56,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     if (!process.env.BREVO_API_KEY) {
-      console.error("❌ BREVO_API_KEY NO DEFINIDA");
+      console.error("BREVO_API_KEY missing");
       return new Response(
         JSON.stringify({ error: "Email service unavailable" }),
         {
@@ -68,13 +68,15 @@ export const POST: APIRoute = async ({ request }) => {
 
     /* -------- ENVÍO BREVO -------- */
 
+    console.log("SENDING EMAIL VIA BREVO...");
+
     const brevoResponse = await fetch(
       "https://api.brevo.com/v3/smtp/email",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "api-key": process.env.BREVO_API_KEY!,
+          "api-key": process.env.BREVO_API_KEY,
         },
         body: JSON.stringify({
           sender: {
@@ -94,10 +96,12 @@ export const POST: APIRoute = async ({ request }) => {
       }
     );
 
-    if (!brevoResponse.ok) {
-      const errorText = await brevoResponse.text();
-      console.error("❌ BREVO ERROR:", errorText);
+    const brevoText = await brevoResponse.text();
 
+    console.log("BREVO STATUS:", brevoResponse.status);
+    console.log("BREVO RESPONSE:", brevoText);
+
+    if (!brevoResponse.ok) {
       return new Response(
         JSON.stringify({ error: "Email delivery failed" }),
         {
@@ -107,19 +111,19 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    console.log("✅ BREVO OK");
-
     /* -------- ESPOCRM (no bloqueante) -------- */
 
     if (process.env.ESPO_URL && process.env.ESPO_API_KEY) {
       try {
+        console.log("CREATING LEAD IN ESPOCRM...");
+
         const espoResponse = await fetch(
           `${process.env.ESPO_URL.replace(/\/$/, "")}/api/v1/Lead`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "X-Api-Key": process.env.ESPO_API_KEY!,
+              "X-Api-Key": process.env.ESPO_API_KEY,
             },
             body: JSON.stringify({
               firstName: name,
@@ -131,10 +135,10 @@ export const POST: APIRoute = async ({ request }) => {
           }
         );
 
-        console.log("📊 ESPO STATUS:", espoResponse.status);
+        console.log("ESPO STATUS:", espoResponse.status);
 
       } catch (err) {
-        console.error("❌ ESPO ERROR:", err);
+        console.error("ESPO ERROR:", err);
       }
     }
 
@@ -149,7 +153,7 @@ export const POST: APIRoute = async ({ request }) => {
     );
 
   } catch (err) {
-    console.error("❌ SERVER ERROR:", err);
+    console.error("SERVER ERROR:", err);
 
     return new Response(
       JSON.stringify({ error: "Server error" }),
