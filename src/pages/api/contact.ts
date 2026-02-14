@@ -1,15 +1,18 @@
-import type { APIRoute } from 'astro';
+import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
     const { name, email, phone, message } = body;
 
-    // -------- VALIDACIÓN BÁSICA --------
+    // VALIDACIÓN
     if (!name || !email || !message) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
-        { status: 400 }
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" }
+        }
       );
     }
 
@@ -17,57 +20,64 @@ export const POST: APIRoute = async ({ request }) => {
     if (!emailRegex.test(email)) {
       return new Response(
         JSON.stringify({ error: "Invalid email format" }),
-        { status: 400 }
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" }
+        }
       );
     }
 
-    // -------- ENV CHECK --------
     if (!process.env.BREVO_API_KEY) {
-      console.error("Missing BREVO_API_KEY");
       return new Response(
         JSON.stringify({ error: "Email service unavailable" }),
-        { status: 500 }
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json" }
+        }
       );
     }
 
-    // -------- 1. ENVIAR EMAIL (CRÍTICO) --------
-    const brevoResponse = await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "api-key": process.env.BREVO_API_KEY,
-      },
-      body: JSON.stringify({
-        sender: {
-          email: process.env.BREVO_SENDER_EMAIL,
-          name: "Tree Airsoft Nation"
+    // ENVÍO EMAIL
+    const brevoResponse = await fetch(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "api-key": process.env.BREVO_API_KEY,
         },
-        to: [{ email: process.env.BREVO_TO_EMAIL }],
-        subject: `Nuevo contacto web - ${name}`,
-        htmlContent: `
-          <h3>Nuevo mensaje desde Tree</h3>
-          <p><strong>Nombre:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Teléfono:</strong> ${phone || "No proporcionado"}</p>
-          <p><strong>Mensaje:</strong><br/>${message}</p>
-        `
-      }),
-    });
+        body: JSON.stringify({
+          sender: {
+            email: process.env.BREVO_SENDER_EMAIL,
+            name: "Tree Airsoft Nation"
+          },
+          to: [{ email: process.env.BREVO_TO_EMAIL }],
+          subject: `Nuevo contacto web - ${name}`,
+          htmlContent: `
+            <h3>Nuevo mensaje desde Tree</h3>
+            <p><strong>Nombre:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Teléfono:</strong> ${phone || "No proporcionado"}</p>
+            <p><strong>Mensaje:</strong><br/>${message}</p>
+          `
+        }),
+      }
+    );
 
     if (!brevoResponse.ok) {
-      const errorText = await brevoResponse.text();
-      console.error("Brevo error:", brevoResponse.status, errorText);
-
       return new Response(
         JSON.stringify({ error: "Email delivery failed" }),
-        { status: 500 }
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json" }
+        }
       );
     }
 
-    // -------- 2. CREAR LEAD EN ESPO (NO BLOQUEANTE) --------
+    // ESPOCRM (no bloqueante)
     if (process.env.ESPO_URL && process.env.ESPO_API_KEY) {
       try {
-        const espoResponse = await fetch(
+        await fetch(
           `${process.env.ESPO_URL.replace(/\/$/, "")}/api/v1/Lead`,
           {
             method: "POST",
@@ -84,35 +94,26 @@ export const POST: APIRoute = async ({ request }) => {
             }),
           }
         );
-
-        if (!espoResponse.ok) {
-          const errorText = await espoResponse.text();
-          console.error("EspoCRM error:", espoResponse.status, errorText);
-        }
-
-      } catch (crmError) {
-        console.error("EspoCRM exception:", crmError);
+      } catch {
+        // no bloqueamos si falla CRM
       }
     }
 
-    // -------- LOG --------
-    console.log(JSON.stringify({
-      event: "contact_success",
-      email,
-      timestamp: Date.now()
-    }));
-
     return new Response(
       JSON.stringify({ success: true }),
-      { status: 200 }
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      }
     );
 
-  } catch (error) {
-    console.error("Contact API fatal error:", error);
-
+  } catch {
     return new Response(
       JSON.stringify({ error: "Server error" }),
-      { status: 500 }
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      }
     );
   }
 };
