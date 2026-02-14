@@ -29,7 +29,7 @@
 .form-grid {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 /* Honeypot oculto */
@@ -46,13 +46,13 @@
 .form-grid textarea {
   width: 100%;
   padding: 14px;
-  border-radius: 12px;
+  border-radius: 14px;
   border: 1px solid var(--border-soft);
   background: var(--bg-card);
-  color: white;
+  color: var(--text-main);
   font-family: var(--font-text);
-  font-size: 0.9rem;
-  transition: border-color 0.2s ease;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form-grid input:focus,
@@ -60,10 +60,11 @@
 .form-grid textarea:focus {
   outline: none;
   border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(0, 184, 148, 0.2);
 }
 
 .form-grid textarea {
-  min-height: 110px;
+  min-height: 120px;
   resize: vertical;
 }
 
@@ -111,7 +112,8 @@
   background: var(--primary-gradient);
   color: white;
   cursor: pointer;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  will-change: transform;
 }
 
 .btn-submit:active {
@@ -130,7 +132,8 @@
 .form-message {
   text-align: center;
   font-size: 0.85rem;
-  margin-top: 10px;
+  margin-top: 12px;
+  min-height: 20px;
 }
 
 .form-message.success {
@@ -142,12 +145,12 @@
 }
 
 /* =========================
-   POWERED SECTION
+   POWERED SECTION (TALLER)
 ========================= */
 
 .powered {
   text-align: center;
-  margin-top: 26px;
+  margin-top: 30px;
 }
 
 .powered img {
