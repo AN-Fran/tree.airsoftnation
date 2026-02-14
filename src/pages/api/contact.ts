@@ -1,38 +1,117 @@
 import type { APIRoute } from 'astro';
 
-export const POST: APIRoute = async () => {
+export const POST: APIRoute = async ({ request }) => {
   try {
+    const body = await request.json();
+    const { name, email, phone, message } = body;
 
+    // -------- VALIDACIÓN BÁSICA --------
+    if (!name || !email || !message) {
+      return new Response(
+        JSON.stringify({ error: "Missing required fields" }),
+        { status: 400 }
+      );
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid email format" }),
+        { status: 400 }
+      );
+    }
+
+    // -------- ENV CHECK --------
+    if (!process.env.BREVO_API_KEY) {
+      console.error("Missing BREVO_API_KEY");
+      return new Response(
+        JSON.stringify({ error: "Email service unavailable" }),
+        { status: 500 }
+      );
+    }
+
+    // -------- 1. ENVIAR EMAIL (CRÍTICO) --------
     const brevoResponse = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "api-key": process.env.BREVO_API_KEY!,
+        "api-key": process.env.BREVO_API_KEY,
       },
       body: JSON.stringify({
         sender: {
           email: process.env.BREVO_SENDER_EMAIL,
-          name: "Tree Test"
+          name: "Tree Airsoft Nation"
         },
         to: [{ email: process.env.BREVO_TO_EMAIL }],
-        subject: "Test envío desde servidor",
-        htmlContent: "<p>Test correcto</p>"
+        subject: `Nuevo contacto web - ${name}`,
+        htmlContent: `
+          <h3>Nuevo mensaje desde Tree</h3>
+          <p><strong>Nombre:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Teléfono:</strong> ${phone || "No proporcionado"}</p>
+          <p><strong>Mensaje:</strong><br/>${message}</p>
+        `
       }),
     });
 
-    const responseText = await brevoResponse.text();
+    if (!brevoResponse.ok) {
+      const errorText = await brevoResponse.text();
+      console.error("Brevo error:", brevoResponse.status, errorText);
+
+      return new Response(
+        JSON.stringify({ error: "Email delivery failed" }),
+        { status: 500 }
+      );
+    }
+
+    // -------- 2. CREAR LEAD EN ESPO (NO BLOQUEANTE) --------
+    if (process.env.ESPO_URL && process.env.ESPO_API_KEY) {
+      try {
+        const espoResponse = await fetch(
+          `${process.env.ESPO_URL.replace(/\/$/, "")}/api/v1/Lead`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Api-Key": process.env.ESPO_API_KEY,
+            },
+            body: JSON.stringify({
+              firstName: name,
+              emailAddress: email,
+              phoneNumber: phone,
+              description: message,
+              assignedUserId: process.env.ESPO_ASSIGNED_USER_ID
+            }),
+          }
+        );
+
+        if (!espoResponse.ok) {
+          const errorText = await espoResponse.text();
+          console.error("EspoCRM error:", espoResponse.status, errorText);
+        }
+
+      } catch (crmError) {
+        console.error("EspoCRM exception:", crmError);
+      }
+    }
+
+    // -------- LOG --------
+    console.log(JSON.stringify({
+      event: "contact_success",
+      email,
+      timestamp: Date.now()
+    }));
 
     return new Response(
-      JSON.stringify({
-        status: brevoResponse.status,
-        body: responseText
-      }),
+      JSON.stringify({ success: true }),
       { status: 200 }
     );
 
   } catch (error) {
+    console.error("Contact API fatal error:", error);
+
     return new Response(
-      JSON.stringify({ error: String(error) }),
+      JSON.stringify({ error: "Server error" }),
       { status: 500 }
     );
   }
