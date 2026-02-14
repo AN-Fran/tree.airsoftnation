@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const body = await request.json();
+    const data = await request.json();
 
     const {
       name,
@@ -12,81 +12,68 @@ export const POST: APIRoute = async ({ request }) => {
       model,
       serialNumber,
       message
-    } = body;
+    } = data;
 
-    if (!name || !email || !phone || !brand || !message) {
+    if (!name || !email || !phone || !message) {
       return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
+        JSON.stringify({ success: false, error: "Campos obligatorios faltantes" }),
         { status: 400 }
       );
     }
 
-    // -------- 1. EMAIL A ADMIN --------
-    const brevoResponse = await fetch("https://api.brevo.com/v3/smtp/email", {
+    // 1️⃣ Crear o actualizar contacto en CRM
+    await fetch("https://api.brevo.com/v3/contacts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "api-key": process.env.BREVO_API_KEY!
+        "api-key": process.env.BREVO_API_KEY!,
+      },
+      body: JSON.stringify({
+        email,
+        attributes: {
+          FIRSTNAME: name,
+          PHONE: phone,
+          MARCA: brand,
+          MODELO: model,
+          SERIE: serialNumber,
+        },
+        updateEnabled: true
+      })
+    });
+
+    // 2️⃣ Enviar email transaccional
+    await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": process.env.BREVO_API_KEY!,
       },
       body: JSON.stringify({
         sender: {
-          email: process.env.BREVO_SENDER_EMAIL,
-          name: "Servicio Técnico - Tree"
+          name: "Airsoft Nation",
+          email: "admin@airsoftnation.eu"
         },
-        to: [{ email: process.env.BREVO_TO_EMAIL }],
+        to: [{ email: "admin@airsoftnation.eu" }],
         subject: `Nuevo ticket técnico - ${name}`,
         htmlContent: `
-          <h3>Nuevo ticket técnico</h3>
+          <h2>Nuevo ticket técnico</h2>
           <p><strong>Nombre:</strong> ${name}</p>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Teléfono:</strong> ${phone}</p>
           <p><strong>Marca:</strong> ${brand}</p>
-          <p><strong>Modelo:</strong> ${model || "-"}</p>
-          <p><strong>Número de serie:</strong> ${serialNumber || "-"}</p>
-          <p><strong>Descripción:</strong><br/>${message}</p>
+          <p><strong>Modelo:</strong> ${model}</p>
+          <p><strong>Nº Serie:</strong> ${serialNumber}</p>
+          <p><strong>Descripción:</strong><br>${message}</p>
         `
       })
     });
 
-    if (!brevoResponse.ok) {
-      return new Response(
-        JSON.stringify({ error: "Email failed" }),
-        { status: 500 }
-      );
-    }
-
-    // -------- 2. CREAR LEAD EN ESPO --------
-    await fetch(`${process.env.ESPO_URL}/api/v1/Lead`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Api-Key": process.env.ESPO_API_KEY!
-      },
-      body: JSON.stringify({
-        firstName: name,
-        emailAddress: email,
-        phoneNumber: phone,
-        description: `
-Marca: ${brand}
-Modelo: ${model}
-Serie: ${serialNumber}
-
-${message}
-        `,
-        assignedUserId: process.env.ESPO_ASSIGNED_USER_ID
-      })
-    });
-
-    return new Response(
-      JSON.stringify({ success: true }),
-      { status: 200 }
-    );
+    return new Response(JSON.stringify({ success: true }));
 
   } catch (error) {
-    console.error("Ticket API error:", error);
-
+    console.error("Ticket error:", error);
     return new Response(
-      JSON.stringify({ error: "Server error" }),
+      JSON.stringify({ success: false, error: "Error interno" }),
       { status: 500 }
     );
   }

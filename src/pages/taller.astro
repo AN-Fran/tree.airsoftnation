@@ -7,78 +7,77 @@ import Hero from "../components/hero.astro";
 
   <Hero />
 
-  <h1 class="form-title">Servicio Técnico</h1>
-  <p class="subtitle">
-    Envíanos los datos de tu réplica y crearemos tu orden de trabajo.
-  </p>
+  <section class="contact-container">
 
-  <form id="ticket-form" class="form-grid" autocomplete="off">
+    <h1 class="form-title">Servicio Técnico</h1>
+    <p class="subtitle">
+      Envíanos los datos de tu réplica y crearemos tu orden de trabajo.
+    </p>
 
-    <input type="text" name="company" style="display:none" />
+    <form id="ticket-form" class="form-grid">
 
-    <input type="text" name="name" placeholder="Nombre y apellidos" required />
-    <input type="email" name="email" placeholder="Email" required />
-    <input type="tel" name="phone" placeholder="Teléfono" required />
+      <!-- Honeypot anti-spam -->
+      <input type="text" name="company" class="hidden-field" />
 
-    <select name="brand" required>
-      <option value="">Marca de la réplica</option>
-      <option>Tokyo Marui</option>
-      <option>Specna Arms</option>
-      <option>VFC</option>
-      <option>G&G</option>
-      <option>ICS</option>
-      <option>LCT</option>
-      <option>E&L</option>
-      <option>Cyma</option>
-      <option>Ares</option>
-      <option>KWA</option>
-      <option>WE</option>
-      <option>Krytac</option>
-      <option>Classic Army</option>
-      <option>Umarex</option>
-      <option>ASG</option>
-      <option>Arcturus</option>
-      <option>Double Eagle</option>
-      <option>Jing Gong</option>
-      <option>A&K</option>
-      <option>Army Armament</option>
-      <option>KWC</option>
-      <option>Lancer Tactical</option>
-      <option>Bo Manufactures</option>
-      <option>Gate</option>
-      <option>Saigo</option>
-      <option>Secutor</option>
-      <option>Evolution</option>
-      <option>Otra</option>
-    </select>
+      <input type="text" name="name" placeholder="Nombre y apellidos" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="tel" name="phone" placeholder="Teléfono" required />
 
-    <input type="text" name="model" placeholder="Modelo (ej: M4 / AR15)" />
-    <input type="text" name="serialNumber" placeholder="Número de serie" />
+      <select name="brand" required>
+        <option value="">Marca de la réplica</option>
+        <option>Tokyo Marui</option>
+        <option>Specna Arms</option>
+        <option>VFC</option>
+        <option>G&G</option>
+        <option>ICS</option>
+        <option>LCT</option>
+        <option>E&L</option>
+        <option>Cyma</option>
+        <option>Ares</option>
+        <option>KWA</option>
+        <option>WE</option>
+        <option>Krytac</option>
+        <option>Classic Army</option>
+        <option>Umarex</option>
+        <option>ASG</option>
+        <option>Arcturus</option>
+        <option>Double Eagle</option>
+        <option>Otra</option>
+      </select>
 
-    <textarea name="message" placeholder="Describe el problema o servicio que necesitas" required></textarea>
+      <input type="text" name="model" placeholder="Modelo (ej: M4 / AR15)" />
+      <input type="text" name="serialNumber" placeholder="Número de serie" />
 
-    <label class="privacy">
-      <input type="checkbox" required />
-      <span>
-        He leído y acepto la
-        <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
-          política de privacidad
-        </a>
-      </span>
-    </label>
+      <textarea
+        name="message"
+        placeholder="Describe el problema o servicio que necesitas"
+        required
+      ></textarea>
 
-    <button type="submit" class="btn-submit">
-      Crear orden de servicio
-    </button>
+      <label class="privacy">
+        <input type="checkbox" required />
+        <span>
+          He leído y acepto la
+          <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
+            política de privacidad
+          </a>
+        </span>
+      </label>
 
-  </form>
+      <button type="submit" class="btn-submit">
+        Crear orden de servicio
+      </button>
 
-  <p id="form-message" class="form-message"></p>
+      <p id="form-message" class="form-message"></p>
 
-  <div class="powered">
-    <img src="/Wolverine Airsoft Claws White.svg" alt="Wolverine Airsoft" />
-    <span>HPA · CNC · PRECISIÓN · POWERED BY WOLVERINE AIRSOFT</span>
-  </div>
+    </form>
+
+    <div class="powered">
+      <img src="/Wolverine Airsoft Claws White.svg" alt="Wolverine Airsoft" />
+      <span>HPA · CNC · PRECISIÓN · POWERED BY WOLVERINE AIRSOFT</span>
+    </div>
+
+  </section>
 
 </FormLayout>
 
@@ -93,45 +92,36 @@ import Hero from "../components/hero.astro";
     button.disabled = true;
     button.innerText = "Enviando...";
 
-    messageBox.className = "form-message";
-    messageBox.innerText = "";
-
     const data = new FormData(form);
 
-    // Honeypot anti-spam
-    if (data.get("company")) {
-      button.disabled = false;
-      button.innerText = "Crear orden de servicio";
-      return;
-    }
+    // Honeypot
+    if (data.get("company")) return;
 
     const payload = {
-      name: data.get("name")?.toString().trim(),
-      email: data.get("email")?.toString().trim(),
-      phone: data.get("phone")?.toString().trim(),
-      brand: data.get("brand")?.toString().trim(),
-      model: data.get("model")?.toString().trim(),
-      serialNumber: data.get("serialNumber")?.toString().trim(),
-      message: data.get("message")?.toString().trim()
+      name: data.get("name"),
+      email: data.get("email"),
+      phone: data.get("phone"),
+      brand: data.get("brand"),
+      model: data.get("model"),
+      serialNumber: data.get("serialNumber"),
+      message: data.get("message"),
     };
 
     try {
       const response = await fetch("/api/ticket", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json();
 
-      if (response.ok && result.success) {
+      if (result.success) {
         messageBox.innerText = "Orden creada correctamente.";
         messageBox.classList.add("success");
         form.reset();
       } else {
-        messageBox.innerText = result.error || "Error creando la orden.";
+        messageBox.innerText = "Error creando la orden.";
         messageBox.classList.add("error");
       }
 

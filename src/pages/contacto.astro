@@ -7,27 +7,46 @@ import Hero from "../components/hero.astro";
 
   <Hero />
 
-  <h1 class="form-title">Contacto</h1>
-  <p class="subtitle">
-    Escríbenos y te responderemos lo antes posible.
-  </p>
+  <section class="contact-container">
 
-  <form id="contact-form" class="form-grid" autocomplete="off">
+    <h1 class="form-title">Contacto</h1>
+    <p class="subtitle">
+      Escríbenos y te responderemos lo antes posible.
+    </p>
 
-    <input type="text" name="company" style="display:none" />
+    <form id="contact-form" class="form-grid">
 
-    <input type="text" name="name" placeholder="Nombre completo" required />
-    <input type="email" name="email" placeholder="Email" required />
-    <input type="tel" name="phone" placeholder="Teléfono" />
-    <textarea name="message" placeholder="Mensaje" required></textarea>
+      <!-- Honeypot anti-spam -->
+      <input type="text" name="company" class="hidden-field" />
 
-    <button type="submit" class="btn-submit">
-      Enviar mensaje
-    </button>
+      <input type="text" name="name" placeholder="Nombre completo" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="tel" name="phone" placeholder="Teléfono" />
+      <textarea
+        name="message"
+        placeholder="Mensaje"
+        required
+      ></textarea>
 
-  </form>
+      <label class="privacy">
+        <input type="checkbox" required />
+        <span>
+          He leído y acepto la
+          <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
+            política de privacidad
+          </a>
+        </span>
+      </label>
 
-  <p id="form-message" class="form-message"></p>
+      <button type="submit" class="btn-submit">
+        Enviar mensaje
+      </button>
+
+      <p id="form-message" class="form-message"></p>
+
+    </form>
+
+  </section>
 
 </FormLayout>
 
@@ -38,25 +57,46 @@ import Hero from "../components/hero.astro";
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const button = form.querySelector("button");
+    button.disabled = true;
+    button.innerText = "Enviando...";
+
     const data = new FormData(form);
 
+    // Honeypot
     if (data.get("company")) return;
 
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(Object.fromEntries(data))
-    });
+    const payload = {
+      name: data.get("name"),
+      email: data.get("email"),
+      phone: data.get("phone"),
+      message: data.get("message"),
+    };
 
-    const result = await response.json();
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    messageBox.innerText = response.ok && result.success
-      ? "Mensaje enviado correctamente."
-      : "Error enviando el formulario.";
+      const result = await response.json();
 
-    messageBox.className =
-      "form-message " + (response.ok ? "success" : "error");
+      if (result.success) {
+        messageBox.innerText = "Mensaje enviado correctamente.";
+        messageBox.classList.add("success");
+        form.reset();
+      } else {
+        messageBox.innerText = "Error enviando el mensaje.";
+        messageBox.classList.add("error");
+      }
 
-    if (response.ok) form.reset();
+    } catch {
+      messageBox.innerText = "Error de conexión.";
+      messageBox.classList.add("error");
+    }
+
+    button.disabled = false;
+    button.innerText = "Enviar mensaje";
   });
 </script>
