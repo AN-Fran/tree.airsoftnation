@@ -1,30 +1,22 @@
-document.addEventListener("DOMContentLoaded", () => {
+console.log("CONTACT JS CARGADO");
 
-  const form = document.getElementById("contact-form");
-  if (!form) return;
+const form = document.getElementById("contact-form");
+console.log("FORM:", form);
 
-  const messageBox = document.getElementById("form-message");
-
+if (!form) {
+  console.log("FORM NO ENCONTRADO");
+} else {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    console.log("SUBMIT REAL EJECUTADO");
 
     const button = form.querySelector("button");
-
     if (button) {
       button.disabled = true;
       button.textContent = "Enviando...";
     }
 
     const data = new FormData(form);
-
-    // Honeypot anti-spam
-    if (data.get("company")) {
-      if (button) {
-        button.disabled = false;
-        button.textContent = "Enviar mensaje";
-      }
-      return;
-    }
 
     try {
       const response = await fetch("/api/contact", {
@@ -40,44 +32,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const result = await response.json();
 
+      const messageBox = document.getElementById("form-message");
+
       if (response.ok && result.success) {
-
         form.reset();
-
         if (messageBox) {
-          messageBox.textContent =
-            "Mensaje enviado correctamente. Te responderemos pronto.";
+          messageBox.textContent = "Mensaje enviado correctamente.";
           messageBox.className = "form-message success";
           messageBox.style.display = "block";
         }
-
-        window.scrollTo({ top: 0, behavior: "smooth" });
-
       } else {
-
         if (messageBox) {
-          messageBox.textContent =
-            result.error || "Error enviando el mensaje.";
+          messageBox.textContent = result.error || "Error enviando el mensaje.";
           messageBox.className = "form-message error";
           messageBox.style.display = "block";
         }
       }
 
     } catch {
-
+      const messageBox = document.getElementById("form-message");
       if (messageBox) {
         messageBox.textContent = "Error de conexión.";
         messageBox.className = "form-message error";
         messageBox.style.display = "block";
       }
+    }
 
-    } finally {
-
-      if (button) {
-        button.disabled = false;
-        button.textContent = "Enviar mensaje";
-      }
-
+    if (button) {
+      button.disabled = false;
+      button.textContent = "Enviar mensaje";
     }
   });
-});
+}
