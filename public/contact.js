@@ -1,7 +1,11 @@
-const form = document.getElementById("contact-form");
-if (!form) {
-  console.log("FORM NO ENCONTRADO");
-} else {
+document.addEventListener("DOMContentLoaded", () => {
+
+  const form = document.getElementById("contact-form");
+
+  if (!form) {
+    console.log("FORM NO ENCONTRADO");
+    return;
+  }
 
   const messageBox = document.getElementById("form-message");
 
@@ -11,14 +15,18 @@ if (!form) {
     console.log("SUBMIT REAL EJECUTADO");
 
     const button = form.querySelector("button");
-    button.disabled = true;
-    button.textContent = "Enviando...";
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Enviando...";
+    }
 
     const data = new FormData(form);
 
     if (data.get("company")) {
-      button.disabled = false;
-      button.textContent = "Enviar mensaje";
+      if (button) {
+        button.disabled = false;
+        button.textContent = "Enviar mensaje";
+      }
       return;
     }
 
@@ -41,21 +49,40 @@ if (!form) {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        messageBox.textContent = "Mensaje enviado correctamente.";
-        messageBox.className = "form-message success";
+
         form.reset();
+
+        if (messageBox) {
+          messageBox.textContent = "Mensaje enviado correctamente. Te responderemos pronto.";
+          messageBox.className = "form-message success";
+          messageBox.style.display = "block";
+        }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
       } else {
-        messageBox.textContent = result.error || "Error enviando el mensaje.";
-        messageBox.className = "form-message error";
+
+        if (messageBox) {
+          messageBox.textContent = result.error || "Error enviando el mensaje.";
+          messageBox.className = "form-message error";
+          messageBox.style.display = "block";
+        }
       }
 
     } catch (err) {
-      messageBox.textContent = "Error de conexión.";
-      messageBox.className = "form-message error";
+
+      if (messageBox) {
+        messageBox.textContent = "Error de conexión.";
+        messageBox.className = "form-message error";
+        messageBox.style.display = "block";
+      }
     }
 
-    button.disabled = false;
-    button.textContent = "Enviar mensaje";
-  });
-}
+    if (button) {
+      button.disabled = false;
+      button.textContent = "Enviar mensaje";
+    }
 
+  });
+
+});
