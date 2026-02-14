@@ -1,17 +1,43 @@
 import type { APIRoute } from "astro";
 
+/* -------------------------------- */
+/* CORS HEADERS                     */
+/* -------------------------------- */
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+/* -------------------------------- */
+/* OPTIONS (preflight CORS)         */
+/* -------------------------------- */
+
+export const OPTIONS: APIRoute = async () => {
+  return new Response(null, {
+    status: 200,
+    headers: corsHeaders,
+  });
+};
+
+/* -------------------------------- */
+/* POST                             */
+/* -------------------------------- */
+
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
     const { name, email, phone, message } = body;
 
-    // VALIDACIÓN
+    /* -------- VALIDACIÓN -------- */
+
     if (!name || !email || !message) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
         {
           status: 400,
-          headers: { "Content-Type": "application/json" }
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
@@ -22,7 +48,7 @@ export const POST: APIRoute = async ({ request }) => {
         JSON.stringify({ error: "Invalid email format" }),
         {
           status: 400,
-          headers: { "Content-Type": "application/json" }
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
@@ -32,12 +58,13 @@ export const POST: APIRoute = async ({ request }) => {
         JSON.stringify({ error: "Email service unavailable" }),
         {
           status: 500,
-          headers: { "Content-Type": "application/json" }
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
 
-    // ENVÍO EMAIL
+    /* -------- ENVÍO BREVO -------- */
+
     const brevoResponse = await fetch(
       "https://api.brevo.com/v3/smtp/email",
       {
@@ -49,7 +76,7 @@ export const POST: APIRoute = async ({ request }) => {
         body: JSON.stringify({
           sender: {
             email: process.env.BREVO_SENDER_EMAIL,
-            name: "Tree Airsoft Nation"
+            name: "Tree Airsoft Nation",
           },
           to: [{ email: process.env.BREVO_TO_EMAIL }],
           subject: `Nuevo contacto web - ${name}`,
@@ -59,7 +86,7 @@ export const POST: APIRoute = async ({ request }) => {
             <p><strong>Email:</strong> ${email}</p>
             <p><strong>Teléfono:</strong> ${phone || "No proporcionado"}</p>
             <p><strong>Mensaje:</strong><br/>${message}</p>
-          `
+          `,
         }),
       }
     );
@@ -69,12 +96,13 @@ export const POST: APIRoute = async ({ request }) => {
         JSON.stringify({ error: "Email delivery failed" }),
         {
           status: 500,
-          headers: { "Content-Type": "application/json" }
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
 
-    // ESPOCRM (no bloqueante)
+    /* -------- ESPOCRM (no bloqueante) -------- */
+
     if (process.env.ESPO_URL && process.env.ESPO_API_KEY) {
       try {
         await fetch(
@@ -90,7 +118,7 @@ export const POST: APIRoute = async ({ request }) => {
               emailAddress: email,
               phoneNumber: phone,
               description: message,
-              assignedUserId: process.env.ESPO_ASSIGNED_USER_ID
+              assignedUserId: process.env.ESPO_ASSIGNED_USER_ID,
             }),
           }
         );
@@ -99,11 +127,13 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
+    /* -------- SUCCESS -------- */
+
     return new Response(
       JSON.stringify({ success: true }),
       {
         status: 200,
-        headers: { "Content-Type": "application/json" }
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
 
@@ -112,7 +142,7 @@ export const POST: APIRoute = async ({ request }) => {
       JSON.stringify({ error: "Server error" }),
       {
         status: 500,
-        headers: { "Content-Type": "application/json" }
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
   }
