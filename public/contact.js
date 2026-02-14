@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const data = new FormData(form);
 
+    // Honeypot anti-spam
     if (data.get("company")) {
       button.disabled = false;
       button.textContent = "Enviar mensaje";
@@ -39,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         messageBox.className = "form-message success";
         form.reset();
       } else {
-        messageBox.textContent = result.error || "Error enviando.";
+        messageBox.textContent = result.error || "Error enviando el mensaje.";
         messageBox.className = "form-message error";
       }
 
