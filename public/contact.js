@@ -16,14 +16,31 @@ if (form) {
 
     const data = new FormData(form);
 
+    let phone = (data.get("phone") || "").trim();
+
+    // 🔎 Validación formato internacional
+    if (phone && !/^\+[0-9]{8,15}$/.test(phone)) {
+      if (messageBox) {
+        messageBox.textContent =
+          "El teléfono debe incluir prefijo internacional. Ejemplo: +34652051753";
+        messageBox.className = "form-message error";
+        messageBox.style.display = "block";
+      }
+
+      if (button) {
+        button.disabled = false;
+        button.textContent = "Enviar mensaje";
+      }
+
+      return;
+    }
+
     const payload = {
       name: (data.get("name") || "").trim(),
       email: (data.get("email") || "").trim(),
-      phone: (data.get("phone") || "").trim(),
+      phone: phone,
       message: (data.get("message") || "").trim(),
       company: (data.get("company") || "").trim(),
-
-      // ✔ Consentimiento real (no forzado)
       consent: form.querySelector('[name="consent"]').checked,
 
       utmSource: new URLSearchParams(window.location.search).get("utm_source") || "",
@@ -51,7 +68,8 @@ if (form) {
         }
       } else {
         if (messageBox) {
-          messageBox.textContent = result.error || "Error enviando el mensaje.";
+          messageBox.textContent =
+            result.error || "Error enviando el mensaje.";
           messageBox.className = "form-message error";
           messageBox.style.display = "block";
         }

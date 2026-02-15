@@ -128,67 +128,59 @@ export const POST: APIRoute = async ({ request }) => {
     const userAgent = request.headers.get("user-agent") || "";
     const spamScore = calculateSpamScore(message);
 
-    /* =========================
-       SEND TO ESPOCRM
-    ========================= */
+/* =========================
+   SEND TO ESPOCRM
+========================= */
 
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
+const controller = new AbortController();
+const timeout = setTimeout(() => controller.abort(), 8000);
 
-    const espoResponse = await fetch(
-      `http://medusa_espocrm-app/api/v1/LeadCapture/${LEAD_CAPTURE_TOKEN}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        signal: controller.signal,
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          emailAddress: email,
-          phoneNumber: phone || "",
-          description: message,
+// Validación segura del teléfono (solo se envía si es válido)
+const formattedPhone =
+  phone && /^\+[0-9]{8,15}$/.test(phone.trim())
+    ? phone.trim()
+    : null;
 
-          cNsource: "web-contact",
-          cSpamScore: spamScore,
-          cConsentGiven: true,
-          cUserAgent: userAgent,
-          cWhatsappSent: false,
-          cUtmSource: utmSource || "",
-          cUtmMedium: utmMedium || "",
-          cUtmCampaign: utmCampaign || "",
-          cUtmTerm: utmTerm || "",
-          cUtmContent: utmContent || "",
-          cIpAddress: ipAddress,
-        }),
-      }
-    );
+const espoResponse = await fetch(
+  `http://medusa_espocrm-app/api/v1/LeadCapture/${LEAD_CAPTURE_TOKEN}`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    signal: controller.signal,
+    body: JSON.stringify({
+      firstName,
+      lastName,
+      emailAddress: email,
+      description: message,
 
-    clearTimeout(timeout);
+      ...(formattedPhone ? { phoneNumber: formattedPhone } : {}),
 
-    // 🔎 Validación más robusta del status HTTP
-    if (espoResponse.status < 200 || espoResponse.status >= 300) {
-      const errorText = await espoResponse.text().catch(() => "No response body");
-      console.error("EspoCRM error:", espoResponse.status, errorText);
-
-      return new Response(
-        JSON.stringify({ error: "CRM error" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    return new Response(
-      JSON.stringify({ success: true }),
-      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
-
-  } catch (error) {
-    console.error("Server error:", error);
-
-    return new Response(
-      JSON.stringify({ error: "Server error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+      cNsource: "web-contact",
+      cSpamScore: spamScore,
+      cConsentGiven: true,
+      cUserAgent: userAgent,
+      cWhatsappSent: false,
+      cUtmSource: utmSource || "",
+      cUtmMedium: utmMedium || "",
+      cUtmCampaign: utmCampaign || "",
+      cUtmTerm: utmTerm || "",
+      cUtmContent: utmContent || "",
+      cIpAddress: ipAddress,
+    }),
   }
-};
+);
+
+clearTimeout(timeout);
+
+// Solo error si realmente no es 2xx
+if (espoResponse.status < 200 || espoResponse.status >= 300) {
+  const errorText = await espoResponse.text().catch(() => "No response body");
+  console.error("EspoCRM error:", espoResponse.status, errorText);
+
+  return new Response(
+    JSON.stringify({ error: "CRM error" }),
+    { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+  );
+}
