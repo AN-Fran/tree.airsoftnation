@@ -1,88 +1,189 @@
 import type { APIRoute } from "astro";
 
+/* =========================
+   CONFIG
+========================= */
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+const LEAD_CAPTURE_TOKEN = process.env.ESPO_LEAD_CAPTURE_TOKEN;
+
+/* =========================
+   HELPERS
+========================= */
+
+function splitName(fullName: string) {
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length === 1) {
+    return { firstName: parts[0], lastName: "(Web)" };
+  }
+  const firstName = parts.shift() || "";
+  const lastName = parts.join(" ");
+  return { firstName, lastName };
+}
+
+function getClientIp(request: Request) {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  return request.headers.get("x-real-ip") || "";
+}
+
+function calculateSpamScore(message: string) {
+  const suspicious = ["viagra", "casino", "crypto", "loan", "http://", "https://"];
+  let score = 0;
+
+  suspicious.forEach(word => {
+    if (message.toLowerCase().includes(word)) score += 20;
+  });
+
+  if (message.length > 1500) score += 30;
+
+  return Math.min(score, 100);
+}
+
+/* =========================
+   OPTIONS
+========================= */
+
 export const OPTIONS: APIRoute = async () => {
   return new Response(null, { status: 200, headers: corsHeaders });
 };
 
+/* =========================
+   POST
+========================= */
+
 export const POST: APIRoute = async ({ request }) => {
   try {
+    if (!LEAD_CAPTURE_TOKEN) {
+      return new Response(
+        JSON.stringify({ error: "CRM not configured" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const body = await request.json();
-    const { name, email, phone, message, utm } = body;
+
+    const {
+      name,
+      email,
+      phone,
+      message,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      utmTerm,
+      utmContent,
+      consent,
+      company,
+    } = body;
+
+    /* =========================
+       VALIDATION
+    ========================= */
+
+    if (company) {
+      return new Response(
+        JSON.stringify({ error: "Spam detected" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
     if (!name || !email || !message) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
-        { status: 400, headers: corsHeaders }
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    const [firstName, ...rest] = name.trim().split(" ");
-    const lastName = rest.join(" ") || "Web";
+    if (!consent) {
+      return new Response(
+        JSON.stringify({ error: "Consent required" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
-    const ip =
-      request.headers.get("x-forwarded-for")?.split(",")[0] ||
-      "unknown";
+    if (message.length > 2000) {
+      return new Response(
+        JSON.stringify({ error: "Message too long" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
-    const userAgent = request.headers.get("user-agent") || "unknown";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid email" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
-    const espoUrl = process.env.ESPO_URL!.replace(/\/$/, "");
+    const { firstName, lastName } = splitName(name);
+
+    const ipAddress = getClientIp(request);
+    const userAgent = request.headers.get("user-agent") || "";
+
+    const spamScore = calculateSpamScore(message);
+
+    /* =========================
+       SEND TO ESPOCRM
+    ========================= */
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
 
     const espoResponse = await fetch(
-      `${espoUrl}/api/v1/LeadCapture/e265740ddcab3dcfbc80882c1087c06a`,
+      `http://medusa_espocrm-app/api/v1/LeadCapture/${LEAD_CAPTURE_TOKEN}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
         },
+        signal: controller.signal,
         body: JSON.stringify({
           firstName,
           lastName,
           emailAddress: email,
-          phoneNumber: phone,
+          phoneNumber: phone || "",
           description: message,
 
-          // Campos personalizados (usa nombres internos reales)
-          cEntrada: "web-contact",
-          cIpAddress: ip,
-          cUserAgent: userAgent,
-
-          cUtmSource: utm?.source,
-          cUtmMedium: utm?.medium,
-          cUtmCampaign: utm?.campaign,
-          cUtmTerm: utm?.term,
-          cUtmContent: utm?.content,
-
+          cNsource: "web-contact",
+          cSpamScore: spamScore,
           cConsentGiven: true,
-          cSpamScore: 0
+          cUserAgent: userAgent,
+          cWhatsappSent: false,
+          cUtmSource: utmSource || "",
+          cUtmMedium: utmMedium || "",
+          cUtmCampaign: utmCampaign || "",
+          cUtmTerm: utmTerm || "",
+          cUtmContent: utmContent || "",
+          cIpAddress: ipAddress,
         }),
       }
     );
 
+    clearTimeout(timeout);
+
     if (!espoResponse.ok) {
-      const err = await espoResponse.text();
-      console.error("ESPO ERROR:", err);
       return new Response(
         JSON.stringify({ error: "CRM error" }),
-        { status: 500, headers: corsHeaders }
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
     return new Response(
       JSON.stringify({ success: true }),
-      { status: 200, headers: corsHeaders }
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
+
   } catch (error) {
-    console.error("SERVER ERROR:", error);
     return new Response(
       JSON.stringify({ error: "Server error" }),
-      { status: 500, headers: corsHeaders }
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 };
