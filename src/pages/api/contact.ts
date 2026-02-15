@@ -126,7 +126,6 @@ export const POST: APIRoute = async ({ request }) => {
 
     const ipAddress = getClientIp(request);
     const userAgent = request.headers.get("user-agent") || "";
-
     const spamScore = calculateSpamScore(message);
 
     /* =========================
@@ -168,7 +167,11 @@ export const POST: APIRoute = async ({ request }) => {
 
     clearTimeout(timeout);
 
-    if (!espoResponse.ok) {
+    // 🔎 Validación más robusta del status HTTP
+    if (espoResponse.status < 200 || espoResponse.status >= 300) {
+      const errorText = await espoResponse.text().catch(() => "No response body");
+      console.error("EspoCRM error:", espoResponse.status, errorText);
+
       return new Response(
         JSON.stringify({ error: "CRM error" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -181,6 +184,8 @@ export const POST: APIRoute = async ({ request }) => {
     );
 
   } catch (error) {
+    console.error("Server error:", error);
+
     return new Response(
       JSON.stringify({ error: "Server error" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
