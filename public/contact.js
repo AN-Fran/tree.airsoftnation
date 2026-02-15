@@ -17,18 +17,20 @@ if (form) {
     const data = new FormData(form);
 
     const payload = {
-      name: data.get("name"),
-      email: data.get("email"),
-      phone: data.get("phone"),
-      message: data.get("message"),
-      company: data.get("company"),
-      consent: true,
+      name: (data.get("name") || "").trim(),
+      email: (data.get("email") || "").trim(),
+      phone: (data.get("phone") || "").trim(),
+      message: (data.get("message") || "").trim(),
+      company: (data.get("company") || "").trim(),
 
-      utmSource: new URLSearchParams(window.location.search).get("utm_source"),
-      utmMedium: new URLSearchParams(window.location.search).get("utm_medium"),
-      utmCampaign: new URLSearchParams(window.location.search).get("utm_campaign"),
-      utmTerm: new URLSearchParams(window.location.search).get("utm_term"),
-      utmContent: new URLSearchParams(window.location.search).get("utm_content"),
+      // ✔ Consentimiento real (no forzado)
+      consent: form.querySelector('[name="consent"]').checked,
+
+      utmSource: new URLSearchParams(window.location.search).get("utm_source") || "",
+      utmMedium: new URLSearchParams(window.location.search).get("utm_medium") || "",
+      utmCampaign: new URLSearchParams(window.location.search).get("utm_campaign") || "",
+      utmTerm: new URLSearchParams(window.location.search).get("utm_term") || "",
+      utmContent: new URLSearchParams(window.location.search).get("utm_content") || "",
     };
 
     try {
