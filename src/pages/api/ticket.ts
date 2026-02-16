@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro"
-import { TicketSchema } from "@/lib/validation/ticket.schema"
-import { createEspoEntity } from "@/lib/espo"
-import { log } from "@/lib/logger"
+import { TicketSchema } from "../../lib/validation/ticket.schema"
+import { createEspoEntity } from "../../lib/espo"
+import { log } from "../../lib/logger"
 
 export const POST: APIRoute = async ({ request }) => {
   try {
