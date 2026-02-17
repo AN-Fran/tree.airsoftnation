@@ -16,33 +16,46 @@ import Hero from "../components/hero.astro";
 
     <form id="ticket-form" class="form-grid" novalidate>
 
-      <!-- Honeypot anti-spam -->
-      <input type="text" name="company" class="hidden-field" />
+      <!-- Honeypot anti-spam (oculto) -->
+      <input type="text" name="company" class="hidden-field" autocomplete="off" />
 
+      <!-- Datos cliente -->
       <input type="text" name="name" placeholder="Nombre y apellidos" required />
       <input type="tel" name="phone" placeholder="Teléfono (+34660000000)" required />
       <input type="email" name="email" placeholder="Email" required />
 
+      <!-- Tipo de servicio -->
+      <select name="serviceType" required>
+        <option value="">Tipo de servicio</option>
+        <option value="Reparación">Reparación</option>
+        <option value="Upgrade">Upgrade</option>
+        <option value="Mantenimiento">Mantenimiento</option>
+        <option value="Diagnóstico">Diagnóstico</option>
+        <option value="Garantía">Garantía</option>
+        <option value="Consulta">Consulta</option>
+      </select>
+
+      <!-- Datos réplica -->
       <select name="brand" required>
         <option value="">Marca de la réplica</option>
-        <option>Tokyo Marui</option>
-        <option>Specna Arms</option>
-        <option>VFC</option>
-        <option>G&G</option>
-        <option>ICS</option>
-        <option>LCT</option>
-        <option>E&L</option>
-        <option>Cyma</option>
-        <option>Ares</option>
-        <option>KWA</option>
-        <option>WE</option>
-        <option>Krytac</option>
-        <option>Classic Army</option>
-        <option>Umarex</option>
-        <option>ASG</option>
-        <option>Arcturus</option>
-        <option>Double Eagle</option>
-        <option>Otra</option>
+        <option value="Tokyo Marui">Tokyo Marui</option>
+        <option value="Specna Arms">Specna Arms</option>
+        <option value="VFC">VFC</option>
+        <option value="G&G">G&G</option>
+        <option value="ICS">ICS</option>
+        <option value="LCT">LCT</option>
+        <option value="E&L">E&L</option>
+        <option value="Cyma">Cyma</option>
+        <option value="Ares">Ares</option>
+        <option value="KWA">KWA</option>
+        <option value="WE">WE</option>
+        <option value="Krytac">Krytac</option>
+        <option value="Classic Army">Classic Army</option>
+        <option value="Umarex">Umarex</option>
+        <option value="ASG">ASG</option>
+        <option value="Arcturus">Arcturus</option>
+        <option value="Double Eagle">Double Eagle</option>
+        <option value="Otra">Otra</option>
       </select>
 
       <input type="text" name="model" placeholder="Modelo (ej: M4 / AR15)" />
@@ -54,6 +67,7 @@ import Hero from "../components/hero.astro";
         required
       ></textarea>
 
+      <!-- Privacidad -->
       <label class="privacy">
         <input type="checkbox" id="privacy-check" required />
         <span>
@@ -77,6 +91,10 @@ import Hero from "../components/hero.astro";
 </FormLayout>
 
 <style>
+.hidden-field {
+  display: none;
+}
+
 .contact-container {
   max-width: 520px;
   margin: 0 auto;
@@ -129,8 +147,4 @@ textarea {
 }
 </style>
 
-<Fragment slot="scripts">
-  <script type="module">
-    import "../scripts/taller.js";
-  </script>
-</Fragment>
+<script src="/scripts/taller.js" defer></script>

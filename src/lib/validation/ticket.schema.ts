@@ -1,6 +1,16 @@
 import { z } from "zod"
 
 export const TicketSchema = z.object({
+ serviceType: z.enum([
+   "Reparación",
+   "Upgrade",
+   "Mantenimiento",
+   "Diagnóstico",
+   "Garantía",
+   "Consulta"
+ ]),
+
+
   name: z.string().min(2),
 
   email: z.string().email(),

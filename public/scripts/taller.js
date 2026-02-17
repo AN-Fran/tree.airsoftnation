@@ -5,11 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("ticket-form");
   const button = document.getElementById("ticket-submit");
   const messageBox = document.getElementById("form-message");
+  const privacyCheck = document.getElementById("privacy-check");
 
-  if (!form || !button) {
-    console.log("Formulario no encontrado");
-    return;
-  }
+  if (!form || !button) return;
 
   button.addEventListener("click", async () => {
 
@@ -20,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = data.get("name")?.toString().trim();
     const email = data.get("email")?.toString().trim();
     const phone = data.get("phone")?.toString().trim();
+    const serviceType = data.get("serviceType")?.toString().trim();
     const brand = data.get("brand")?.toString().trim();
     const model = data.get("model")?.toString().trim();
     const serialNumber = data.get("serialNumber")?.toString().trim();
@@ -29,11 +28,18 @@ document.addEventListener("DOMContentLoaded", () => {
       name,
       email,
       phone,
+      serviceType,
       brand,
       model,
       serialNumber,
       message
     });
+
+    if (!privacyCheck.checked) {
+      messageBox.innerText = "Debes aceptar la política de privacidad.";
+      messageBox.className = "form-message error";
+      return;
+    }
 
     try {
       const response = await fetch("/api/ticket", {
@@ -45,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
           name,
           email,
           phone,
+          serviceType,
           brand,
           model,
           serialNumber,
@@ -52,23 +59,23 @@ document.addEventListener("DOMContentLoaded", () => {
         })
       });
 
-      console.log("FETCH EJECUTADO - STATUS:", response.status);
-
       const result = await response.json();
+
       console.log("RESPUESTA API:", result);
 
       if (response.ok) {
-        messageBox.innerText = "Respuesta recibida. Revisa consola.";
-        messageBox.classList.add("success");
+        messageBox.innerText = "Orden creada correctamente.";
+        messageBox.className = "form-message success";
+        form.reset();
       } else {
         messageBox.innerText = "Error en API. Revisa consola.";
-        messageBox.classList.add("error");
+        messageBox.className = "form-message error";
       }
 
     } catch (error) {
       console.log("ERROR FETCH:", error);
       messageBox.innerText = "Error de conexión.";
-      messageBox.classList.add("error");
+      messageBox.className = "form-message error";
     }
 
   });

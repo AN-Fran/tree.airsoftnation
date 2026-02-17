@@ -47,7 +47,7 @@ export const POST: APIRoute = async ({ request }) => {
       cModelo: data.model || "",
       cNumerserie: data.serialNumber || "",
 
-      cTipoServicio: "Reparación",
+     cTipoServicio: data.serviceType,
       cEstadoServicio: "Recibido",
       cPrioridadTecnica: "Media"
     }
