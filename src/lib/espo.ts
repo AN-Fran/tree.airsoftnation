@@ -2,13 +2,24 @@ export async function createEspoEntity(
   entity: string,
   payload: Record<string, any>
 ) {
+  const baseUrl = process.env.ESPO_URL
+  const apiKey = process.env.ESPO_API_KEY_TICKETS
+
+  if (!baseUrl) {
+    throw new Error("Missing ESPO_URL")
+  }
+
+  if (!apiKey) {
+    throw new Error("Missing ESPO_API_KEY_TICKETS")
+  }
+
   const response = await fetch(
-    `${process.env.ESPO_URL}/api/v1/${entity}`,
+    `${baseUrl}/api/v1/${entity}`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Api-Key": process.env.ESPO_API_KEY as string
+        "X-Api-Key": apiKey
       },
       body: JSON.stringify(payload)
     }

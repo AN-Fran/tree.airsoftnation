@@ -30,9 +30,9 @@ export const POST: APIRoute = async ({ request }) => {
       emailAddress: data.email,
       phoneNumber: data.phone,
 
-      status: "New", // Estado general Espo
+      status: "New",
 
-      // 🔧 Campos personalizados
+      // Campos personalizados reales
       cMarca: data.brand,
       cModelo: data.model || "",
       cNumerserie: data.serialNumber || "",
@@ -46,8 +46,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     log("info", "ticket_created", {
       id: espoResponse.id,
-      brand: data.brand,
-      tipoServicio: "Reparación"
+      brand: data.brand
     })
 
     return new Response(
