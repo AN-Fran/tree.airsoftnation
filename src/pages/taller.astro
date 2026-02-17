@@ -14,20 +14,13 @@ import Hero from "../components/hero.astro";
       Envíanos los datos de tu réplica y crearemos tu orden de trabajo.
     </p>
 
-    <form id="ticket-form" class="form-grid">
+    <form id="ticket-form" class="form-grid" novalidate>
 
       <!-- Honeypot anti-spam -->
       <input type="text" name="company" class="hidden-field" />
 
       <input type="text" name="name" placeholder="Nombre y apellidos" required />
-
-      <input 
-        type="tel" 
-        name="phone" 
-        placeholder="Teléfono (+34660000000)" 
-        required 
-      />
-
+      <input type="tel" name="phone" placeholder="Teléfono (+34660000000)" required />
       <input type="email" name="email" placeholder="Email" required />
 
       <select name="brand" required>
@@ -62,7 +55,7 @@ import Hero from "../components/hero.astro";
       ></textarea>
 
       <label class="privacy">
-        <input type="checkbox" required />
+        <input type="checkbox" id="privacy-check" required />
         <span>
           He leído y acepto la
           <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
@@ -71,7 +64,7 @@ import Hero from "../components/hero.astro";
         </span>
       </label>
 
-      <button type="submit" class="btn-submit">
+      <button type="button" id="ticket-submit" class="btn-submit">
         Crear orden de servicio
       </button>
 
@@ -125,15 +118,6 @@ textarea {
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.btn-submit:hover {
-  opacity: 0.9;
-}
-
-.form-message {
-  font-size: 0.9rem;
 }
 
 .form-message.success {
@@ -145,87 +129,4 @@ textarea {
 }
 </style>
 
-<script is:inline>
-  console.log("TALLER JS CARGADO");
-
-  document.addEventListener("DOMContentLoaded", () => {
-
-    const form = document.getElementById("ticket-form");
-    const messageBox = document.getElementById("form-message");
-
-    if (!form) {
-      console.log("Formulario no encontrado");
-      return;
-    }
-
-    const phoneRegex = /^\+\d{9,15}$/;
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const button = form.querySelector("button");
-      button.disabled = true;
-      button.innerText = "Enviando...";
-
-      messageBox.innerText = "";
-      messageBox.classList.remove("success", "error");
-
-      const data = new FormData(form);
-
-      if (data.get("company")) {
-        button.disabled = false;
-        button.innerText = "Crear orden de servicio";
-        return;
-      }
-
-      const phone = data.get("phone")?.toString().trim();
-
-      if (!phoneRegex.test(phone)) {
-        messageBox.innerText =
-          "El teléfono debe estar en formato internacional. Ejemplo: +34660000000";
-        messageBox.classList.add("error");
-
-        button.disabled = false;
-        button.innerText = "Crear orden de servicio";
-        return;
-      }
-
-      const payload = {
-        name: data.get("name")?.toString().trim(),
-        email: data.get("email")?.toString().trim(),
-        phone: phone,
-        brand: data.get("brand")?.toString().trim(),
-        model: data.get("model")?.toString().trim(),
-        serialNumber: data.get("serialNumber")?.toString().trim(),
-        message: data.get("message")?.toString().trim(),
-      };
-
-      try {
-        const response = await fetch("/api/ticket", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-          messageBox.innerText = "Orden creada correctamente.";
-          messageBox.classList.add("success");
-          form.reset();
-        } else {
-          messageBox.innerText = "Error enviando la orden.";
-          messageBox.classList.add("error");
-        }
-
-      } catch {
-        messageBox.innerText = "Error de conexión.";
-        messageBox.classList.add("error");
-      }
-
-      button.disabled = false;
-      button.innerText = "Crear orden de servicio";
-    });
-
-  });
-</script>
+<script type="module" src="../scripts/taller.js"></script>
