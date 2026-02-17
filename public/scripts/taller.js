@@ -31,6 +31,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const brand = data.get("brand")?.toString().trim();
     const message = data.get("message")?.toString().trim();
 
+  console.log("VALORES FORMULARIO:", {
+    name,
+    email,
+    phone,
+    brand,
+    message,
+    privacy: privacyCheck.checked
+  });
+
+
     if (!name || !email || !phone || !brand || !message) {
       messageBox.innerText = "Todos los campos obligatorios deben completarse.";
       messageBox.classList.add("error");
