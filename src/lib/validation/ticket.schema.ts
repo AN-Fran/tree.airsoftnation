@@ -1,21 +1,24 @@
 import { z } from "zod"
 
 export const TicketSchema = z.object({
- serviceType: z.enum([
-   "Reparación",
-   "Upgrade",
-   "Mantenimiento",
-   "Diagnóstico",
-   "Garantía",
-   "Consulta"
- ]),
 
+  serviceType: z.enum([
+    "Reparación",
+    "Upgrade",
+    "Mantenimiento",
+    "Diagnóstico",
+    "Garantía",
+    "Consulta"
+  ]),
 
-  name: z.string().min(2),
+  name: z.string()
+    .min(2, "Nombre demasiado corto"),
 
-  email: z.string().email(),
+  email: z.string()
+    .email("Email inválido"),
 
-  phone: z.string().min(6),
+  phone: z.string()
+    .regex(/^\+\d{8,15}$/, "Teléfono debe estar en formato internacional +34600000000"),
 
   brand: z.enum([
     "Tokyo Marui",
@@ -48,9 +51,18 @@ export const TicketSchema = z.object({
     "Otra"
   ]),
 
-  model: z.string().max(150).optional(),
+  model: z.string()
+    .max(150)
+    .optional()
+    .or(z.literal("")),
 
-  serialNumber: z.string().max(100).optional(),
+  serialNumber: z.string()
+    .max(100)
+    .optional()
+    .or(z.literal("")),
 
-  message: z.string().min(10)
+  message: z.string()
+    .min(10, "Mensaje demasiado corto")
+
 })
+
