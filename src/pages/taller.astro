@@ -145,13 +145,18 @@ textarea {
 }
 </style>
 
-<script>
+<script is:inline>
+  console.log("TALLER JS CARGADO");
+
   document.addEventListener("DOMContentLoaded", () => {
 
     const form = document.getElementById("ticket-form");
     const messageBox = document.getElementById("form-message");
 
-    if (!form) return;
+    if (!form) {
+      console.log("Formulario no encontrado");
+      return;
+    }
 
     const phoneRegex = /^\+\d{9,15}$/;
 
@@ -208,11 +213,8 @@ textarea {
           messageBox.innerText = "Orden creada correctamente.";
           messageBox.classList.add("success");
           form.reset();
-        } else if (response.status === 400) {
-          messageBox.innerText = "Revisa los datos del formulario.";
-          messageBox.classList.add("error");
         } else {
-          messageBox.innerText = "Error interno. Inténtalo de nuevo.";
+          messageBox.innerText = "Error enviando la orden.";
           messageBox.classList.add("error");
         }
 
@@ -227,4 +229,3 @@ textarea {
 
   });
 </script>
-
