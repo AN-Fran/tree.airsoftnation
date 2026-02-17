@@ -19,39 +19,40 @@ import Hero from "../components/hero.astro";
       <!-- Honeypot anti-spam -->
       <input type="text" name="company" class="hidden-field" />
 
-      <div class="grid-2">
-        <input type="text" name="name" placeholder="Nombre y apellidos" required />
-        <input type="tel" name="phone" placeholder="Teléfono" required />
-      </div>
+      <input type="text" name="name" placeholder="Nombre y apellidos" required />
+
+      <input 
+        type="tel" 
+        name="phone" 
+        placeholder="Teléfono (+34660000000)" 
+        required 
+      />
 
       <input type="email" name="email" placeholder="Email" required />
 
-      <div class="grid-2">
-        <select name="brand" required>
-          <option value="">Marca de la réplica</option>
-          <option>Tokyo Marui</option>
-          <option>Specna Arms</option>
-          <option>VFC</option>
-          <option>G&G</option>
-          <option>ICS</option>
-          <option>LCT</option>
-          <option>E&L</option>
-          <option>Cyma</option>
-          <option>Ares</option>
-          <option>KWA</option>
-          <option>WE</option>
-          <option>Krytac</option>
-          <option>Classic Army</option>
-          <option>Umarex</option>
-          <option>ASG</option>
-          <option>Arcturus</option>
-          <option>Double Eagle</option>
-          <option>Otra</option>
-        </select>
+      <select name="brand" required>
+        <option value="">Marca de la réplica</option>
+        <option>Tokyo Marui</option>
+        <option>Specna Arms</option>
+        <option>VFC</option>
+        <option>G&G</option>
+        <option>ICS</option>
+        <option>LCT</option>
+        <option>E&L</option>
+        <option>Cyma</option>
+        <option>Ares</option>
+        <option>KWA</option>
+        <option>WE</option>
+        <option>Krytac</option>
+        <option>Classic Army</option>
+        <option>Umarex</option>
+        <option>ASG</option>
+        <option>Arcturus</option>
+        <option>Double Eagle</option>
+        <option>Otra</option>
+      </select>
 
-        <input type="text" name="model" placeholder="Modelo (ej: M4 / AR15)" />
-      </div>
-
+      <input type="text" name="model" placeholder="Modelo (ej: M4 / AR15)" />
       <input type="text" name="serialNumber" placeholder="Número de serie" />
 
       <textarea
@@ -78,11 +79,6 @@ import Hero from "../components/hero.astro";
 
     </form>
 
-    <div class="powered">
-      <img src="/Wolverine Airsoft Claws White.svg" alt="Wolverine Airsoft" />
-      <span>HPA · CNC · PRECISIÓN · POWERED BY WOLVERINE AIRSOFT</span>
-    </div>
-
   </section>
 
 </FormLayout>
@@ -97,12 +93,6 @@ import Hero from "../components/hero.astro";
 .form-grid {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
@@ -142,6 +132,10 @@ textarea {
   opacity: 0.9;
 }
 
+.form-message {
+  font-size: 0.9rem;
+}
+
 .form-message.success {
   color: #3ddc84;
 }
@@ -149,73 +143,88 @@ textarea {
 .form-message.error {
   color: #ff6b6b;
 }
-
-@media (max-width: 600px) {
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
-}
 </style>
 
 <script>
-  const form = document.getElementById("ticket-form");
-  const messageBox = document.getElementById("form-message");
+  document.addEventListener("DOMContentLoaded", () => {
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+    const form = document.getElementById("ticket-form");
+    const messageBox = document.getElementById("form-message");
 
-    const button = form.querySelector("button");
-    button.disabled = true;
-    button.innerText = "Enviando...";
+    if (!form) return;
 
-    messageBox.innerText = "";
-    messageBox.classList.remove("success", "error");
+    const phoneRegex = /^\+\d{9,15}$/;
 
-    const data = new FormData(form);
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    if (data.get("company")) {
-      button.disabled = false;
-      button.innerText = "Crear orden de servicio";
-      return;
-    }
+      const button = form.querySelector("button");
+      button.disabled = true;
+      button.innerText = "Enviando...";
 
-    const payload = {
-      name: data.get("name")?.toString().trim(),
-      email: data.get("email")?.toString().trim(),
-      phone: data.get("phone")?.toString().trim(),
-      brand: data.get("brand")?.toString().trim(),
-      model: data.get("model")?.toString().trim(),
-      serialNumber: data.get("serialNumber")?.toString().trim(),
-      message: data.get("message")?.toString().trim(),
-    };
+      messageBox.innerText = "";
+      messageBox.classList.remove("success", "error");
 
-    try {
-      const response = await fetch("/api/ticket", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const data = new FormData(form);
 
-      const result = await response.json();
+      if (data.get("company")) {
+        button.disabled = false;
+        button.innerText = "Crear orden de servicio";
+        return;
+      }
 
-      if (response.ok && result.success) {
-        messageBox.innerText = "Orden creada correctamente.";
-        messageBox.classList.add("success");
-        form.reset();
-      } else if (response.status === 400) {
-        messageBox.innerText = "Revisa los datos del formulario.";
+      const phone = data.get("phone")?.toString().trim();
+
+      if (!phoneRegex.test(phone)) {
+        messageBox.innerText =
+          "El teléfono debe estar en formato internacional. Ejemplo: +34660000000";
         messageBox.classList.add("error");
-      } else {
-        messageBox.innerText = "Error interno. Inténtalo de nuevo.";
+
+        button.disabled = false;
+        button.innerText = "Crear orden de servicio";
+        return;
+      }
+
+      const payload = {
+        name: data.get("name")?.toString().trim(),
+        email: data.get("email")?.toString().trim(),
+        phone: phone,
+        brand: data.get("brand")?.toString().trim(),
+        model: data.get("model")?.toString().trim(),
+        serialNumber: data.get("serialNumber")?.toString().trim(),
+        message: data.get("message")?.toString().trim(),
+      };
+
+      try {
+        const response = await fetch("/api/ticket", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          messageBox.innerText = "Orden creada correctamente.";
+          messageBox.classList.add("success");
+          form.reset();
+        } else if (response.status === 400) {
+          messageBox.innerText = "Revisa los datos del formulario.";
+          messageBox.classList.add("error");
+        } else {
+          messageBox.innerText = "Error interno. Inténtalo de nuevo.";
+          messageBox.classList.add("error");
+        }
+
+      } catch {
+        messageBox.innerText = "Error de conexión.";
         messageBox.classList.add("error");
       }
 
-    } catch {
-      messageBox.innerText = "Error de conexión.";
-      messageBox.classList.add("error");
-    }
+      button.disabled = false;
+      button.innerText = "Crear orden de servicio";
+    });
 
-    button.disabled = false;
-    button.innerText = "Crear orden de servicio";
   });
 </script>
+
