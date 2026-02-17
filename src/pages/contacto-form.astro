@@ -1,0 +1,164 @@
+---
+import FormLayout from "../layouts/FormLayout.astro";
+import Hero from "../components/hero.astro";
+---
+
+<FormLayout title="Contacto | Airsoft Nation">
+
+  <Hero />
+
+  <section class="contact-container">
+
+    <div class="form-wrapper">
+
+      <h1 class="form-title">Contacto</h1>
+      <p class="subtitle">
+        Escríbenos y te responderemos lo antes posible.
+      </p>
+
+      <form id="contact-form" class="form-grid" novalidate>
+
+        <!-- Honeypot -->
+        <input type="text" name="company" class="honeypot" autocomplete="off" />
+
+        <div class="form-row">
+          <input
+            type="text"
+            name="name"
+            placeholder="Nombre completo"
+            required
+          />
+        </div>
+
+        <div class="form-row">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+          />
+        </div>
+
+        <div class="form-row">
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Teléfono (+34652051753)"
+          />
+        </div>
+
+        <div class="form-row">
+          <textarea
+            name="message"
+            placeholder="Mensaje"
+            required
+          ></textarea>
+        </div>
+
+        <label class="privacy">
+          <input type="checkbox" name="consent" required />
+          <span>
+            He leído y acepto la
+            <a
+              href="https://airsoftnation.eu/politica-de-privacidad/"
+              target="_blank"
+              rel="noopener"
+            >
+              política de privacidad
+            </a>
+          </span>
+        </label>
+
+        <div id="form-message" class="form-message"></div>
+
+        <button type="submit" class="btn-submit">
+          Enviar mensaje
+        </button>
+
+      </form>
+
+    </div>
+
+  </section>
+
+</FormLayout>
+
+<script slot="scripts" src="/contact.js"></script>
+
+<style>
+.contact-container {
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 520px;
+}
+
+.form-title {
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  margin-bottom: 30px;
+  opacity: 0.85;
+}
+
+.form-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.form-row input,
+.form-row textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: 15px;
+}
+
+.form-row textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.privacy {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.privacy input {
+  margin-top: 3px;
+}
+
+.btn-submit {
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background: #e11d2e;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-submit:hover {
+  opacity: 0.9;
+}
+
+.form-message {
+  min-height: 20px;
+  font-size: 14px;
+}
+
+.honeypot {
+  display: none;
+}
+</style>
