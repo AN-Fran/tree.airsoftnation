@@ -4,6 +4,21 @@ import MainLayout from "../layouts/MainLayout.astro";
 
 <MainLayout title="Contacto | Airsoft Nation">
 
+<div class="store-header">
+
+  <img 
+    src="/logo_airsoft_nation.svg" 
+    alt="Airsoft Nation Store"
+    class="store-logo"
+  />
+
+  <h1>Visítanos en tienda</h1>
+  <p class="store-subtitle">
+    Airsoft Nation Store · Celrà (Girona)
+  </p>
+
+</div>
+
 <section class="contact-page">
 
   <h1>Visítanos en tienda</h1>
@@ -134,5 +149,26 @@ import MainLayout from "../layouts/MainLayout.astro";
   border: 1px solid white;
   border-radius: 6px;
   text-decoration: none;
+}
+</style>
+
+<style>
+.store-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.store-logo {
+  width: 120px;
+  margin: 0 auto 1rem;
+  display: block;
+  opacity: 0.95;
+}
+
+.store-subtitle {
+  opacity: 0.8;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
 }
 </style>
