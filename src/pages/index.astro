@@ -3,19 +3,26 @@ import MainLayout from "../layouts/MainLayout.astro";
 import Hero from "../components/hero.astro";
 
 const routes = [
+  { 
+    name: "Visítanos en tienda",
+    href: "/contacto/",
+    icon: "store"
+  },
+  { 
+    name: "Contacto",
+    href: "/contacto-form/",
+    icon: "mail"
+  },
+  { 
+    name: "Servicio técnico",
+    href: "/taller/",
+    icon: "tools"
+  },
   { name: "Saber", href: "/saber/" },
   { name: "Ir a jugar", href: "/ir-a-jugar/" },
   { name: "Eventos", href: "/eventos/" },
-  { name: "Taller", href: "/taller/" },
   { name: "Novedades", href: "/novedades/" },
-  { name: "Comprar", href: "/comprar/" },
-  { name: "Contacto", href: "/contacto/" },
-  { 
-    name: "Tienda Física", 
-    href: "https://maps.app.goo.gl/vLG19SnL58wq81L27",
-    external: true,
-    icon: "location"
-  }
+  { name: "Comprar", href: "/comprar/" }
 ];
 ---
 
@@ -27,15 +34,29 @@ const routes = [
     {routes.map((route, i) => (
       <a
         href={route.href}
-        class="link-card"
-        style={`animation-delay:${i * 0.1}s`}
-        {...(route.external && { target: "_blank", rel: "noopener" })}
+        class={`link-card ${i < 3 ? "primary-link" : ""}`}
+        style={`animation-delay:${i * 0.08}s`}
       >
-        {route.icon === "location" && (
+
+        {/* Iconos */}
+        {route.icon === "store" && (
           <svg class="link-icon" viewBox="0 0 24 24">
-            <path d="M12 2C8.1 2 5 5.1 5 9c0 5.3 7 13 7 13s7-7.7 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/>
+            <path d="M3 9l1-4h16l1 4v11a1 1 0 0 1-1 1h-4v-6H8v6H4a1 1 0 0 1-1-1V9z"/>
           </svg>
         )}
+
+        {route.icon === "mail" && (
+          <svg class="link-icon" viewBox="0 0 24 24">
+            <path d="M2 4h20v16H2zM2 6l10 7L22 6"/>
+          </svg>
+        )}
+
+        {route.icon === "tools" && (
+          <svg class="link-icon" viewBox="0 0 24 24">
+            <path d="M22 19l-6.3-6.3a5 5 0 0 0-6.4-6.4l3 3-2 2-3-3a5 5 0 0 0 6.4 6.4L19 22z"/>
+          </svg>
+        )}
+
         {route.name}
       </a>
     ))}
@@ -45,7 +66,7 @@ const routes = [
 
 <style>
 .linktree {
-  padding: 20px;
+  padding: 24px;
   display: grid;
   gap: 16px;
 }
@@ -54,7 +75,7 @@ const routes = [
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   padding: 18px;
   border-radius: 14px;
   background: #111827;
@@ -71,10 +92,18 @@ const routes = [
   text-transform: uppercase;
 }
 
+.primary-link {
+  background: linear-gradient(90deg, #0f172a, #111827);
+  border: 1px solid rgba(0,180,255,0.3);
+}
+
+.primary-link:hover {
+  box-shadow: 0 0 22px rgba(0,180,255,0.35);
+}
+
 .link-card:hover {
   transform: translateY(-3px);
   border-color: var(--primary);
-  box-shadow: 0 0 18px rgba(0,180,255,0.25);
 }
 
 .link-card:active {
