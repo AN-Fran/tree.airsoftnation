@@ -55,6 +55,9 @@ import MainLayout from "../layouts/MainLayout.astro";
       <span>11:00 – 14:00</span>
       <span>16:00 – 21:00</span>
     </div>
+<p id="store-status" class="store-status"></p>
+
+
 
     <p class="schedule-note">
       Si necesitas venir fuera de horario, escríbenos mediante el formulario y buscamos una solución.
@@ -73,6 +76,118 @@ import MainLayout from "../layouts/MainLayout.astro";
   </div>
 
 </section>
+<Fragment slot="scripts">
+<script>
+  const statusElement = document.getElementById("store-status");
+
+  function checkStoreStatus() {
+    const now = new Date();
+    const day = now.getDay(); // 0=domingo
+    const hour = now.getHours();
+    const minutes = now.getMinutes();
+    const currentTime = hour + minutes / 60;
+
+    let isOpen = false;
+
+    if (day >= 1 && day <= 4) { // L-J
+      if ((currentTime >= 11 && currentTime < 14) ||
+          (currentTime >= 16 && currentTime < 20)) {
+        isOpen = true;
+      }
+    }
+
+    if (day === 5) { // Viernes
+      if ((currentTime >= 11 && currentTime < 14) ||
+          (currentTime >= 16 && currentTime < 21)) {
+        isOpen = true;
+      }
+    }
+
+    statusElement.textContent = isOpen
+      ? "Abierto ahora"
+      : "Cerrado en este momento";
+
+    statusElement.style.color = isOpen ? "#3ddc84" : "#ff6b6b";
+  }
+
+  checkStoreStatus();
+</script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SportingGoodsStore",
+      "name": "Airsoft Nation Store",
+      "image": "https://airsoftnation.eu/logo_airsoft_nation.svg",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "C. Just Puig, local 14",
+        "addressLocality": "Celrà",
+        "postalCode": "17460",
+        "addressRegion": "Girona",
+        "addressCountry": "ES"
+      },
+      "url": "https://airsoftnation.eu/contacto/",
+      "telephone": "+34614212918",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday","Tuesday","Wednesday","Thursday"
+          ],
+          "opens": "11:00",
+          "closes": "20:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Friday",
+          "opens": "11:00",
+          "closes": "21:00"
+        }
+      ],
+      "priceRange": "€€"
+    }
+  </script>
+</Fragment>
+
+<a href="https://wa.me/34614212918"
+   target="_blank"
+   class="whatsapp-float"
+   aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24">
+    <path d="M12 2a10 10 0 0 0-8.5 15l-1 5 5-1A10 10 0 1 0 12 2z"/>
+  </svg>
+</a>
+
+
+<style>
+.store-status {
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+
+.whatsapp-float {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  z-index: 1000;
+}
+
+.whatsapp-float svg {
+  width: 26px;
+  height: 26px;
+  fill: white;
+}
+</style>
 
 </MainLayout>
 
