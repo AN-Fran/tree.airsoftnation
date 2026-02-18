@@ -22,15 +22,14 @@ const {
   <link rel="preload" href="/fonts/open-sans-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" as="image" href="/logo_airsoft_nation.svg" type="image/svg+xml">
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TU_ID_REAL"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXX');
+  gtag('config', 'G-TU_ID_REAL');
 </script>
-
-
 
 </head>
 
@@ -117,26 +116,27 @@ const {
       }
     }
 
-    document.addEventListener("click", function(e) {
+document.addEventListener("click", function(e) {
+  const link = e.target.closest("a");
+  if (!link || typeof gtag !== "function") return;
 
-      const el = e.target.closest("a");
-      if (!el) return;
+  if (link.href.includes("google.com/maps")) {
+    gtag("event", "click_maps");
+  }
 
-      if (el.href.includes("google.com/maps")) {
-        trackEvent("click_maps");
-      }
+  if (link.href.includes("wa.me")) {
+    gtag("event", "click_whatsapp");
+  }
 
-      if (el.href.includes("wa.me")) {
-        trackEvent("click_whatsapp");
-      }
+  if (link.href.includes("/contacto-form/")) {
+    gtag("event", "click_contact_form");
+  }
 
-      if (el.href.includes("/contacto-form/")) {
-        trackEvent("click_contact_form");
-      }
+  if (link.href.includes("/taller/")) {
+    gtag("event", "click_servicio_tecnico");
+  }
+});
 
-      if (el.href.includes("/taller/")) {
-        trackEvent("click_servicio_tecnico");
-      }
 
     });
   </script>
