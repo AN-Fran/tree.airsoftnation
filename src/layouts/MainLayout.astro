@@ -21,6 +21,17 @@ const {
   <link rel="preload" href="/fonts/oswald-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/open-sans-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" as="image" href="/logo_airsoft_nation.svg" type="image/svg+xml">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXX');
+</script>
+
+
+
 </head>
 
 <body>
@@ -78,6 +89,60 @@ const {
   </div>
 
   <slot name="scripts" />
+
+  <!-- Language detection -->
+  <script>
+    (function() {
+      const lang = navigator.language || navigator.userLanguage;
+      const html = document.documentElement;
+
+      if (lang.startsWith("fr")) {
+        html.setAttribute("data-lang", "fr");
+      } else if (lang.startsWith("en")) {
+        html.setAttribute("data-lang", "en");
+      } else {
+        html.setAttribute("data-lang", "es");
+      }
+    })();
+  </script>
+
+  <!-- GA4 Event Tracking -->
+  <script>
+    function trackEvent(name) {
+      if (typeof gtag === "function") {
+        gtag("event", name, {
+          event_category: "engagement",
+          event_label: "airsoft_nation"
+        });
+      }
+    }
+
+    document.addEventListener("click", function(e) {
+
+      const el = e.target.closest("a");
+      if (!el) return;
+
+      if (el.href.includes("google.com/maps")) {
+        trackEvent("click_maps");
+      }
+
+      if (el.href.includes("wa.me")) {
+        trackEvent("click_whatsapp");
+      }
+
+      if (el.href.includes("/contacto-form/")) {
+        trackEvent("click_contact_form");
+      }
+
+      if (el.href.includes("/taller/")) {
+        trackEvent("click_servicio_tecnico");
+      }
+
+    });
+  </script>
+
+</body>
+</html>
 
 </body>
 </html>

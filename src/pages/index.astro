@@ -30,6 +30,30 @@ const routes = [
 
   <Hero />
 
+<div id="fr-cta" class="fr-cta" style="display:none;">
+  Livraison et assistance pour joueurs français 🇫🇷
+</div>
+
+<style>
+.fr-cta {
+  text-align: center;
+  background: linear-gradient(90deg, #002395, #ed2939);
+  padding: 12px;
+  font-weight: 600;
+  margin: 15px;
+  border-radius: 8px;
+}
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.documentElement.dataset.lang === "fr") {
+      document.getElementById("fr-cta").style.display = "block";
+    }
+  });
+</script>
+
+
   <section class="linktree">
     {routes.map((route, i) => (
       <a
