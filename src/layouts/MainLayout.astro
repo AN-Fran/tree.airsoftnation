@@ -17,19 +17,19 @@ const {
 
   {Astro.head}
 
-  <!-- Preload fuentes locales -->
+  <!-- Preload fuentes -->
   <link rel="preload" href="/fonts/oswald-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/open-sans-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" as="image" href="/logo_airsoft_nation.svg" type="image/svg+xml">
 
-<!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TU_ID_REAL"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-TU_ID_REAL');
-</script>
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TU_ID_REAL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TU_ID_REAL');
+  </script>
 
 </head>
 
@@ -59,13 +59,13 @@ const {
         </svg>
       </a>
 
-<a href="https://www.google.com/maps/place/Airsoft+Nation+Store"
-   target="_blank"
-   aria-label="Ubicación">
-  <svg viewBox="0 0 24 24">
-    <path d="M12 2C8.1 2 5 5.1 5 9c0 5.3 7 13 7 13s7-7.7 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/>
-  </svg>
-</a>
+      <a href="https://www.google.com/maps/place/Airsoft+Nation+Store"
+         target="_blank"
+         aria-label="Ubicación">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C8.1 2 5 5.1 5 9c0 5.3 7 13 7 13s7-7.7 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/>
+        </svg>
+      </a>
 
       <a href="https://wa.me/34614212918" target="_blank" aria-label="WhatsApp">
         <svg viewBox="0 0 24 24">
@@ -89,60 +89,45 @@ const {
 
   <slot name="scripts" />
 
-<!-- Language detection -->
-<script>
-  (function () {
-    const lang = navigator.language || navigator.userLanguage;
-    const html = document.documentElement;
+  <!-- Language detection -->
+  <script>
+    (function () {
+      const lang = navigator.language || navigator.userLanguage;
+      const html = document.documentElement;
 
-    if (lang.startsWith("fr")) {
-      html.setAttribute("data-lang", "fr");
-    } else if (lang.startsWith("en")) {
-      html.setAttribute("data-lang", "en");
-    } else {
-      html.setAttribute("data-lang", "es");
-    }
-  })();
-</script>
+      if (lang.startsWith("fr")) {
+        html.setAttribute("data-lang", "fr");
+      } else if (lang.startsWith("en")) {
+        html.setAttribute("data-lang", "en");
+      } else {
+        html.setAttribute("data-lang", "es");
+      }
+    })();
+  </script>
 
   <!-- GA4 Event Tracking -->
   <script>
-    function trackEvent(name) {
-      if (typeof gtag === "function") {
-        gtag("event", name, {
-          event_category: "engagement",
-          event_label: "airsoft_nation"
-        });
+    document.addEventListener("click", function(e) {
+      const link = e.target.closest("a");
+      if (!link || typeof gtag !== "function") return;
+
+      if (link.href.includes("google.com/maps")) {
+        gtag("event", "click_maps");
       }
-    }
 
-document.addEventListener("click", function(e) {
-  const link = e.target.closest("a");
-  if (!link || typeof gtag !== "function") return;
+      if (link.href.includes("wa.me")) {
+        gtag("event", "click_whatsapp");
+      }
 
-  if (link.href.includes("google.com/maps")) {
-    gtag("event", "click_maps");
-  }
+      if (link.href.includes("/contacto-form/")) {
+        gtag("event", "click_contact_form");
+      }
 
-  if (link.href.includes("wa.me")) {
-    gtag("event", "click_whatsapp");
-  }
-
-  if (link.href.includes("/contacto-form/")) {
-    gtag("event", "click_contact_form");
-  }
-
-  if (link.href.includes("/taller/")) {
-    gtag("event", "click_servicio_tecnico");
-  }
-});
-
-
+      if (link.href.includes("/taller/")) {
+        gtag("event", "click_servicio_tecnico");
+      }
     });
   </script>
-
-</body>
-</html>
 
 </body>
 </html>
