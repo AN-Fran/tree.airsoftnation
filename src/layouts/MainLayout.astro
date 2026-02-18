@@ -89,21 +89,21 @@ const {
 
   <slot name="scripts" />
 
-  <!-- Language detection -->
-  <script>
-    (function() {
-      const lang = navigator.language || navigator.userLanguage;
-      const html = document.documentElement;
+<!-- Language detection -->
+<script>
+  (function () {
+    const lang = navigator.language || navigator.userLanguage;
+    const html = document.documentElement;
 
-      if (lang.startsWith("fr")) {
-        html.setAttribute("data-lang", "fr");
-      } else if (lang.startsWith("en")) {
-        html.setAttribute("data-lang", "en");
-      } else {
-        html.setAttribute("data-lang", "es");
-      }
-    })();
-  </script>
+    if (lang.startsWith("fr")) {
+      html.setAttribute("data-lang", "fr");
+    } else if (lang.startsWith("en")) {
+      html.setAttribute("data-lang", "en");
+    } else {
+      html.setAttribute("data-lang", "es");
+    }
+  })();
+</script>
 
   <!-- GA4 Event Tracking -->
   <script>
