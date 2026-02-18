@@ -105,29 +105,50 @@ const {
     })();
   </script>
 
-  <!-- GA4 Event Tracking -->
-  <script>
-    document.addEventListener("click", function(e) {
+<!-- GA4 Event Tracking -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    function track(eventName) {
+      if (typeof window.gtag === "function") {
+        window.gtag("event", eventName, {
+          event_category: "engagement",
+          event_label: window.location.pathname
+        });
+        console.log("GA4 EVENT:", eventName);
+      }
+    }
+
+    document.body.addEventListener("click", function (e) {
       const link = e.target.closest("a");
-      if (!link || typeof gtag !== "function") return;
+      if (!link) return;
 
-      if (link.href.includes("google.com/maps")) {
-        gtag("event", "click_maps");
+      const href = link.href || "";
+
+      if (href.includes("google.com/maps")) {
+        track("click_maps");
       }
 
-      if (link.href.includes("wa.me")) {
-        gtag("event", "click_whatsapp");
+      if (href.includes("wa.me")) {
+        track("click_whatsapp");
       }
 
-      if (link.href.includes("/contacto-form/")) {
-        gtag("event", "click_contact_form");
+      if (href.includes("/contacto-form/")) {
+        track("click_contact_form");
       }
 
-      if (link.href.includes("/taller/")) {
-        gtag("event", "click_servicio_tecnico");
+      if (href.includes("/taller/")) {
+        track("click_servicio_tecnico");
       }
+
+      if (href.includes("fr")) {
+        track("click_france_cta");
+      }
+
     });
-  </script>
+
+  });
+</script>
 
 </body>
 </html>
