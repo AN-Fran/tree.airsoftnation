@@ -21,16 +21,6 @@ const {
   <link rel="preload" href="/fonts/oswald-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/open-sans-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" as="image" href="/logo_airsoft_nation.svg" type="image/svg+xml">
-
-  <!-- Google Analytics 4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TU_ID_REAL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TU_ID_REAL');
-  </script>
-
 </head>
 
 <body>
@@ -67,13 +57,17 @@ const {
         </svg>
       </a>
 
-      <a href="https://wa.me/34614212918" target="_blank" aria-label="WhatsApp">
+      <a href="https://wa.me/34614212918"
+         target="_blank"
+         aria-label="WhatsApp">
         <svg viewBox="0 0 24 24">
           <path d="M12 2a10 10 0 0 0-8.5 15l-1 5 5-1A10 10 0 1 0 12 2z"/>
         </svg>
       </a>
 
-      <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank" aria-label="Instagram">
+      <a href="https://www.instagram.com/airsoftnation.eu/"
+         target="_blank"
+         aria-label="Instagram">
         <svg viewBox="0 0 24 24">
           <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z"/>
         </svg>
@@ -84,7 +78,6 @@ const {
       Registro de marca de la Unión Europea nº 19040186<br />
       © 2026 Airsoft Nation · Celrà (Girona)
     </div>
-
   </div>
 
   <slot name="scripts" />
@@ -95,9 +88,9 @@ const {
       const lang = navigator.language || navigator.userLanguage;
       const html = document.documentElement;
 
-      if (lang.startsWith("fr")) {
+      if (lang && lang.startsWith("fr")) {
         html.setAttribute("data-lang", "fr");
-      } else if (lang.startsWith("en")) {
+      } else if (lang && lang.startsWith("en")) {
         html.setAttribute("data-lang", "en");
       } else {
         html.setAttribute("data-lang", "es");
@@ -105,50 +98,82 @@ const {
     })();
   </script>
 
-<!-- GA4 Event Tracking -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
+  <!-- Cookie Banner + GA4 -->
+  <div id="cookie-banner" style="position:fixed;bottom:0;left:0;width:100%;background:#111;padding:15px;text-align:center;z-index:9999;">
+    <p style="margin:0 0 10px;color:#fff;font-size:14px;">
+      Utilizamos cookies para analizar el tráfico y mejorar la experiencia.
+    </p>
+    <button id="accept-cookies" style="margin-right:10px;padding:8px 14px;">Aceptar</button>
+    <button id="reject-cookies" style="padding:8px 14px;">Rechazar</button>
+  </div>
 
-    function track(eventName) {
-      if (typeof window.gtag === "function") {
-        window.gtag("event", eventName, {
-          event_category: "engagement",
-          event_label: window.location.pathname
-        });
-        console.log("GA4 EVENT:", eventName);
+  <script>
+    (function(){
+
+      function loadGA(){
+        var script = document.createElement("script");
+        script.async = true;
+        script.src = "https://www.googletagmanager.com/gtag/js?id=G-55QHT62H0";
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        window.gtag = gtag;
+
+        gtag('js', new Date());
+        gtag('config', 'G-55QHT62H0');
       }
-    }
 
-    document.body.addEventListener("click", function (e) {
+      var consent = localStorage.getItem("ga_consent");
+
+      if (consent === "accepted") {
+        loadGA();
+        document.getElementById("cookie-banner").style.display = "none";
+      }
+
+      document.getElementById("accept-cookies").onclick = function(){
+        localStorage.setItem("ga_consent", "accepted");
+        loadGA();
+        document.getElementById("cookie-banner").style.display = "none";
+      };
+
+      document.getElementById("reject-cookies").onclick = function(){
+        localStorage.setItem("ga_consent", "rejected");
+        document.getElementById("cookie-banner").style.display = "none";
+      };
+
+    })();
+  </script>
+
+  <!-- Event Tracking -->
+  <script>
+    document.addEventListener("click", function (e) {
+
+      if (typeof window.gtag !== "function") return;
+
       const link = e.target.closest("a");
       if (!link) return;
 
       const href = link.href || "";
 
       if (href.includes("google.com/maps")) {
-        track("click_maps");
+        gtag("event", "click_maps");
       }
 
       if (href.includes("wa.me")) {
-        track("click_whatsapp");
+        gtag("event", "click_whatsapp");
       }
 
       if (href.includes("/contacto-form/")) {
-        track("click_contact_form");
+        gtag("event", "click_contact_form");
       }
 
       if (href.includes("/taller/")) {
-        track("click_servicio_tecnico");
-      }
-
-      if (href.includes("fr")) {
-        track("click_france_cta");
+        gtag("event", "click_servicio_tecnico");
       }
 
     });
-
-  });
-</script>
+  </script>
 
 </body>
 </html>
