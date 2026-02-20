@@ -113,16 +113,17 @@ import MainLayout from "../layouts/MainLayout.astro";
 
 <style>
 .wolverine-container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 40px 20px 80px;
+  padding: 40px 20px 60px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 32px;
 }
 
+/* HERO */
 .product-hero {
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
   background: #0f172a;
 }
@@ -130,24 +131,25 @@ import MainLayout from "../layouts/MainLayout.astro";
 .hero-image {
   width: 100%;
   height: auto;
-  display: contain;
+  display: block;
 }
 
+/* INFO */
 .product-info h1 {
   font-size: 2rem;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .subtitle {
-  opacity: 0.7;
-  margin-bottom: 20px;
+  opacity: 0.75;
+  margin-bottom: 16px;
 }
 
 .meta-box {
-  background: rgba(255,255,255,0.05);
-  padding: 16px;
+  background: rgba(255,255,255,0.04);
+  padding: 14px 16px;
   border-radius: 10px;
-  margin: 20px 0;
+  margin: 16px 0;
 }
 
 .cta-row {
@@ -156,27 +158,34 @@ import MainLayout from "../layouts/MainLayout.astro";
   flex-wrap: wrap;
 }
 
+/* BOTONES */
 .btn-main {
   background: #E02B20;
   color: white;
   padding: 10px 18px;
-  border-radius: 8px;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.btn-main:hover {
+  transform: translateY(-2px);
 }
 
 .btn-secondary {
   border: 1px solid #E02B20;
   color: #E02B20;
   padding: 10px 18px;
-  border-radius: 8px;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
 }
 
+/* GALERÍA */
 .gallery {
   display: grid;
-  gap: 14px;
+  gap: 18px;
 }
 
 .gallery img {
@@ -188,21 +197,21 @@ import MainLayout from "../layouts/MainLayout.astro";
   display: block;
 }
 
-
+/* PREORDER */
 .preorder-box {
   background: #111827;
   border: 1px solid rgba(224,43,32,0.4);
-  padding: 24px;
+  padding: 20px;
   border-radius: 12px;
 }
 
-.preorder-box ul {
-  margin: 16px 0;
-  padding-left: 18px;
+/* DESKTOP OPTIMIZACIÓN */
+@media (min-width: 900px) {
+
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
 }
 
-.note {
-  font-size: 0.9rem;
-  opacity: 0.7;
-}
 </style>

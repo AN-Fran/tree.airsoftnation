@@ -111,7 +111,9 @@ import Hero from "../components/hero.astro";
 
 <style>
 .hub {
-  padding: 20px 20px 40px; /* reduce bottom */
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
   display: flex;
   flex-direction: column;
   gap: 22px;
@@ -182,7 +184,7 @@ import Hero from "../components/hero.astro";
 
 .hub-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 16px;
 }
 
