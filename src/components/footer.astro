@@ -7,13 +7,12 @@ const items = [
   { href: "/", icon: "bi-house", label: "Inicio" },
   { href: "/comprar/", icon: "bi-bag", label: "Comprar" },
   { href: "/eventos/", icon: "bi-trophy", label: "Eventos" },
-  { href: "/hpa/", icon: "bi-tools", label: "HPA" },
-  { href: "https://www.instagram.com/airsoftnation.eu/", icon: "bi-instagram", label: "IG", external: true }
+  { href: "https://wa.me/34614212918", icon: "bi-whatsapp", label: "WhatsApp", external: true },
+  { href: "/saber/", icon: "bi-grid", label: "Más" }
 ];
 ---
 
 <nav class="bottom-nav">
-
   {items.map(item => {
     const isActive =
       !item.external &&
@@ -33,7 +32,6 @@ const items = [
       </a>
     );
   })}
-
 </nav>
 
 <style>
@@ -42,18 +40,13 @@ const items = [
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-
   width: 100%;
   max-width: 520px;
-
   background: var(--bg-card);
   display: flex;
   justify-content: space-around;
-  align-items: center;
-
   padding: 8px 0 calc(10px + env(safe-area-inset-bottom));
   box-shadow: 0 -4px 14px rgba(0,0,0,0.35);
-
   z-index: 100;
 }
 
@@ -62,26 +55,18 @@ const items = [
   text-align: center;
   text-decoration: none;
   color: var(--text-muted);
-
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
-
   font-size: 0.65rem;
-  font-weight: 500;
 }
 
 .nav-item i {
   font-size: 1.15rem;
-  transition: transform 0.15s ease;
 }
 
 .nav-item.active {
   color: var(--primary);
-}
-
-.nav-item.active i {
-  transform: scale(1.05);
 }
 </style>

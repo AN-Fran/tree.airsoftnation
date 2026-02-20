@@ -21,7 +21,7 @@ import Hero from "../components/hero.astro";
       </p>
 
       <p class="card-text">
-        Asesoramiento técnico especializado, comunidad activa y atención profesional.
+        Asesoramiento técnico especializado y comunidad activa.
       </p>
 
       <div class="hub-actions">
@@ -39,45 +39,21 @@ import Hero from "../components/hero.astro";
       </div>
     </section>
 
-    <!-- HPA -->
+    <!-- SERVICIO TÉCNICO -->
     <section class="hub-card">
       <h2>
-        <i class="bi bi-gear"></i>
-        <span>Centro Técnico HPA</span>
+        <i class="bi bi-tools"></i>
+        <span>Servicio Técnico</span>
       </h2>
 
       <p class="card-text">
-        Instalación, configuración y optimización avanzada de sistemas HPA.
+        Instalación, mantenimiento y optimización profesional de réplicas y sistemas HPA.
       </p>
 
       <div class="hub-actions">
-        <a href="/hpa/" class="btn-primary">
-          <i class="bi bi-tools"></i>
-          Servicio HPA
-        </a>
-
-        <a href="/taller/" class="btn-secondary">
+        <a href="/taller/" class="btn-primary">
           <i class="bi bi-wrench"></i>
-          Taller general
-        </a>
-      </div>
-    </section>
-
-    <!-- WOLVERINE -->
-    <section class="hub-card highlight">
-      <h2>
-        <i class="bi bi-lightning-charge"></i>
-        <span>Wolverine Systems</span>
-      </h2>
-
-      <p class="card-text">
-        Sistemas HPA premium, configuraciones avanzadas y builds optimizadas.
-      </p>
-
-      <div class="hub-actions single">
-        <a href="/wolverine/" class="btn-primary full">
-          <i class="bi bi-arrow-right-circle"></i>
-          Ver sistemas
+          Solicitar servicio
         </a>
       </div>
     </section>
@@ -118,10 +94,10 @@ import Hero from "../components/hero.astro";
       </a>
 
       <a href="/saber/" class="mini-card">
-        <i class="bi bi-journal-text"></i>
+        <i class="bi bi-grid"></i>
         <div>
-          <h3>Saber</h3>
-          <span>Blog y FAQs</span>
+          <h3>Más</h3>
+          <span>Información y redes</span>
         </div>
       </a>
 
@@ -138,7 +114,6 @@ import Hero from "../components/hero.astro";
   gap: 18px;
 }
 
-/* CARDS PRINCIPALES */
 .hub-card {
   padding: 18px;
   border-radius: var(--radius);
@@ -148,10 +123,6 @@ import Hero from "../components/hero.astro";
 
 .hub-card.primary {
   border: 1px solid var(--primary);
-}
-
-.hub-card.highlight {
-  border: 1px solid rgba(225,6,0,0.4);
 }
 
 .hub-card h2 {
@@ -164,7 +135,6 @@ import Hero from "../components/hero.astro";
 }
 
 .hub-card h2 i {
-  font-size: 1.1rem;
   color: var(--primary);
 }
 
@@ -183,25 +153,8 @@ import Hero from "../components/hero.astro";
 .hub-actions {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
 }
 
-.hub-actions.single .full {
-  width: 100%;
-  justify-content: center;
-}
-
-/* BOTONES */
-.btn-primary,
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-  font-size: 0.85rem;
-}
-
-/* GRID APP */
 .hub-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -228,7 +181,6 @@ import Hero from "../components/hero.astro";
 .mini-card h3 {
   margin: 0;
   font-size: 0.9rem;
-  font-weight: 600;
 }
 
 .mini-card span {
