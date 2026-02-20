@@ -130,7 +130,7 @@ import MainLayout from "../layouts/MainLayout.astro";
 .hero-image {
   width: 100%;
   height: auto;
-  display: block;
+  display: contain;
 }
 
 .product-info h1 {
@@ -181,9 +181,13 @@ import MainLayout from "../layouts/MainLayout.astro";
 
 .gallery img {
   width: 100%;
-  border-radius: 10px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 14px;
   background: #0f172a;
+  display: block;
 }
+
 
 .preorder-box {
   background: #111827;
