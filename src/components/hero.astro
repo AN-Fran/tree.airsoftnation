@@ -53,7 +53,7 @@ if (isHoliday) {
       isOpen = true;
       message = "Abierto ahora";
     } else {
-      message = `Cerrado · Horario 11-14 / 16-${day === 5 ? "21" : "20"}`;
+      message = `Cerrado · 11-14 / 16-${day === 5 ? "21" : "20"}`;
     }
   } else {
     message = "Cerrado hoy";
@@ -62,38 +62,69 @@ if (isHoliday) {
 ---
 
 <section class="hero">
-  <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" class="logo" />
 
-  <p class="tagline">
-    Comunidad, juego y evolución táctica
-  </p>
+  <div class="hero-inner">
 
-  <div class={`store-status ${isOpen ? "open" : "closed"}`}>
-    {isOpen ? "🟢" : "🔴"} {message}
+    <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" class="logo" />
+
+    <h1 class="title">Airsoft Nation</h1>
+
+    <p class="tagline">
+      Comunidad · Juego · Evolución táctica
+    </p>
+
+    <div class={`store-status ${isOpen ? "open" : "closed"}`}>
+      <i class={`bi ${isOpen ? "bi-circle-fill" : "bi-x-circle-fill"}`}></i>
+      <span>{message}</span>
+    </div>
+
   </div>
+
 </section>
 
 <style>
 .hero {
+  padding: 32px 18px 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-inner {
+  width: 100%;
+  max-width: 380px;
   text-align: center;
-  padding: 40px 20px 20px;
 }
 
 .logo {
-  width: 220px;
-  max-width: 80%;
+  width: 150px;
+  margin: 0 auto 14px;
+  display: block;
+}
+
+.title {
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  margin: 0;
 }
 
 .tagline {
-  margin-top: 12px;
+  margin-top: 8px;
   font-size: 0.9rem;
-  opacity: 0.8;
+  color: var(--text-muted);
 }
 
 .store-status {
-  margin-top: 10px;
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 0.85rem;
   font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: var(--bg-card);
 }
 
 .store-status.open {
@@ -103,4 +134,9 @@ if (isHoliday) {
 .store-status.closed {
   color: #E02B20;
 }
-</style>
+
+.store-status i {
+  font-size: 10px;
+}
+</style>y
+

@@ -13,16 +13,23 @@ const {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#061630" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
   <title>{title}</title>
   <meta name="description" content={description} />
   {Astro.head}
 
-  <!-- Preload fuentes -->
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+
+  <!-- Fonts -->
   <link rel="preload" href="/fonts/oswald-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/open-sans-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" as="image" href="/logo_airsoft_nation.svg" type="image/svg+xml">
 
-  <!-- Bootstrap Icons -->
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 
@@ -30,7 +37,7 @@ const {
 
   <div class="app-wrapper">
 
-    <main class="content">
+    <main class="content page-transition">
       <slot />
     </main>
 
@@ -38,7 +45,7 @@ const {
 
   </div>
 
-  <!-- WhatsApp flotante con icono oficial Bootstrap -->
+  <!-- WhatsApp -->
   <a href="https://wa.me/34614212918"
      class="floating-wa"
      target="_blank"
@@ -46,29 +53,38 @@ const {
      <i class="bi bi-whatsapp"></i>
   </a>
 
-  <slot name="scripts" />
-
-  <!-- Language detection -->
-  <script>
-    (function () {
-      const lang = navigator.language || navigator.userLanguage;
-      const html = document.documentElement;
-
-      if (lang?.startsWith("fr")) html.dataset.lang = "fr";
-      else if (lang?.startsWith("en")) html.dataset.lang = "en";
-      else html.dataset.lang = "es";
-    })();
-  </script>
-
-  <!-- Cookie + GA -->
+  <!-- Cookie banner -->
   <div id="cookie-banner" class="cookie-banner">
     <p>Utilizamos cookies para analizar el tráfico y mejorar la experiencia.</p>
-    <button id="accept-cookies">Aceptar</button>
-    <button id="reject-cookies">Rechazar</button>
+    <div class="cookie-actions">
+      <button id="accept-cookies" class="btn-primary">Aceptar</button>
+      <button id="reject-cookies" class="btn-secondary">Rechazar</button>
+    </div>
   </div>
 
+  <!-- Service Worker -->
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => {
+          reg.update();
+        })
+        .catch(err => console.log('SW error', err));
+    });
+  }
+</script>
+
+  <!-- Cookie + GA -->
   <script>
     (function(){
+
+      const banner = document.getElementById("cookie-banner");
+
+      function adjustLayout() {
+        document.body.classList.toggle("banner-visible", banner.style.display !== "none");
+      }
 
       function loadGA(){
         var script = document.createElement("script");
@@ -88,86 +104,86 @@ const {
 
       if (consent === "accepted") {
         loadGA();
-        document.getElementById("cookie-banner").style.display = "none";
+        banner.style.display = "none";
       }
+
+      adjustLayout();
 
       document.getElementById("accept-cookies").onclick = function(){
         localStorage.setItem("ga_consent", "accepted");
         loadGA();
-        document.getElementById("cookie-banner").style.display = "none";
+        banner.style.display = "none";
+        adjustLayout();
       };
 
       document.getElementById("reject-cookies").onclick = function(){
         localStorage.setItem("ga_consent", "rejected");
-        document.getElementById("cookie-banner").style.display = "none";
+        banner.style.display = "none";
+        adjustLayout();
       };
 
     })();
-  </script>
-
-  <!-- Event Tracking -->
-  <script>
-    document.addEventListener("click", function (e) {
-
-      if (typeof window.gtag !== "function") return;
-
-      const link = e.target.closest("a");
-      if (!link) return;
-
-      const href = link.href || "";
-
-      if (href.includes("maps")) gtag("event", "click_maps");
-      if (href.includes("wa.me")) gtag("event", "click_whatsapp");
-      if (href.includes("/contacto-form/")) gtag("event", "click_contact_form");
-      if (href.includes("/taller/")) gtag("event", "click_servicio_tecnico");
-      if (href.includes("/wolverine/")) gtag("event", "click_wolverine");
-      if (href.includes("/hpa/")) gtag("event", "click_hpa");
-
-    });
   </script>
 
 </body>
 </html>
 
 <style>
+:root {
+  --bg-main: #061630;
+  --bg-card: #0c213f;
+  --primary: #e10600;
+  --text-main: #ffffff;
+  --text-muted: #9aa4b2;
+  --radius: 14px;
+  --shadow-card: 0 6px 18px rgba(0,0,0,0.35);
+}
+
 body {
   margin: 0;
-  background: #061630;
+  background: var(--bg-main);
+  font-family: "Open Sans", sans-serif;
+  color: var(--text-main);
 }
 
 .app-wrapper {
   max-width: 520px;
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
 
 .content {
   flex: 1;
-  padding: 20px 16px 90px;
+  padding: 24px 18px 110px;
 }
 
-/* WhatsApp flotante */
-.floating-wa {
+/* Banner empuja footer */
+.cookie-banner {
   position: fixed;
-  bottom: 90px;
-  right: 20px;
-  background: #25D366;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-  z-index: 60;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 520px;
+  background: var(--bg-card);
+  padding: 16px;
+  z-index: 200;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.4);
 }
 
-/* Icono Bootstrap dentro */
-.floating-wa i {
-  font-size: 26px;
-  color: white;
+body.banner-visible footer {
+  bottom: 90px;
+}
+
+/* Transición suave entre rutas */
+.page-transition {
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>

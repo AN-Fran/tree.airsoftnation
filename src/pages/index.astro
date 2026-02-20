@@ -12,26 +12,28 @@ import Hero from "../components/hero.astro";
     <!-- TIENDA -->
     <section class="hub-card primary">
       <h2>
-        <span class="icon">🏬</span>
-        Tienda Física · Celrà
+        <i class="bi bi-shop"></i>
+        <span>Tienda Física · Celrà</span>
       </h2>
 
       <p class="address">
         C. Just Puig, local 14 · 17460 Celrà (Girona)
       </p>
 
-      <p>
+      <p class="card-text">
         Asesoramiento técnico especializado, comunidad activa y atención profesional.
       </p>
 
       <div class="hub-actions">
         <a href="https://maps.app.goo.gl/qZ9mKjF6iWpGxFBG7"
            target="_blank"
-           class="btn-main">
+           class="btn-primary">
+          <i class="bi bi-geo-alt"></i>
           Cómo llegar
         </a>
 
         <a href="/contacto-form/" class="btn-secondary">
+          <i class="bi bi-envelope"></i>
           Contactar
         </a>
       </div>
@@ -40,20 +42,22 @@ import Hero from "../components/hero.astro";
     <!-- HPA -->
     <section class="hub-card">
       <h2>
-        <span class="icon">🔧</span>
-        Centro Técnico HPA
+        <i class="bi bi-gear"></i>
+        <span>Centro Técnico HPA</span>
       </h2>
 
-      <p>
+      <p class="card-text">
         Instalación, configuración y optimización avanzada de sistemas HPA.
       </p>
 
       <div class="hub-actions">
-        <a href="/hpa/" class="btn-main">
+        <a href="/hpa/" class="btn-primary">
+          <i class="bi bi-tools"></i>
           Servicio HPA
         </a>
 
         <a href="/taller/" class="btn-secondary">
+          <i class="bi bi-wrench"></i>
           Taller general
         </a>
       </div>
@@ -62,8 +66,8 @@ import Hero from "../components/hero.astro";
     <!-- WOLVERINE -->
     <section class="hub-card highlight">
       <h2>
-        <span class="icon">★</span>
-        Wolverine Airsoft Systems
+        <i class="bi bi-lightning-charge"></i>
+        <span>Wolverine Systems</span>
       </h2>
 
       <p class="card-text">
@@ -71,8 +75,9 @@ import Hero from "../components/hero.astro";
       </p>
 
       <div class="hub-actions single">
-        <a href="/wolverine/" class="btn-main">
-          Ver sistemas Wolverine
+        <a href="/wolverine/" class="btn-primary full">
+          <i class="bi bi-arrow-right-circle"></i>
+          Ver sistemas
         </a>
       </div>
     </section>
@@ -81,28 +86,43 @@ import Hero from "../components/hero.astro";
     <section class="hub-grid">
 
       <a href="/comprar/" class="mini-card">
-        <h3>Comprar</h3>
-        <span>Catálogo online</span>
+        <i class="bi bi-bag"></i>
+        <div>
+          <h3>Comprar</h3>
+          <span>Catálogo online</span>
+        </div>
       </a>
 
       <a href="/eventos/" class="mini-card">
-        <h3>Eventos</h3>
-        <span>Competiciones</span>
+        <i class="bi bi-trophy"></i>
+        <div>
+          <h3>Eventos</h3>
+          <span>Competiciones</span>
+        </div>
       </a>
 
       <a href="/ir-a-jugar/" class="mini-card">
-        <h3>Ir a jugar</h3>
-        <span>Campos recomendados</span>
+        <i class="bi bi-flag"></i>
+        <div>
+          <h3>Ir a jugar</h3>
+          <span>Campos recomendados</span>
+        </div>
       </a>
 
       <a href="/novedades/" class="mini-card">
-        <h3>Novedades</h3>
-        <span>Últimos lanzamientos</span>
+        <i class="bi bi-megaphone"></i>
+        <div>
+          <h3>Novedades</h3>
+          <span>Últimos lanzamientos</span>
+        </div>
       </a>
 
       <a href="/saber/" class="mini-card">
-        <h3>Saber</h3>
-        <span>Blog y FAQs</span>
+        <i class="bi bi-journal-text"></i>
+        <div>
+          <h3>Saber</h3>
+          <span>Blog y FAQs</span>
+        </div>
       </a>
 
     </section>
@@ -113,104 +133,106 @@ import Hero from "../components/hero.astro";
 
 <style>
 .hub {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 40px 20px 60px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 18px;
 }
 
+/* CARDS PRINCIPALES */
 .hub-card {
-  padding: 24px;
-  border-radius: 18px;
-  background: #0f172a;
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: transform 0.25s ease, border-color 0.25s ease;
+  padding: 18px;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
 }
 
-.hub-card:hover {
-  transform: translateY(-6px);
-  border-color: #ff3b2f;
+.hub-card.primary {
+  border: 1px solid var(--primary);
 }
 
-.primary {
-  border: 1px solid #ff3b2f;
+.hub-card.highlight {
+  border: 1px solid rgba(225,6,0,0.4);
 }
 
-.highlight {
-  background: linear-gradient(135deg, #111827, #161e30);
-  border: 1px solid rgba(255,59,47,0.5);
+.hub-card h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Oswald", sans-serif;
+  font-size: 1.15rem;
+  margin: 0 0 8px;
 }
 
-.icon {
-  margin-right: 8px;
-  opacity: 0.85;
+.hub-card h2 i {
+  font-size: 1.1rem;
+  color: var(--primary);
 }
 
 .address {
-  font-size: 0.85rem;
-  opacity: 0.75;
-  margin-bottom: 10px;
-}
-
-.hub-actions {
-  margin-top: 16px;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.hub-actions.single {
-  margin-top: 6px;
-}
-
-.btn-main {
-  background: #ff3b2f;
-  padding: 11px 20px;
-  border-radius: 12px;
-  color: #fff;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.25s ease;
-}
-
-.btn-main:hover {
-  transform: translateY(-2px);
-}
-
-.btn-secondary {
-  border: 1px solid #ff3b2f;
-  padding: 11px 20px;
-  border-radius: 12px;
-  color: #ff3b2f;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.hub-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 16px;
-}
-
-.mini-card {
-  padding: 20px;
-  border-radius: 16px;
-  background: #111827;
-  border: 1px solid rgba(255,255,255,0.05);
-  text-decoration: none;
-  color: white;
-  transition: all 0.25s ease;
-}
-
-.mini-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255,59,47,0.5);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
 }
 
 .card-text {
-  margin-bottom: 18px;
-  opacity: 0.85;
+  font-size: 0.9rem;
+  margin-bottom: 14px;
+  color: var(--text-muted);
+}
+
+.hub-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hub-actions.single .full {
+  width: 100%;
+  justify-content: center;
+}
+
+/* BOTONES */
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+/* GRID APP */
+.hub-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.mini-card {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  text-decoration: none;
+  color: var(--text-main);
+  box-shadow: var(--shadow-card);
+  align-items: center;
+}
+
+.mini-card i {
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+
+.mini-card h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.mini-card span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 </style>
