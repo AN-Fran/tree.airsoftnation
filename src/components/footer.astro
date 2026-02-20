@@ -1,210 +1,161 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
-import Hero from "../components/hero.astro";
+const year = new Date().getFullYear();
 ---
 
-<MainLayout title="Airsoft Nation | Centro táctico especializado">
+<footer class="footer">
 
-  <Hero />
+  <div class="container footer-grid">
 
-  <main class="hub">
+    <!-- Marca -->
+    <div class="footer-brand">
+      <img src="/logo_airsoft_nation.svg"
+           alt="Airsoft Nation"
+           width="160"
+           height="50" />
 
-    <!-- TIENDA -->
-    <section class="hub-card primary">
-      <h2>
-        <span class="icon">🏬</span>
-        Tienda Física · Celrà
-      </h2>
-
-      <p class="address">
-        C. Just Puig, local 14 · 17460 Celrà (Girona)
+      <p class="brand-text">
+        Centro táctico especializado en HPA, comunidad activa y servicio técnico profesional.
       </p>
 
-      <p>
-        Asesoramiento técnico especializado, comunidad activa y atención profesional.
-      </p>
+      <a href="https://maps.app.goo.gl/qZ9mKjF6iWpGxFBG7"
+         target="_blank"
+         rel="noopener"
+         class="rating-badge">
+        <span class="stars">★★★★★</span>
+        <span class="rating-value">4.7 Google</span>
+      </a>
+    </div>
 
-      <div class="hub-actions">
-        <a href="https://maps.app.goo.gl/qZ9mKjF6iWpGxFBG7"
-           target="_blank"
-           class="btn-main">
-          Cómo llegar
-        </a>
+    <!-- Links -->
+    <div class="footer-links">
 
-        <a href="/contacto-form/" class="btn-secondary">
-          Contactar
-        </a>
+      <div>
+        <h4>Navegación</h4>
+        <a href="/saber/">Saber</a>
+        <a href="/eventos/">Eventos</a>
+        <a href="/novedades/">Novedades</a>
       </div>
-    </section>
 
-    <!-- HPA -->
-    <section class="hub-card hpa">
-      <h2>
-        <span class="icon">🔧</span>
-        Centro Técnico HPA
-      </h2>
-
-      <p>
-        Instalación, configuración y optimización avanzada de sistemas HPA.
-      </p>
-
-      <div class="hub-actions">
-        <a href="/hpa/" class="btn-main">
-          Servicio HPA
-        </a>
-
-        <a href="/taller/" class="btn-secondary">
-          Taller general
-        </a>
+      <div>
+        <h4>Servicios</h4>
+        <a href="/hpa/">HPA</a>
+        <a href="/taller/">Servicio técnico</a>
+        <a href="/wolverine/">Wolverine</a>
       </div>
-    </section>
 
-    <!-- WOLVERINE -->
-    <section class="hub-card highlight">
-      <h2>
-        <span class="icon">★</span>
-        Wolverine Airsoft Systems
-      </h2>
+      <div>
+        <h4>Contacto</h4>
+        <a href="https://wa.me/34614212918" target="_blank">WhatsApp</a>
+        <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank">Instagram</a>
+        <a href="mailto:admin@airsoftnation.eu">Email</a>
+      </div>
 
-      <p>
-        Sistemas HPA premium, configuraciones avanzadas y builds optimizadas.
-      </p>
+    </div>
 
-      <a href="/wolverine/" class="btn-main">
-        Ver sistemas Wolverine
-      </a>
-    </section>
+  </div>
 
-    <!-- GRID -->
-    <section class="hub-grid">
+  <div class="footer-bottom">
+    <span>© {year} Airsoft Nation · Celrà (Girona)</span>
+    <span>Marca UE nº 19040186</span>
+  </div>
 
-      <a href="/comprar/" class="mini-card">
-        <h3>Comprar</h3>
-        <span>Catálogo online</span>
-      </a>
-
-      <a href="/eventos/" class="mini-card">
-        <h3>Eventos</h3>
-        <span>Competiciones</span>
-      </a>
-
-      <a href="/ir-a-jugar/" class="mini-card">
-        <h3>Ir a jugar</h3>
-        <span>Campos recomendados</span>
-      </a>
-
-      <a href="/novedades/" class="mini-card">
-        <h3>Novedades</h3>
-        <span>Últimos lanzamientos</span>
-      </a>
-
-      <a href="/saber/" class="mini-card">
-        <h3>Saber</h3>
-        <span>Blog y FAQs</span>
-      </a>
-
-    </section>
-
-  </main>
-
-</MainLayout>
+</footer>
 
 <style>
-.hub {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-}
-
-.hub-card {
-  padding: 24px;
-  border-radius: 18px;
-  background: #0f172a;
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: transform 0.25s ease, border-color 0.25s ease;
-}
-
-.hub-card:hover {
-  transform: translateY(-6px);
-  border-color: #ff3b2f;
-}
-
-.primary {
-  border: 1px solid #ff3b2f;
-}
-
-.highlight {
-  background: linear-gradient(135deg, #111827, #161e30);
-  border: 1px solid rgba(255,59,47,0.5);
-}
-
-.icon {
-  margin-right: 8px;
-  opacity: 0.85;
-}
-
-.address {
-  font-size: 0.85rem;
-  opacity: 0.75;
-  margin-bottom: 10px;
-}
-
-.hub-actions {
-  margin-top: 16px;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.btn-main {
-  background: #ff3b2f;
-  padding: 11px 20px;
-  border-radius: 12px;
-  color: #fff;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.25s ease;
-}
-
-.btn-main:hover {
-  transform: translateY(-2px);
-}
-
-.btn-secondary {
-  border: 1px solid #ff3b2f;
-  padding: 11px 20px;
-  border-radius: 12px;
-  color: #ff3b2f;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.hub-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 16px;
-}
-
-.mini-card {
-  padding: 20px;
-  border-radius: 16px;
-  background: #111827;
-  border: 1px solid rgba(255,255,255,0.05);
-  text-decoration: none;
-  color: white;
-  transition: all 0.25s ease;
-}
-
-.mini-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255,59,47,0.5);
-}
-
 .footer {
   background: #0b1220;
-  padding: 60px 20px 25px;
-  margin-top: 60px;   /* antes 120px */
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 45px 20px 20px;
+  margin-top: 40px;
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-grid {
+  display: grid;
+  gap: 50px;
+}
+
+.footer-brand img {
+  margin-bottom: 16px;
+}
+
+.brand-text {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  max-width: 320px;
+}
+
+.rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: white;
+  opacity: 0.9;
+}
+
+.stars {
+  color: #ff3b2f;
+  letter-spacing: 2px;
+}
+
+.footer-links {
+  display: grid;
+  gap: 30px;
+}
+
+.footer-links h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.footer-links a {
+  display: block;
+  text-decoration: none;
+  color: white;
+  opacity: 0.85;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  transition: 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #ff3b2f;
+}
+
+.footer-bottom {
+  margin-top: 40px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.75rem;
+  color: #9ca3af;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1.2fr 2fr;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
 </style>
