@@ -1,3 +1,71 @@
+---
+const now = new Date();
+
+// Forzar zona horaria España
+const madridTime = new Date(
+  now.toLocaleString("en-US", { timeZone: "Europe/Madrid" })
+);
+
+const day = madridTime.getDay(); // 0 = Domingo
+const hour = madridTime.getHours();
+const minutes = madridTime.getMinutes();
+const todayStr = madridTime.toISOString().split("T")[0];
+
+// Festivos nacionales España (añadir cada año)
+const nationalHolidays = [
+  "2026-01-01",
+  "2026-01-06",
+  "2026-05-01",
+  "2026-08-15",
+  "2026-10-12",
+  "2026-11-01",
+  "2026-12-06",
+  "2026-12-08",
+  "2026-12-25"
+];
+
+const isHoliday = nationalHolidays.includes(todayStr);
+
+// Horario
+const schedule = {
+  1: { morning: [11, 14], afternoon: [16, 20] }, // Lunes
+  2: { morning: [11, 14], afternoon: [16, 20] },
+  3: { morning: [11, 14], afternoon: [16, 20] },
+  4: { morning: [11, 14], afternoon: [16, 20] },
+  5: { morning: [11, 14], afternoon: [16, 21] }, // Viernes
+  6: null, // Sábado cerrado
+  0: null  // Domingo cerrado
+};
+
+let isOpen = false;
+let message = "";
+
+if (isHoliday) {
+  message = "Cerrado · Festivo nacional";
+} else {
+  const todaySchedule = schedule[day];
+
+  if (todaySchedule) {
+    const current = hour + minutes / 60;
+
+    const [mOpen, mClose] = todaySchedule.morning;
+    const [aOpen, aClose] = todaySchedule.afternoon;
+
+    if (
+      (current >= mOpen && current < mClose) ||
+      (current >= aOpen && current < aClose)
+    ) {
+      isOpen = true;
+      message = `Abierto ahora`;
+    } else {
+      message = `Cerrado · Horario 11-14 / 16-${day === 5 ? "21" : "20"}`;
+    }
+  } else {
+    message = "Cerrado hoy";
+  }
+}
+---
+
 <section class="hero">
 
   <img 
@@ -10,6 +78,10 @@
     Comunidad, juego y evolución táctica
   </p>
 
+  <div class={`store-status ${isOpen ? "open" : "closed"}`}>
+    {isOpen ? "🟢" : "🔴"} {message}
+  </div>
+
 </section>
 
 <style>
@@ -18,7 +90,6 @@
   padding: 60px 20px 40px;
 }
 
-/* Logo visible y con profundidad real */
 .logo {
   width: 260px;
   max-width: 85%;
@@ -31,7 +102,6 @@
   opacity: 0;
 }
 
-/* Subtítulo */
 .tagline {
   margin-top: 18px;
   font-size: 0.95rem;
@@ -39,6 +109,22 @@
   letter-spacing: 0.5px;
   animation: fadeIn 1.2s ease forwards;
   opacity: 0;
+}
+
+.store-status {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: fadeIn 1.4s ease forwards;
+  opacity: 0;
+}
+
+.store-status.open {
+  color: #22c55e;
+}
+
+.store-status.closed {
+  color: #ef4444;
 }
 
 @keyframes fadeIn {
