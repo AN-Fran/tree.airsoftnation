@@ -5,73 +5,117 @@ import Hero from "../components/hero.astro";
 
 <MainLayout title="Servicio Técnico HPA | Airsoft Nation">
 
-<Hero />
+  <Hero />
 
-<section class="hpa-hub">
+  <section class="hpa-wrapper">
 
-  <div class="hpa-card">
-    <h2>Servicio Técnico HPA</h2>
-    <p>Optimización y configuración avanzada de sistemas Wolverine.</p>
-  </div>
+    <div class="hpa-header">
+      <h1>Servicio Técnico HPA</h1>
+      <p>
+        Optimización, configuración avanzada e instalación profesional de sistemas HPA.
+      </p>
+    </div>
 
-  <div class="hpa-card form-card">
-    <form id="hpa-form" method="POST" action="/api/hpa">
+    <form class="hpa-form" method="POST" action="/api/hpa">
 
-      <input type="text" name="company" class="honeypot" />
+      <input
+        type="text"
+        name="nombre"
+        placeholder="Nombre completo"
+        required
+      />
 
-      <input type="text" name="name" placeholder="Nombre completo" required />
-      <input type="email" name="email" placeholder="Email" required />
-      <input type="tel" name="phone" placeholder="Teléfono" />
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        required
+      />
 
-      <textarea name="message"
-        placeholder="Modelo de réplica, sistema HPA, uso y mejoras deseadas"
-        required></textarea>
+      <input
+        type="tel"
+        name="telefono"
+        placeholder="Teléfono"
+      />
 
-      <button type="submit" class="btn-main">
+      <textarea
+        name="mensaje"
+        placeholder="Modelo de réplica, sistema HPA, uso previsto y mejoras deseadas"
+        required
+      ></textarea>
+
+      <button type="submit">
         Solicitar servicio técnico
       </button>
 
     </form>
-  </div>
 
-</section>
+  </section>
 
 </MainLayout>
 
 <style>
-.hpa-hub {
-  padding: 20px;
+.hpa-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.hpa-header h1 {
+  font-size: 1.9rem;
+  margin-bottom: 6px;
+}
+
+.hpa-header p {
+  opacity: 0.75;
+  font-size: 0.95rem;
+}
+
+.hpa-form {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.hpa-card {
-  padding: 20px;
-  border-radius: 14px;
+.hpa-form input,
+.hpa-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
   background: #0f172a;
-  border: 1px solid rgba(224,43,32,0.35);
-}
-
-.form-card form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-input, textarea {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: #111827;
   color: white;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
 }
 
-textarea {
-  min-height: 100px;
+.hpa-form input:focus,
+.hpa-form textarea:focus {
+  outline: none;
+  border-color: #E02B20;
 }
 
-.honeypot {
-  display: none;
+.hpa-form textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.hpa-form button {
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #E02B20;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.hpa-form button:hover {
+  transform: translateY(-2px);
 }
 </style>
