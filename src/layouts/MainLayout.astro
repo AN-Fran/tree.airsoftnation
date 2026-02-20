@@ -25,13 +25,11 @@ const {
 
 <body>
 
-  <div class="layout">
+  <main class="content">
+    <slot />
+  </main>
 
-    <main class="content">
-      <slot />
-    </main>
-
-  </div>
+  <Footer />
 
   <!-- WhatsApp flotante -->
   <a href="https://wa.me/34614212918"
@@ -125,14 +123,8 @@ const {
 </html>
 
 <style>
-.layout {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
 .content {
-  flex: 1;
+  padding-bottom: 40px;
 }
 
 /* WhatsApp flotante */
