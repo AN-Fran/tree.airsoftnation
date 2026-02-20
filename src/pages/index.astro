@@ -11,19 +11,12 @@ import Hero from "../components/hero.astro";
 
     <!-- TIENDA FÍSICA -->
     <div class="hub-card primary">
-      <div class="card-header">
-        <svg viewBox="0 0 24 24" class="icon">
-          <path d="M3 9l1-4h16l1 4v11a1 1 0 0 1-1 1h-4v-6H8v6H4a1 1 0 0 1-1-1V9z"/>
-        </svg>
-        <h2>Tienda Física · Celrà</h2>
-      </div>
-
+      <h2>🏬 Tienda Física · Celrà</h2>
       <p class="address">
         C. Just Puig, local 14 · 17460 Celrà (Girona)
       </p>
-
       <p>
-        Asesoramiento técnico especializado y comunidad activa.
+        Asesoramiento técnico especializado, comunidad activa y atención profesional.
       </p>
 
       <div class="hub-actions">
@@ -41,43 +34,37 @@ import Hero from "../components/hero.astro";
 
     <!-- CENTRO TÉCNICO HPA -->
     <div class="hub-card hpa">
-      <div class="card-header">
-        <svg viewBox="0 0 24 24" class="icon">
-          <path d="M22 19l-6.3-6.3a5 5 0 0 0-6.4-6.4l3 3-2 2-3-3a5 5 0 0 0 6.4 6.4L19 22z"/>
-        </svg>
-        <h2>Centro Técnico HPA</h2>
-      </div>
-
+      <h2>🔧 Centro Técnico HPA</h2>
       <p>
-        Instalación y optimización avanzada de sistemas HPA.
+        Instalación, configuración y optimización avanzada de sistemas HPA.
       </p>
 
       <div class="hub-actions">
-        <a href="/hpa/" class="btn-main">Servicio técnico</a>
-        <a href="/taller/" class="btn-secondary">Taller general</a>
+        <a href="/hpa/" class="btn-main">
+          Servicio HPA
+        </a>
+
+        <a href="/taller/" class="btn-secondary">
+          Taller general
+        </a>
       </div>
     </div>
 
     <!-- WOLVERINE -->
-    <div class="hub-card wolverine">
-      <div class="card-header">
-        <svg viewBox="0 0 24 24" class="icon">
-          <path d="M12 2l4 7h6l-5 4 2 7-7-4-7 4 2-7-5-4h6z"/>
-        </svg>
-        <h2>Wolverine Airsoft Systems</h2>
-      </div>
-
+    <div class="hub-card highlight">
+      <h2>⭐ Wolverine Airsoft Systems</h2>
       <p>
-        Sistemas HPA premium, configuraciones avanzadas y builds optimizadas.
+        Sistemas HPA premium, configuraciones avanzadas y builds optimizadas para máximo rendimiento.
       </p>
 
-      <div class="hub-actions">
-        <a href="/wolverine/" class="btn-main">Ver sistemas Wolverine</a>
-      </div>
+      <a href="/wolverine/" class="btn-main">
+        Ver sistemas Wolverine
+      </a>
     </div>
 
     <!-- GRID ONLINE -->
     <div class="hub-grid">
+
       <a href="/comprar/" class="mini-card">
         <h3>Comprar</h3>
         <span>Catálogo online</span>
@@ -102,23 +89,7 @@ import Hero from "../components/hero.astro";
         <h3>Saber</h3>
         <span>Blog y FAQs</span>
       </a>
-    </div>
 
-    <!-- MAPA -->
-    <div class="hub-card map-card">
-      <h2>Ubicación</h2>
-
-      <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2963.679330530417!2d2.885202876765681!3d42.02861107122563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12bae5005890eaad%3A0x3c8a5295a0dff486!2sAirsoft%20Nation%20Store!5e0!3m2!1ses!2sus!4v1771579069491!5m2!1ses!2sus"
-        loading="lazy"
-        allowfullscreen>
-      </iframe>
-
-      <a href="https://maps.app.goo.gl/qZ9mKjF6iWpGxFBG7"
-         target="_blank"
-         class="btn-main">
-        Abrir en Google Maps
-      </a>
     </div>
 
   </section>
@@ -130,110 +101,112 @@ import Hero from "../components/hero.astro";
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
-/* CARDS */
+/* CARDS PRINCIPALES */
 .hub-card {
-  padding: 20px;
-  border-radius: 14px;
+  padding: 22px;
+  border-radius: 16px;
   background: #0f172a;
   border: 1px solid rgba(255,255,255,0.05);
-  transition: transform 0.25s ease, border-color 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .hub-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   border-color: #E02B20;
 }
 
+/* TIENDA DESTACADA */
 .primary {
   border: 1px solid #E02B20;
 }
 
+/* HPA */
 .hpa {
   border: 1px solid rgba(224,43,32,0.35);
 }
 
-.wolverine {
+/* WOLVERINE */
+.highlight {
+  background: linear-gradient(135deg, #111827, #151c2d);
   border: 1px solid rgba(224,43,32,0.4);
-  background: linear-gradient(90deg, #111827, #1a1f2e);
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
-  fill: #E02B20;
-  opacity: 0.9;
 }
 
 .address {
   font-size: 0.85rem;
   opacity: 0.75;
-  margin-top: 4px;
   margin-bottom: 8px;
 }
 
+/* BOTONES */
 .hub-actions {
-  margin-top: 12px;
+  margin-top: 14px;
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .btn-main {
   background: #E02B20;
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
   color: #fff;
   text-decoration: none;
   font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.btn-main:hover {
+  transform: translateY(-2px);
+  background: #ff3b2f;
 }
 
 .btn-secondary {
   border: 1px solid #E02B20;
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
   color: #E02B20;
   text-decoration: none;
   font-weight: 600;
+  transition: all 0.25s ease;
 }
 
-/* GRID */
+.btn-secondary:hover {
+  background: rgba(224,43,32,0.08);
+}
+
+/* GRID SECUNDARIO */
 .hub-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
+  gap: 14px;
 }
 
 .mini-card {
-  padding: 16px;
-  border-radius: 12px;
+  padding: 18px;
+  border-radius: 14px;
   background: #111827;
   border: 1px solid rgba(255,255,255,0.05);
   text-decoration: none;
   color: white;
-  transition: 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .mini-card:hover {
-  border-color: #E02B20;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  border-color: rgba(224,43,32,0.5);
 }
 
-/* MAP */
-.map-card iframe {
-  width: 100%;
-  height: 240px;
-  border: 0;
-  border-radius: 12px;
-  filter: grayscale(100%) contrast(110%);
-  margin: 12px 0;
+.mini-card h3 {
+  margin-bottom: 4px;
+  font-size: 1rem;
+}
+
+.mini-card span {
+  font-size: 0.85rem;
+  opacity: 0.7;
 }
 </style>
+

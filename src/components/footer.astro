@@ -3,58 +3,73 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
-  <div class="container footer-inner">
 
+  <div class="container footer-grid">
+
+    <!-- MARCA -->
     <div class="footer-brand">
-      <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" />
-      <p>
-        Comunidad, eventos y equipamiento especializado en airsoft.
+      <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" width="180" height="60" />
+      <p class="brand-text">
+        Centro táctico especializado en HPA, comunidad activa y servicio técnico profesional.
       </p>
+
+      <!-- RATING -->
+      <a href="https://maps.app.goo.gl/qZ9mKjF6iWpGxFBG7"
+         target="_blank"
+         rel="noopener"
+         class="rating-badge">
+        <div class="stars">
+          ★★★★★
+        </div>
+        <div class="rating-text">
+          <strong>4.7 / 5</strong>
+          <span>Valoración en Google</span>
+        </div>
+      </a>
     </div>
 
+    <!-- LINKS -->
     <div class="footer-links">
+
       <div>
-        <h4>Explorar</h4>
+        <h4>Navegación</h4>
         <a href="/saber/">Saber</a>
         <a href="/ir-a-jugar/">Ir a jugar</a>
         <a href="/eventos/">Eventos</a>
-        <a href="/taller/">Taller</a>
+        <a href="/novedades/">Novedades</a>
       </div>
 
       <div>
-        <h4>Actualidad</h4>
-        <a href="/novedades/">Novedades</a>
-        <a href="/comprar/">Comprar</a>
+        <h4>Servicios</h4>
+        <a href="/taller/">Servicio técnico</a>
+        <a href="/wolverine/">Wolverine Systems</a>
+        <a href="/comprar/">Tienda online</a>
       </div>
 
       <div>
         <h4>Contacto</h4>
-        <a href="https://wa.me/34614212918" target="_blank" rel="noopener">
-          WhatsApp
-        </a>
-        <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank" rel="noopener">
-          Instagram
-        </a>
-        <a href="mailto:admin@airsoftnation.eu">
-          Email
-        </a>
+        <a href="https://wa.me/34614212918" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank" rel="noopener">Instagram</a>
+        <a href="mailto:admin@airsoftnation.eu">Email</a>
       </div>
+
     </div>
 
   </div>
 
   <div class="footer-bottom">
-    <span>© {year} Airsoft Nation</span>
-    <span>Todos los derechos reservados</span>
+    <span>© {year} Airsoft Nation · Celrà (Girona)</span>
+    <span>Registro marca UE nº 19040186</span>
   </div>
+
 </footer>
 
 <style>
 .footer {
-  background: #0f172a;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding: 80px 20px 40px;
-  margin-top: 120px;
+  background: #0b1220;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 70px 20px 30px;
+  margin-top: 100px;
 }
 
 .container {
@@ -62,32 +77,69 @@ const year = new Date().getFullYear();
   margin: 0 auto;
 }
 
-.footer-inner {
+.footer-grid {
   display: grid;
   gap: 60px;
 }
 
 .footer-brand img {
-  height: 90px;
   margin-bottom: 20px;
 }
 
-.footer-brand p {
+.brand-text {
   color: #9ca3af;
-  max-width: 320px;
+  max-width: 340px;
+  margin-bottom: 25px;
+  font-size: 0.95rem;
 }
 
+/* RATING */
+.rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.rating-badge:hover {
+  border-color: #E02B20;
+  transform: translateY(-2px);
+}
+
+.stars {
+  color: #E02B20;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.rating-text strong {
+  color: white;
+  display: block;
+  font-size: 0.95rem;
+}
+
+.rating-text span {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+/* LINKS */
 .footer-links {
   display: grid;
   gap: 40px;
 }
 
 .footer-links h4 {
-  margin-bottom: 14px;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
+  font-size: 0.85rem;
   text-transform: uppercase;
+  letter-spacing: 1px;
   color: #9ca3af;
+  margin-bottom: 14px;
 }
 
 .footer-links a {
@@ -95,30 +147,32 @@ const year = new Date().getFullYear();
   margin-bottom: 8px;
   text-decoration: none;
   color: white;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
+  opacity: 0.85;
+  transition: all 0.2s ease;
 }
 
 .footer-links a:hover {
   opacity: 1;
+  color: #E02B20;
 }
 
+/* BOTTOM */
 .footer-bottom {
   margin-top: 60px;
   padding-top: 20px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid rgba(255,255,255,0.05);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: #9ca3af;
+  gap: 6px;
   text-align: center;
+  font-size: 0.8rem;
+  color: #9ca3af;
 }
 
-/* Desktop */
+/* DESKTOP */
 @media (min-width: 768px) {
-  .footer-inner {
-    grid-template-columns: 1.5fr 2fr;
+  .footer-grid {
+    grid-template-columns: 1.2fr 2fr;
   }
 
   .footer-links {
