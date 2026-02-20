@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import Footer from "../components/footer.astro";
 
 const {
   title = "Airsoft Nation",
@@ -14,7 +15,6 @@ const {
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>{title}</title>
   <meta name="description" content={description} />
-
   {Astro.head}
 
   <!-- Preload fuentes -->
@@ -25,16 +25,22 @@ const {
 
 <body>
 
-  <main class="app-content">
-    <slot />
-  </main>
+  <div class="layout">
 
-  <!-- Botón flotante WhatsApp -->
+    <main class="content">
+      <slot />
+    </main>
+
+    <Footer />
+
+  </div>
+
+  <!-- WhatsApp flotante -->
   <a href="https://wa.me/34614212918"
      class="floating-wa"
      target="_blank"
      aria-label="WhatsApp">
-    💬
+     💬
   </a>
 
   <slot name="scripts" />
@@ -45,21 +51,15 @@ const {
       const lang = navigator.language || navigator.userLanguage;
       const html = document.documentElement;
 
-      if (lang?.startsWith("fr")) {
-        html.setAttribute("data-lang", "fr");
-      } else if (lang?.startsWith("en")) {
-        html.setAttribute("data-lang", "en");
-      } else {
-        html.setAttribute("data-lang", "es");
-      }
+      if (lang?.startsWith("fr")) html.dataset.lang = "fr";
+      else if (lang?.startsWith("en")) html.dataset.lang = "en";
+      else html.dataset.lang = "es";
     })();
   </script>
 
-  <!-- Cookie Banner + GA4 -->
+  <!-- Cookie + GA -->
   <div id="cookie-banner" class="cookie-banner">
-    <p>
-      Utilizamos cookies para analizar el tráfico y mejorar la experiencia.
-    </p>
+    <p>Utilizamos cookies para analizar el tráfico y mejorar la experiencia.</p>
     <button id="accept-cookies">Aceptar</button>
     <button id="reject-cookies">Rechazar</button>
   </div>
@@ -119,6 +119,7 @@ const {
       if (href.includes("/taller/")) gtag("event", "click_servicio_tecnico");
       if (href.includes("/wolverine/")) gtag("event", "click_wolverine");
       if (href.includes("/hpa/")) gtag("event", "click_hpa");
+
     });
   </script>
 
@@ -126,8 +127,14 @@ const {
 </html>
 
 <style>
-.app-content {
+.layout {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
 }
 
 /* WhatsApp flotante */
@@ -149,7 +156,7 @@ const {
   z-index: 60;
 }
 
-/* Cookie banner más limpio */
+/* Cookie banner */
 .cookie-banner {
   position: fixed;
   bottom: 0;
