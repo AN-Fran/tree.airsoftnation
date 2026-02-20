@@ -4,26 +4,37 @@ const year = new Date().getFullYear();
 
 <footer class="footer">
 
-  <div class="container footer-grid">
+  <div class="footer-inner">
 
     <!-- Marca -->
     <div class="footer-brand">
-      <img src="/logo_airsoft_nation.svg"
-           alt="Airsoft Nation"
-           width="160"
-           height="50" />
+      <a href="/" class="footer-logo">
+        <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation">
+      </a>
 
-      <p class="brand-text">
-        Centro táctico especializado en HPA, comunidad activa y servicio técnico profesional.
+      <p>
+        Centro táctico especializado en HPA y servicio técnico profesional.
       </p>
 
-      <a href="https://maps.app.goo.gl/qZ9mKjF6iWpGxFBG7"
-         target="_blank"
-         rel="noopener"
-         class="rating-badge">
-        <span class="stars">★★★★★</span>
-        <span class="rating-value">4.7 Google</span>
-      </a>
+      <div class="footer-social">
+        <a href="https://wa.me/34614212918" target="_blank" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2a10 10 0 0 0-8.5 15l-1 5 5-1A10 10 0 1 0 12 2z"/>
+          </svg>
+        </a>
+
+        <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24">
+            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z"/>
+          </svg>
+        </a>
+
+        <a href="/" aria-label="Home">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>
+          </svg>
+        </a>
+      </div>
     </div>
 
     <!-- Links -->
@@ -43,13 +54,6 @@ const year = new Date().getFullYear();
         <a href="/wolverine/">Wolverine</a>
       </div>
 
-      <div>
-        <h4>Contacto</h4>
-        <a href="https://wa.me/34614212918" target="_blank">WhatsApp</a>
-        <a href="https://www.instagram.com/airsoftnation.eu/" target="_blank">Instagram</a>
-        <a href="mailto:admin@airsoftnation.eu">Email</a>
-      </div>
-
     </div>
 
   </div>
@@ -65,44 +69,43 @@ const year = new Date().getFullYear();
 .footer {
   background: #0b1220;
   border-top: 1px solid rgba(255,255,255,0.05);
-  padding: 45px 20px 20px;
-  margin-top: 40px;
+  padding: 50px 20px 25px;
+  margin-top: 80px;
 }
 
-.container {
-  max-width: 1200px;
+.footer-inner {
+  max-width: 1100px;
   margin: 0 auto;
-}
-
-.footer-grid {
   display: grid;
-  gap: 50px;
+  gap: 40px;
 }
 
-.footer-brand img {
-  margin-bottom: 16px;
+.footer-logo img {
+  height: 40px;
+  margin-bottom: 12px;
 }
 
-.brand-text {
-  color: #9ca3af;
+.footer-brand p {
   font-size: 0.9rem;
-  margin-bottom: 20px;
+  opacity: 0.7;
   max-width: 320px;
+  margin-bottom: 20px;
 }
 
-.rating-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.85rem;
-  text-decoration: none;
-  color: white;
-  opacity: 0.9;
+.footer-social {
+  display: flex;
+  gap: 18px;
 }
 
-.stars {
-  color: #ff3b2f;
-  letter-spacing: 2px;
+.footer-social svg {
+  width: 22px;
+  height: 22px;
+  fill: #E02B20;
+  transition: 0.2s ease;
+}
+
+.footer-social svg:hover {
+  transform: translateY(-3px);
 }
 
 .footer-links {
@@ -111,21 +114,19 @@ const year = new Date().getFullYear();
 }
 
 .footer-links h4 {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  color: #9ca3af;
-  margin-bottom: 12px;
-  letter-spacing: 1px;
+  opacity: 0.6;
+  margin-bottom: 10px;
 }
 
 .footer-links a {
   display: block;
   text-decoration: none;
   color: white;
-  opacity: 0.85;
   font-size: 0.9rem;
   margin-bottom: 6px;
-  transition: 0.2s ease;
+  opacity: 0.85;
 }
 
 .footer-links a:hover {
@@ -133,29 +134,26 @@ const year = new Date().getFullYear();
 }
 
 .footer-bottom {
-  margin-top: 40px;
+  max-width: 1100px;
+  margin: 40px auto 0;
   padding-top: 15px;
   border-top: 1px solid rgba(255,255,255,0.05);
   font-size: 0.75rem;
   color: #9ca3af;
   display: flex;
-  flex-direction: column;
-  gap: 5px;
-  text-align: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 @media (min-width: 768px) {
-  .footer-grid {
-    grid-template-columns: 1.2fr 2fr;
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
   }
 
   .footer-links {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .footer-bottom {
-    flex-direction: row;
-    justify-content: space-between;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
+
 </style>

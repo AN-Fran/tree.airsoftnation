@@ -60,20 +60,23 @@ import Hero from "../components/hero.astro";
     </section>
 
     <!-- WOLVERINE -->
-    <section class="hub-card highlight">
-      <h2>
-        <span class="icon">★</span>
-        Wolverine Airsoft Systems
-      </h2>
 
-      <p>
-        Sistemas HPA premium, configuraciones avanzadas y builds optimizadas.
-      </p>
+<section class="hub-card highlight">
+  <h2>
+    <span class="icon">★</span>
+    Wolverine Airsoft Systems
+  </h2>
 
-      <a href="/wolverine/" class="btn-main">
-        Ver sistemas Wolverine
-      </a>
-    </section>
+  <p class="card-text">
+    Sistemas HPA premium, configuraciones avanzadas y builds optimizadas.
+  </p>
+
+  <div class="hub-actions single">
+    <a href="/wolverine/" class="btn-main">
+      Ver sistemas Wolverine
+    </a>
+  </div>
+</section>
 
     <!-- GRID -->
     <section class="hub-grid">
@@ -202,4 +205,14 @@ import Hero from "../components/hero.astro";
   transform: translateY(-4px);
   border-color: rgba(255,59,47,0.5);
 }
+
+.card-text {
+  margin-bottom: 18px;
+  opacity: 0.85;
+}
+
+.hub-actions.single {
+  margin-top: 6px;
+}
+
 </style>
