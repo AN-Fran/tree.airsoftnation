@@ -1,5 +1,6 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import Hero from "../components/hero.astro";
 ---
 
 <MainLayout title="Airsoft Nation | Centro táctico especializado">
@@ -37,7 +38,7 @@ import MainLayout from "../layouts/MainLayout.astro";
     </section>
 
     <!-- HPA -->
-    <section class="hub-card hpa">
+    <section class="hub-card">
       <h2>
         <span class="icon">🔧</span>
         Centro Técnico HPA
@@ -59,23 +60,22 @@ import MainLayout from "../layouts/MainLayout.astro";
     </section>
 
     <!-- WOLVERINE -->
+    <section class="hub-card highlight">
+      <h2>
+        <span class="icon">★</span>
+        Wolverine Airsoft Systems
+      </h2>
 
-<section class="hub-card highlight">
-  <h2>
-    <span class="icon">★</span>
-    Wolverine Airsoft Systems
-  </h2>
+      <p class="card-text">
+        Sistemas HPA premium, configuraciones avanzadas y builds optimizadas.
+      </p>
 
-  <p class="card-text">
-    Sistemas HPA premium, configuraciones avanzadas y builds optimizadas.
-  </p>
-
-  <div class="hub-actions single">
-    <a href="/wolverine/" class="btn-main">
-      Ver sistemas Wolverine
-    </a>
-  </div>
-</section>
+      <div class="hub-actions single">
+        <a href="/wolverine/" class="btn-main">
+          Ver sistemas Wolverine
+        </a>
+      </div>
+    </section>
 
     <!-- GRID -->
     <section class="hub-grid">
@@ -107,7 +107,7 @@ import MainLayout from "../layouts/MainLayout.astro";
 
     </section>
 
-  </main>
+  </section>
 
 </MainLayout>
 
@@ -161,6 +161,10 @@ import MainLayout from "../layouts/MainLayout.astro";
   flex-wrap: wrap;
 }
 
+.hub-actions.single {
+  margin-top: 6px;
+}
+
 .btn-main {
   background: #ff3b2f;
   padding: 11px 20px;
@@ -209,9 +213,4 @@ import MainLayout from "../layouts/MainLayout.astro";
   margin-bottom: 18px;
   opacity: 0.85;
 }
-
-.hub-actions.single {
-  margin-top: 6px;
-}
-
 </style>
