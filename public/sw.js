@@ -1,4 +1,4 @@
-const CACHE_NAME = "airsoftnation-v2";
+const CACHE_NAME = "airsoftnation-v3";
 
 const STATIC_ASSETS = [
   "/",
