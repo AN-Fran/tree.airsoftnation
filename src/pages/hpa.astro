@@ -1,161 +1,75 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
+import FormLayout from "../layouts/FormLayout.astro";
+import Hero from "../components/hero.astro";
 ---
 
-<MainLayout title="Especialistas HPA | Airsoft Nation">
+<FormLayout title="Especialistas HPA | Airsoft Nation">
 
-<section class="hpa-container">
+<Hero />
 
-  <h1>Sistemas HPA de alto rendimiento</h1>
+<section class="contact-container">
+  <div class="form-wrapper">
 
-  <p class="intro">
-    Centro técnico especializado en instalación, configuración y optimización 
-    de sistemas HPA <strong>Wolverine Airsoft</strong> para jugadores exigentes.
-  </p>
+    <h1 class="form-title">Servicio Técnico HPA</h1>
 
-  <div class="hpa-block">
-    <h2>Servicios HPA</h2>
-    <ul>
-      <li>Instalación completa de sistema HPA</li>
-      <li>Configuración de presión y dwell</li>
-      <li>Optimización para CQB y Speed</li>
-      <li>Diagnóstico electrónico avanzado</li>
-      <li>Conversión de AEG a plataforma HPA</li>
-    </ul>
-  </div>
+    <p class="subtitle">
+      Instalación y optimización de sistemas HPA Wolverine.
+    </p>
 
-  <div class="hpa-block">
-    <h2>Solicitar ajuste o instalación</h2>
+    <form id="hpa-form" class="form-grid" method="POST" action="/api/hpa">
 
-    <form id="hpa-form" method="POST" action="/api/hpa" class="hpa-form">
+      <input type="text" name="company" class="honeypot" autocomplete="off" />
 
-      <input 
-        type="text" 
-        name="name" 
-        placeholder="Nombre" 
-        required 
-      />
+      <div class="form-row">
+        <input type="text" name="name" placeholder="Nombre completo" required />
+      </div>
 
-      <input 
-        type="email" 
-        name="email" 
-        placeholder="Email" 
-        required 
-      />
+      <div class="form-row">
+        <input type="email" name="email" placeholder="Email" required />
+      </div>
 
-      <textarea 
-        name="message" 
-        placeholder="Describe tu réplica y lo que necesitas (modelo, uso, problema, mejora deseada)" 
-        required
-      ></textarea>
+      <div class="form-row">
+        <input type="tel" name="phone" placeholder="Teléfono" />
+      </div>
 
-      <button type="submit">
-        Enviar solicitud técnica
+      <div class="form-row">
+        <textarea
+          name="message"
+          placeholder="Modelo de réplica, sistema HPA, uso (CQB/Speed), problema o mejora deseada"
+          required
+        ></textarea>
+      </div>
+
+      <label class="privacy">
+        <input type="checkbox" name="consent" required />
+        <span>
+          He leído y acepto la
+          <a
+            href="https://airsoftnation.eu/politica-de-privacidad/"
+            target="_blank"
+            rel="noopener"
+          >
+            política de privacidad
+          </a>
+        </span>
+      </label>
+
+      <div id="form-message" class="form-message"></div>
+
+      <button type="submit" class="btn-submit">
+        Solicitar servicio técnico HPA
       </button>
 
     </form>
 
-    <div id="form-message" class="form-message"></div>
-
   </div>
-
 </section>
 
-</MainLayout>
-
-<style>
-.hpa-container {
-  max-width: 760px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.intro {
-  text-align: center;
-  opacity: 0.85;
-  margin-bottom: 30px;
-}
-
-.hpa-block {
-  margin-bottom: 40px;
-  padding: 20px;
-  border-radius: 14px;
-  background: #0f172a;
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-.hpa-block h2 {
-  margin-bottom: 15px;
-}
-
-ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-ul li {
-  margin-bottom: 8px;
-  padding-left: 16px;
-  position: relative;
-}
-
-ul li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: var(--primary);
-}
-
-.hpa-form {
-  display: grid;
-  gap: 14px;
-}
-
-.hpa-form input,
-.hpa-form textarea {
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background: #111827;
-  color: white;
-  font-size: 0.95rem;
-}
-
-.hpa-form textarea {
-  min-height: 120px;
-  resize: vertical;
-}
-
-.hpa-form button {
-  padding: 14px;
-  border-radius: 10px;
-  border: none;
-  background: var(--primary);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.hpa-form button:hover {
-  transform: translateY(-2px);
-}
-
-.form-message {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  opacity: 0.85;
-}
-</style>
+</FormLayout>
 
 <script>
 document.getElementById("hpa-form")?.addEventListener("submit", async function(e) {
   e.preventDefault();
-
   const form = e.target;
   const formData = new FormData(form);
 
@@ -167,13 +81,12 @@ document.getElementById("hpa-form")?.addEventListener("submit", async function(e
   const messageBox = document.getElementById("form-message");
 
   if (response.ok) {
-    messageBox.innerText = "Solicitud enviada correctamente. Te contactaremos en breve.";
+    messageBox.innerText = "Solicitud enviada correctamente.";
     form.reset();
 
     if (typeof gtag === "function") {
       gtag("event", "hpa_submit");
     }
-
   } else {
     messageBox.innerText = "Error al enviar. Inténtalo nuevamente.";
   }

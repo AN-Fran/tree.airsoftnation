@@ -1,17 +1,14 @@
 ---
 const now = new Date();
-
-// Forzar zona horaria España
 const madridTime = new Date(
   now.toLocaleString("en-US", { timeZone: "Europe/Madrid" })
 );
 
-const day = madridTime.getDay(); // 0 = Domingo
+const day = madridTime.getDay();
 const hour = madridTime.getHours();
 const minutes = madridTime.getMinutes();
 const todayStr = madridTime.toISOString().split("T")[0];
 
-// Festivos nacionales España (añadir cada año)
 const nationalHolidays = [
   "2026-01-01",
   "2026-01-06",
@@ -26,15 +23,14 @@ const nationalHolidays = [
 
 const isHoliday = nationalHolidays.includes(todayStr);
 
-// Horario
 const schedule = {
-  1: { morning: [11, 14], afternoon: [16, 20] }, // Lunes
+  1: { morning: [11, 14], afternoon: [16, 20] },
   2: { morning: [11, 14], afternoon: [16, 20] },
   3: { morning: [11, 14], afternoon: [16, 20] },
   4: { morning: [11, 14], afternoon: [16, 20] },
-  5: { morning: [11, 14], afternoon: [16, 21] }, // Viernes
-  6: null, // Sábado cerrado
-  0: null  // Domingo cerrado
+  5: { morning: [11, 14], afternoon: [16, 21] },
+  6: null,
+  0: null
 };
 
 let isOpen = false;
@@ -47,7 +43,6 @@ if (isHoliday) {
 
   if (todaySchedule) {
     const current = hour + minutes / 60;
-
     const [mOpen, mClose] = todaySchedule.morning;
     const [aOpen, aClose] = todaySchedule.afternoon;
 
@@ -56,7 +51,7 @@ if (isHoliday) {
       (current >= aOpen && current < aClose)
     ) {
       isOpen = true;
-      message = `Abierto ahora`;
+      message = "Abierto ahora";
     } else {
       message = `Cerrado · Horario 11-14 / 16-${day === 5 ? "21" : "20"}`;
     }
@@ -67,12 +62,7 @@ if (isHoliday) {
 ---
 
 <section class="hero">
-
-  <img 
-    src="/logo_airsoft_nation.svg" 
-    alt="Airsoft Nation"
-    class="logo"
-  />
+  <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" class="logo" />
 
   <p class="tagline">
     Comunidad, juego y evolución táctica
@@ -81,42 +71,29 @@ if (isHoliday) {
   <div class={`store-status ${isOpen ? "open" : "closed"}`}>
     {isOpen ? "🟢" : "🔴"} {message}
   </div>
-
 </section>
 
 <style>
 .hero {
   text-align: center;
-  padding: 60px 20px 40px;
+  padding: 40px 20px 20px;
 }
 
 .logo {
-  width: 260px;
-  max-width: 85%;
-  filter:
-    brightness(1.25)
-    contrast(1.1)
-    drop-shadow(0 0 20px rgba(0,180,255,0.35))
-    drop-shadow(0 10px 40px rgba(0,0,0,0.6));
-  animation: fadeIn 0.8s ease forwards;
-  opacity: 0;
+  width: 220px;
+  max-width: 80%;
 }
 
 .tagline {
-  margin-top: 18px;
-  font-size: 0.95rem;
-  opacity: 0.75;
-  letter-spacing: 0.5px;
-  animation: fadeIn 1.2s ease forwards;
-  opacity: 0;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  opacity: 0.8;
 }
 
 .store-status {
-  margin-top: 14px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  animation: fadeIn 1.4s ease forwards;
-  opacity: 0;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .store-status.open {
@@ -124,10 +101,6 @@ if (isHoliday) {
 }
 
 .store-status.closed {
-  color: #ef4444;
-}
-
-@keyframes fadeIn {
-  to { opacity: 1; }
+  color: #E02B20;
 }
 </style>

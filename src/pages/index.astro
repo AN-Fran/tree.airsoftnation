@@ -122,9 +122,9 @@ const routes = [
 }
 
 .linktree {
-  padding: 24px;
+  padding: 16px;
   display: grid;
-  gap: 16px;
+  gap: 12px;
 }
 
 .link-card {
@@ -132,7 +132,7 @@ const routes = [
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 18px;
+  padding: 16px;
   border-radius: 14px;
   text-decoration: none;
   color: white;
@@ -187,6 +187,18 @@ const routes = [
 document.addEventListener("DOMContentLoaded", () => {
   if (document.documentElement.dataset.lang === "fr") {
     document.getElementById("fr-cta").style.display = "block";
+  }
+});
+</script>
+<script>
+let scrollTracked = false;
+
+window.addEventListener("scroll", () => {
+  if (!scrollTracked && window.scrollY > 300) {
+    scrollTracked = true;
+    if (typeof gtag === "function") {
+      gtag("event", "scroll_300");
+    }
   }
 });
 </script>
