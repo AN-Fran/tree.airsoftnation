@@ -17,8 +17,24 @@ if (form) {
     const data = new FormData(form);
 
     let phone = (data.get("phone") || "").trim();
+    const reason = (data.get("reason") || "").trim();
 
-    // 🔎 Validación formato internacional
+    if (!reason) {
+      if (messageBox) {
+        messageBox.textContent = "Selecciona el motivo de tu consulta.";
+        messageBox.className = "form-message error";
+        messageBox.style.display = "block";
+      }
+
+      if (button) {
+        button.disabled = false;
+        button.textContent = "Enviar mensaje";
+      }
+
+      return;
+    }
+
+    // Validación formato internacional
     if (phone && !/^\+[0-9]{8,15}$/.test(phone)) {
       if (messageBox) {
         messageBox.textContent =
@@ -38,10 +54,12 @@ if (form) {
     const payload = {
       name: (data.get("name") || "").trim(),
       email: (data.get("email") || "").trim(),
-      phone: phone,
+      phone,
+      reason,
       message: (data.get("message") || "").trim(),
       company: (data.get("company") || "").trim(),
       consent: form.querySelector('[name="consent"]').checked,
+      marketingConsent: form.querySelector('[name="marketingConsent"]').checked,
 
       utmSource: new URLSearchParams(window.location.search).get("utm_source") || "",
       utmMedium: new URLSearchParams(window.location.search).get("utm_medium") || "",
