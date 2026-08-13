@@ -48,6 +48,18 @@ import Hero from "../components/hero.astro";
         </div>
 
         <div class="form-row">
+          <select name="reason" required>
+            <option value="" selected disabled>¿En qué podemos ayudarte?</option>
+            <option value="general">Consulta general</option>
+            <option value="product_order">Producto / pedido</option>
+            <option value="technical_service">Servicio técnico</option>
+            <option value="hpa">HPA</option>
+            <option value="events_fields">Eventos / campos</option>
+            <option value="other">Otro</option>
+          </select>
+        </div>
+
+        <div class="form-row">
           <textarea
             name="message"
             placeholder="Mensaje"
@@ -66,6 +78,13 @@ import Hero from "../components/hero.astro";
             >
               política de privacidad
             </a>
+          </span>
+        </label>
+
+        <label class="privacy">
+          <input type="checkbox" name="marketingConsent" />
+          <span>
+            Quiero recibir novedades, promociones y comunicaciones comerciales de Airsoft Nation.
           </span>
         </label>
 
@@ -112,6 +131,7 @@ import Hero from "../components/hero.astro";
 }
 
 .form-row input,
+.form-row select,
 .form-row textarea {
   width: 100%;
   padding: 12px 14px;
@@ -120,6 +140,14 @@ import Hero from "../components/hero.astro";
   background: rgba(255,255,255,0.05);
   color: #fff;
   font-size: 15px;
+}
+
+.form-row select {
+  appearance: none;
+}
+
+.form-row select option {
+  color: #111;
 }
 
 .form-row textarea {
