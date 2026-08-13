@@ -8,6 +8,13 @@ export type StoreClosure = {
   reason: string;
 };
 
+export type StoreScheduleOverride = {
+  from: string;
+  to: string;
+  schedule: StoreSchedule;
+  label: string;
+};
+
 export type SpecialOpening = {
   date: string;
   periods: StorePeriod[];
@@ -24,6 +31,24 @@ export const weeklySchedule: StoreSchedule = {
   6: [],
 };
 
+// Temporary timetables that replace the normal weekly schedule for a date range.
+export const scheduleOverrides: StoreScheduleOverride[] = [
+  {
+    from: "2026-08-01",
+    to: "2026-08-31",
+    label: "Horario de agosto",
+    schedule: {
+      0: [],
+      1: [],
+      2: [],
+      3: [["17:00", "21:00"]],
+      4: [["17:00", "21:00"]],
+      5: [["17:00", "21:00"]],
+      6: [],
+    },
+  },
+];
+
 export const holidays = [
   "2026-01-01",
   "2026-01-06",
@@ -36,12 +61,12 @@ export const holidays = [
   "2026-12-25",
 ];
 
-// Add planned closures here. Dates are inclusive.
+// Add planned full closures here. Dates are inclusive.
 export const closures: StoreClosure[] = [
-  // { from: "2026-08-24", to: "2026-08-30", reason: "Vacaciones" },
+  // { from: "2026-12-24", to: "2026-12-24", reason: "Cerrado por inventario" },
 ];
 
-// Use this for Sundays, holidays or days with a different timetable.
+// Use this for isolated days with a different timetable.
 export const specialOpenings: SpecialOpening[] = [
   // {
   //   date: "2026-12-20",
