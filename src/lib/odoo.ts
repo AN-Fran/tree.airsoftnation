@@ -5,19 +5,22 @@ type JsonRpcResponse<T> = {
   error?: {
     code: number;
     message: string;
-    data?: unknown;
+    data?: {
+      message?: string;
+      [key: string]: unknown;
+    };
   };
 };
 
 const ODOO_URL = process.env.ODOO_URL?.replace(/\/$/, "");
 const ODOO_DB = process.env.ODOO_DB;
 const ODOO_USERNAME = process.env.ODOO_USERNAME;
-const ODOO_API_KEY = process.env.ODOO_API_KEY;
+const ODOO_PASSWORD = process.env.ODOO_PASSWORD;
 
 function assertConfig() {
-  if (!ODOO_URL || !ODOO_DB || !ODOO_USERNAME || !ODOO_API_KEY) {
+  if (!ODOO_URL || !ODOO_DB || !ODOO_USERNAME || !ODOO_PASSWORD) {
     throw new Error(
-      "Odoo is not configured. Required: ODOO_URL, ODOO_DB, ODOO_USERNAME, ODOO_API_KEY"
+      "Odoo is not configured. Required: ODOO_URL, ODOO_DB, ODOO_USERNAME, ODOO_PASSWORD"
     );
   }
 }
@@ -49,7 +52,9 @@ async function jsonRpc<T>(service: string, method: string, args: unknown[]) {
   const payload = (await response.json()) as JsonRpcResponse<T>;
 
   if (payload.error) {
-    throw new Error(`Odoo RPC error: ${payload.error.message}`);
+    throw new Error(
+      `Odoo RPC error: ${payload.error.data?.message || payload.error.message}`
+    );
   }
 
   return payload.result as T;
@@ -63,7 +68,7 @@ export async function authenticateOdoo() {
   const uid = await jsonRpc<number | false>("common", "authenticate", [
     ODOO_DB,
     ODOO_USERNAME,
-    ODOO_API_KEY,
+    ODOO_PASSWORD,
     {},
   ]);
 
@@ -86,7 +91,7 @@ export async function executeOdoo<T>(
   return jsonRpc<T>("object", "execute_kw", [
     ODOO_DB,
     uid,
-    ODOO_API_KEY,
+    ODOO_PASSWORD,
     model,
     method,
     args,
