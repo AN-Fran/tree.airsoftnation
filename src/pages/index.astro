@@ -9,6 +9,23 @@ import Hero from "../components/hero.astro";
 
   <section class="hub">
 
+    <!-- CTA PRINCIPAL -->
+    <a
+      href="https://airsoftnation.store"
+      class="shop-cta"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <div class="shop-cta-icon">
+        <i class="bi bi-bag"></i>
+      </div>
+      <div>
+        <h2>Comprar Online</h2>
+        <p>Airsoft · HPA · Equipación</p>
+      </div>
+      <i class="bi bi-arrow-up-right shop-cta-arrow"></i>
+    </a>
+
     <!-- TIENDA -->
     <section class="hub-card primary">
       <h2>
@@ -27,6 +44,7 @@ import Hero from "../components/hero.astro";
       <div class="hub-actions">
         <a href="https://maps.app.goo.gl/qZ9mKjF6iWpGxFBG7"
            target="_blank"
+           rel="noopener noreferrer"
            class="btn-primary">
           <i class="bi bi-geo-alt"></i>
           Cómo llegar
@@ -77,16 +95,8 @@ import Hero from "../components/hero.astro";
       </div>
     </section>
 
-    <!-- GRID -->
+    <!-- ENLACES SECUNDARIOS -->
     <section class="hub-grid">
-
-      <a href="/comprar/" class="mini-card">
-        <i class="bi bi-bag"></i>
-        <div>
-          <h3>Comprar</h3>
-          <span>Catálogo online</span>
-        </div>
-      </a>
 
       <a href="/eventos/" class="mini-card">
         <i class="bi bi-trophy"></i>
@@ -104,19 +114,19 @@ import Hero from "../components/hero.astro";
         </div>
       </a>
 
-      <a href="/novedades/" class="mini-card">
-        <i class="bi bi-megaphone"></i>
+      <a href="/saber/" class="mini-card">
+        <i class="bi bi-journal-text"></i>
         <div>
-          <h3>Novedades</h3>
-          <span>Últimos lanzamientos</span>
+          <h3>Guías y más</h3>
+          <span>Información y redes</span>
         </div>
       </a>
 
-      <a href="/saber/" class="mini-card">
-        <i class="bi bi-grid"></i>
+      <a href="/contacto-form/" class="mini-card">
+        <i class="bi bi-envelope"></i>
         <div>
-          <h3>Más</h3>
-          <span>Información y redes</span>
+          <h3>Contacto</h3>
+          <span>¿En qué podemos ayudarte?</span>
         </div>
       </a>
 
@@ -131,6 +141,46 @@ import Hero from "../components/hero.astro";
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+
+.shop-cta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: var(--shadow-card);
+}
+
+.shop-cta-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  flex-shrink: 0;
+}
+
+.shop-cta h2 {
+  margin: 0;
+  font-family: "Oswald", sans-serif;
+  font-size: 1.2rem;
+}
+
+.shop-cta p {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.shop-cta-arrow {
+  margin-left: auto;
+  font-size: 1.1rem;
 }
 
 .hub-card {
