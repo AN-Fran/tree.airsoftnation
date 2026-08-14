@@ -5,7 +5,7 @@ import {
   writeOdooRecords,
 } from "./odoo";
 
-type ContactPayload = {
+export type ContactPayload = {
   name: string;
   email: string;
   phone?: string | null;
@@ -16,6 +16,7 @@ type ContactPayload = {
   utmCampaign?: string;
   utmTerm?: string;
   utmContent?: string;
+  landing?: string;
 };
 
 export type WorkshopTicketPayload = {
@@ -34,28 +35,11 @@ export type WorkshopResult = {
   quotationId: number;
 };
 
-type IdName = {
-  id: number;
-  name: string;
-};
-
-type HelpdeskTeam = IdName & {
-  company_id?: [number, string] | false;
-};
-
-type PartnerRecord = {
-  id: number;
-};
-
-type ProductRecord = {
-  id: number;
-};
-
-type WorkshopPostTicketStage =
-  | "product"
-  | "quotation"
-  | "quotation_line"
-  | "ticket_link";
+type IdName = { id: number; name: string };
+type HelpdeskTeam = IdName & { company_id?: [number, string] | false };
+type PartnerRecord = { id: number };
+type ProductRecord = { id: number };
+type WorkshopPostTicketStage = "product" | "quotation" | "quotation_line" | "ticket_link";
 
 const WORKSHOP_PROJECT_NAME = "Taller Airsoft Nation";
 const WORKSHOP_QUOTE_PRODUCT_CODE = "TALLER-PRESUPUESTO";
@@ -65,29 +49,13 @@ const WORKSHOP_QUOTE_PRICE = 30;
 const cache = new Map<string, number>();
 let workshopQuoteProductPromise: Promise<number> | null = null;
 
-async function findIdByName(
-  model: string,
-  name: string
-): Promise<number | null> {
+async function findIdByName(model: string, name: string): Promise<number | null> {
   const key = `${model}:${name.toLowerCase()}`;
+  if (cache.has(key)) return cache.get(key)!;
 
-  if (cache.has(key)) {
-    return cache.get(key)!;
-  }
-
-  const rows = await searchReadOdoo<IdName>(
-    model,
-    [["name", "=", name]],
-    ["id", "name"],
-    1
-  );
-
+  const rows = await searchReadOdoo<IdName>(model, [["name", "=", name]], ["id", "name"], 1);
   const id = rows[0]?.id ?? null;
-
-  if (id) {
-    cache.set(key, id);
-  }
-
+  if (id) cache.set(key, id);
   return id;
 }
 
@@ -98,78 +66,37 @@ async function getHelpdeskTeam() {
     ["id", "name", "company_id"],
     1
   );
-
   const team = rows[0];
-
-  if (!team) {
-    throw new Error('Helpdesk team "Taller" not found');
-  }
-
+  if (!team) throw new Error('Helpdesk team "Taller" not found');
   if (!team.company_id || !Array.isArray(team.company_id)) {
     throw new Error('Helpdesk team "Taller" has no company configured');
   }
-
   return team;
 }
 
 async function getWorkshopProjectId() {
   const projectId = await findIdByName("project.project", WORKSHOP_PROJECT_NAME);
-
-  if (!projectId) {
-    throw new Error(`Odoo project "${WORKSHOP_PROJECT_NAME}" not found`);
-  }
-
+  if (!projectId) throw new Error(`Odoo project "${WORKSHOP_PROJECT_NAME}" not found`);
   return projectId;
 }
 
 function buildDescription(payload: ContactPayload) {
   const lines = [payload.message, "", `Motivo: ${payload.reason}`];
-
-  if (payload.phone) {
-    lines.push(`Teléfono: ${payload.phone}`);
-  }
-
-  if (payload.utmSource) {
-    lines.push(`UTM source: ${payload.utmSource}`);
-  }
-
-  if (payload.utmMedium) {
-    lines.push(`UTM medium: ${payload.utmMedium}`);
-  }
-
-  if (payload.utmCampaign) {
-    lines.push(`UTM campaign: ${payload.utmCampaign}`);
-  }
-
-  if (payload.utmTerm) {
-    lines.push(`UTM term: ${payload.utmTerm}`);
-  }
-
-  if (payload.utmContent) {
-    lines.push(`UTM content: ${payload.utmContent}`);
-  }
-
+  if (payload.phone) lines.push(`Teléfono: ${payload.phone}`);
+  if (payload.landing) lines.push(`Landing: ${payload.landing}`);
+  if (payload.utmSource) lines.push(`UTM source: ${payload.utmSource}`);
+  if (payload.utmMedium) lines.push(`UTM medium: ${payload.utmMedium}`);
+  if (payload.utmCampaign) lines.push(`UTM campaign: ${payload.utmCampaign}`);
+  if (payload.utmTerm) lines.push(`UTM term: ${payload.utmTerm}`);
+  if (payload.utmContent) lines.push(`UTM content: ${payload.utmContent}`);
   return lines.join("\n");
 }
 
 function buildWorkshopDescription(payload: WorkshopTicketPayload) {
-  const lines = [
-    payload.message,
-    "",
-    `Tipo de servicio: ${payload.serviceType}`,
-    `Marca: ${payload.brand}`,
-  ];
-
-  if (payload.model) {
-    lines.push(`Modelo: ${payload.model}`);
-  }
-
-  if (payload.serialNumber) {
-    lines.push(`Número de serie: ${payload.serialNumber}`);
-  }
-
+  const lines = [payload.message, "", `Tipo de servicio: ${payload.serviceType}`, `Marca: ${payload.brand}`];
+  if (payload.model) lines.push(`Modelo: ${payload.model}`);
+  if (payload.serialNumber) lines.push(`Número de serie: ${payload.serialNumber}`);
   lines.push(`Teléfono: ${payload.phone}`);
-
   return lines.join("\n");
 }
 
@@ -193,12 +120,14 @@ function reasonLabel(reason: string) {
   const labels: Record<string, string> = {
     general: "Consulta general",
     product_order: "Producto / pedido",
-    technical_service: "Servicio técnico",
+    workshop: "Servicio técnico",
+    upgrade_hpa: "Upgrade / HPA",
+    quotation: "Solicitud de presupuesto",
+    events_business: "Eventos / campos / colaboración",
+    other: "Otra consulta",
     hpa: "HPA",
     events_fields: "Eventos / campos",
-    other: "Otro",
   };
-
   return labels[reason] || reason;
 }
 
@@ -206,7 +135,11 @@ function normalizeTicketType(serviceType: string) {
   return serviceType === "Garantía" ? "Grantía" : serviceType;
 }
 
-async function findOrCreatePartner(payload: WorkshopTicketPayload) {
+export async function findOrCreatePartner(payload: {
+  name: string;
+  email: string;
+  phone?: string | null;
+}) {
   const normalizedEmail = payload.email.trim().toLowerCase();
   const [partner] = await searchReadOdoo<PartnerRecord>(
     "res.partner",
@@ -214,16 +147,11 @@ async function findOrCreatePartner(payload: WorkshopTicketPayload) {
     ["id"],
     1
   );
+  if (partner) return partner.id;
 
-  if (partner) {
-    return partner.id;
-  }
-
-  return createOdooRecord("res.partner", {
-    name: payload.name,
-    email: normalizedEmail,
-    phone: payload.phone,
-  });
+  const values: Record<string, unknown> = { name: payload.name, email: normalizedEmail };
+  if (payload.phone) values.phone = payload.phone;
+  return createOdooRecord("res.partner", values);
 }
 
 async function findOrCreateWorkshopQuoteProduct() {
@@ -233,11 +161,7 @@ async function findOrCreateWorkshopQuoteProduct() {
     ["id"],
     1
   );
-
-  if (product) {
-    return product.id;
-  }
-
+  if (product) return product.id;
   return createOdooRecord("product.product", {
     name: WORKSHOP_QUOTE_PRODUCT_NAME,
     default_code: WORKSHOP_QUOTE_PRODUCT_CODE,
@@ -250,14 +174,11 @@ async function findOrCreateWorkshopQuoteProduct() {
 
 function getWorkshopQuoteProductId() {
   if (!workshopQuoteProductPromise) {
-    workshopQuoteProductPromise = findOrCreateWorkshopQuoteProduct().catch(
-      (error) => {
-        workshopQuoteProductPromise = null;
-        throw error;
-      }
-    );
+    workshopQuoteProductPromise = findOrCreateWorkshopQuoteProduct().catch((error) => {
+      workshopQuoteProductPromise = null;
+      throw error;
+    });
   }
-
   return workshopQuoteProductPromise;
 }
 
@@ -265,13 +186,9 @@ async function assertWorkshopSaleOrderFields() {
   const requiredFields = ["partner_id", "company_id", "origin"];
   const fields = await fieldsGetOdoo("sale.order", requiredFields);
   const missingFields = requiredFields.filter((field) => !fields[field]);
-
   if (missingFields.length) {
-    throw new Error(
-      `Odoo sale.order is missing workshop fields: ${missingFields.join(", ")}`
-    );
+    throw new Error(`Odoo sale.order is missing workshop fields: ${missingFields.join(", ")}`);
   }
-
   if (fields.partner_id.relation !== "res.partner") {
     throw new Error("Odoo sale.order partner_id has an unexpected relation");
   }
@@ -281,11 +198,7 @@ async function runPostTicketStep<T>(
   ticketId: number,
   stage: WorkshopPostTicketStage,
   operation: () => Promise<T>,
-  onError?: (
-    error: unknown,
-    ticketId: number,
-    stage: WorkshopPostTicketStage
-  ) => void
+  onError?: (error: unknown, ticketId: number, stage: WorkshopPostTicketStage) => void
 ) {
   try {
     return await operation();
@@ -301,32 +214,25 @@ export async function createHelpdeskTicket(payload: ContactPayload) {
     findIdByName("helpdesk.ticket.type", "Consulta"),
     getWorkshopProjectId(),
   ]);
+  if (!typeId) throw new Error('Helpdesk ticket type "Consulta" not found');
+  const partnerId = await findOrCreatePartner(payload);
 
-  if (!typeId) {
-    throw new Error('Helpdesk ticket type "Consulta" not found');
-  }
-
-  const values: Record<string, unknown> = {
+  return createOdooRecord("helpdesk.ticket", {
     name: `Solicitud web - ${payload.name}`,
     description: buildDescription(payload),
     team_id: team.id,
     type_id: typeId,
     company_id: team.company_id[0],
     project_id: projectId,
+    partner_id: partnerId,
     partner_name: payload.name,
-    partner_email: payload.email,
-  };
-
-  return createOdooRecord("helpdesk.ticket", values);
+    partner_email: payload.email.trim().toLowerCase(),
+  });
 }
 
 export async function createWorkshopTicket(
   payload: WorkshopTicketPayload,
-  onPostTicketError?: (
-    error: unknown,
-    ticketId: number,
-    stage: WorkshopPostTicketStage
-  ) => void
+  onPostTicketError?: (error: unknown, ticketId: number, stage: WorkshopPostTicketStage) => void
 ): Promise<WorkshopResult> {
   const odooTypeName = normalizeTicketType(payload.serviceType);
   const [team, typeId, projectId] = await Promise.all([
@@ -334,10 +240,7 @@ export async function createWorkshopTicket(
     findIdByName("helpdesk.ticket.type", odooTypeName),
     getWorkshopProjectId(),
   ]);
-
-  if (!typeId) {
-    throw new Error(`Helpdesk ticket type "${odooTypeName}" not found`);
-  }
+  if (!typeId) throw new Error(`Helpdesk ticket type "${odooTypeName}" not found`);
 
   const partnerId = await findOrCreatePartner(payload);
   const ticketName = `Taller - ${payload.brand} ${payload.model || ""}`.trim();
@@ -353,90 +256,52 @@ export async function createWorkshopTicket(
     partner_email: payload.email.trim().toLowerCase(),
   });
 
-  const productId = await runPostTicketStep(
-    ticketId,
-    "product",
-    getWorkshopQuoteProductId,
-    onPostTicketError
-  );
+  const productId = await runPostTicketStep(ticketId, "product", getWorkshopQuoteProductId, onPostTicketError);
+  const quotationId = await runPostTicketStep(ticketId, "quotation", async () => {
+    await assertWorkshopSaleOrderFields();
+    return createOdooRecord("sale.order", {
+      partner_id: partnerId,
+      company_id: team.company_id[0],
+      origin: `Taller / Ticket #${ticketId}`,
+    });
+  }, onPostTicketError);
 
-  const quotationId = await runPostTicketStep(
-    ticketId,
-    "quotation",
-    async () => {
-      await assertWorkshopSaleOrderFields();
-      return createOdooRecord("sale.order", {
-        partner_id: partnerId,
-        company_id: team.company_id[0],
-        origin: `Taller / Ticket #${ticketId}`,
-      });
-    },
-    onPostTicketError
-  );
+  await runPostTicketStep(ticketId, "quotation_line", () =>
+    createOdooRecord("sale.order.line", {
+      order_id: quotationId,
+      product_id: productId,
+      name: buildWorkshopQuotationLineName(payload),
+      product_uom_qty: 1,
+      price_unit: WORKSHOP_QUOTE_PRICE,
+    }), onPostTicketError);
 
-  await runPostTicketStep(
-    ticketId,
-    "quotation_line",
-    () =>
-      createOdooRecord("sale.order.line", {
-        order_id: quotationId,
-        product_id: productId,
-        name: buildWorkshopQuotationLineName(payload),
-        product_uom_qty: 1,
-        price_unit: WORKSHOP_QUOTE_PRICE,
-      }),
-    onPostTicketError
-  );
-
-  await runPostTicketStep(
-    ticketId,
-    "ticket_link",
-    () =>
-      writeOdooRecords("helpdesk.ticket", [ticketId], {
-        sale_order_ids: [[4, quotationId]],
-      }),
-    onPostTicketError
-  );
+  await runPostTicketStep(ticketId, "ticket_link", () =>
+    writeOdooRecords("helpdesk.ticket", [ticketId], { sale_order_ids: [[4, quotationId]] }), onPostTicketError);
 
   return { ticketId, quotationId };
 }
 
 export async function createCrmLead(payload: ContactPayload) {
+  const partnerId = await findOrCreatePartner(payload);
   const [sourceId, mediumId, campaignId] = await Promise.all([
-    payload.utmSource
-      ? findIdByName("utm.source", payload.utmSource)
-      : findIdByName("utm.source", "ig"),
-    payload.utmMedium
-      ? findIdByName("utm.medium", payload.utmMedium)
-      : findIdByName("utm.medium", "social"),
-    payload.utmCampaign
-      ? findIdByName("utm.campaign", payload.utmCampaign)
-      : Promise.resolve(null),
+    payload.utmSource ? findIdByName("utm.source", payload.utmSource) : Promise.resolve(null),
+    payload.utmMedium ? findIdByName("utm.medium", payload.utmMedium) : findIdByName("utm.medium", "Website"),
+    payload.utmCampaign ? findIdByName("utm.campaign", payload.utmCampaign) : Promise.resolve(null),
   ]);
 
   const values: Record<string, unknown> = {
     name: `${reasonLabel(payload.reason)} - ${payload.name}`,
-    type: "lead",
+    type: "opportunity",
+    partner_id: partnerId,
     contact_name: payload.name,
-    email_from: payload.email,
+    email_from: payload.email.trim().toLowerCase(),
     description: buildDescription(payload),
+    user_id: false,
   };
-
-  if (payload.phone) {
-    values.phone = payload.phone;
-  }
-
-  if (sourceId) {
-    values.source_id = sourceId;
-  }
-
-  if (mediumId) {
-    values.medium_id = mediumId;
-  }
-
-  if (campaignId) {
-    values.campaign_id = campaignId;
-  }
+  if (payload.phone) values.phone = payload.phone;
+  if (sourceId) values.source_id = sourceId;
+  if (mediumId) values.medium_id = mediumId;
+  if (campaignId) values.campaign_id = campaignId;
 
   return createOdooRecord("crm.lead", values);
 }
