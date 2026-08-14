@@ -16,7 +16,16 @@ import Hero from "../components/hero.astro";
       </p>
     </div>
 
-    <form class="hpa-form" method="POST" action="/api/hpa">
+    <form id="hpa-form" class="hpa-form">
+
+      <input
+        type="text"
+        name="company"
+        class="hpa-honeypot"
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true"
+      />
 
       <input
         type="text"
@@ -44,15 +53,97 @@ import Hero from "../components/hero.astro";
         required
       ></textarea>
 
-      <button type="submit">
+      <button id="hpa-submit" type="submit">
         Solicitar servicio técnico
       </button>
+
+      <p id="hpa-message" class="hpa-message" role="status" aria-live="polite"></p>
 
     </form>
 
   </section>
 
 </MainLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#hpa-form");
+  const submitButton = document.querySelector<HTMLButtonElement>("#hpa-submit");
+  const messageBox = document.querySelector<HTMLParagraphElement>("#hpa-message");
+
+  function normalizeInternationalPhone(value: string) {
+    const compact = value.trim().replace(/[\s().-]/g, "");
+    return compact.startsWith("00") ? `+${compact.slice(2)}` : compact;
+  }
+
+  function showMessage(message: string, type: "success" | "error") {
+    if (!messageBox) return;
+    messageBox.textContent = message;
+    messageBox.className = `hpa-message ${type}`;
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const formData = new FormData(form);
+    const phone = normalizeInternationalPhone(
+      formData.get("telefono")?.toString() || ""
+    );
+
+    if (phone && !/^\+[0-9]{8,15}$/.test(phone)) {
+      showMessage(
+        "Introduce el teléfono en formato internacional, por ejemplo +34600000000.",
+        "error"
+      );
+      return;
+    }
+
+    if (!submitButton || submitButton.disabled) return;
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Enviando…";
+    showMessage("Procesando tu solicitud…", "success");
+
+    try {
+      const response = await fetch("/api/hpa", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          company: formData.get("company")?.toString() || "",
+          name: formData.get("nombre")?.toString() || "",
+          email: formData.get("email")?.toString() || "",
+          phone,
+          message: formData.get("mensaje")?.toString() || "",
+        }),
+      });
+
+      if (!response.ok) {
+        showMessage(
+          response.status === 400
+            ? "Revisa los datos del formulario e inténtalo de nuevo."
+            : "No hemos podido enviar la solicitud. Inténtalo de nuevo más tarde.",
+          "error"
+        );
+        return;
+      }
+
+      form.reset();
+      showMessage("Solicitud enviada correctamente. Te contactaremos pronto.", "success");
+    } catch {
+      showMessage(
+        "No hemos podido conectar con el servidor. Inténtalo de nuevo más tarde.",
+        "error"
+      );
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "Solicitar servicio técnico";
+    }
+  });
+</script>
 
 <style>
 .hpa-wrapper {
@@ -78,6 +169,18 @@ import Hero from "../components/hero.astro";
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.hpa-honeypot {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
 .hpa-form input,
@@ -117,5 +220,25 @@ import Hero from "../components/hero.astro";
 
 .hpa-form button:hover {
   transform: translateY(-2px);
+}
+
+.hpa-form button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+  transform: none;
+}
+
+.hpa-message {
+  min-height: 1.25rem;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.hpa-message.success {
+  color: #3ddc84;
+}
+
+.hpa-message.error {
+  color: #ff6b6b;
 }
 </style>

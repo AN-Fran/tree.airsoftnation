@@ -1,5 +1,3 @@
-console.log("TALLER JS CARGADO");
-
 document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.getElementById("ticket-form");
@@ -11,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   button.addEventListener("click", async () => {
 
-    console.log("CLICK DETECTADO");
+    if (button.disabled) return;
 
     const data = new FormData(form);
 
@@ -23,23 +21,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const model = data.get("model")?.toString().trim();
     const serialNumber = data.get("serialNumber")?.toString().trim();
     const message = data.get("message")?.toString().trim();
-
-    console.log("VALORES FORMULARIO:", {
-      name,
-      email,
-      phone,
-      serviceType,
-      brand,
-      model,
-      serialNumber,
-      message
-    });
+    const company = data.get("company")?.toString().trim();
 
     if (!privacyCheck.checked) {
       messageBox.innerText = "Debes aceptar la política de privacidad.";
       messageBox.className = "form-message error";
       return;
     }
+
+    button.disabled = true;
 
     try {
       const response = await fetch("/api/ticket", {
@@ -55,27 +45,27 @@ document.addEventListener("DOMContentLoaded", () => {
           brand,
           model,
           serialNumber,
-          message
+          message,
+          company
         })
       });
 
-      const result = await response.json();
-
-      console.log("RESPUESTA API:", result);
+      await response.json();
 
       if (response.ok) {
         messageBox.innerText = "Orden creada correctamente.";
         messageBox.className = "form-message success";
         form.reset();
       } else {
-        messageBox.innerText = "Error en API. Revisa consola.";
+        messageBox.innerText = "No se ha podido crear la orden. Inténtalo de nuevo.";
         messageBox.className = "form-message error";
       }
 
-    } catch (error) {
-      console.log("ERROR FETCH:", error);
+    } catch {
       messageBox.innerText = "Error de conexión.";
       messageBox.className = "form-message error";
+    } finally {
+      button.disabled = false;
     }
 
   });

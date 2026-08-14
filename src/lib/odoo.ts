@@ -106,6 +106,31 @@ export async function createOdooRecord(
   return executeOdoo<number>(model, "create", [values]);
 }
 
+export type OdooFieldDefinition = {
+  type?: string;
+  relation?: string;
+  required?: boolean;
+  readonly?: boolean;
+};
+
+export async function fieldsGetOdoo(
+  model: string,
+  fields: string[],
+  attributes: Array<keyof OdooFieldDefinition> = [
+    "type",
+    "relation",
+    "required",
+    "readonly",
+  ]
+) {
+  return executeOdoo<Record<string, OdooFieldDefinition>>(
+    model,
+    "fields_get",
+    [fields],
+    { attributes }
+  );
+}
+
 export async function searchReadOdoo<T>(
   model: string,
   domain: unknown[] = [],

@@ -1,80 +1,66 @@
 import type { APIRoute } from "astro";
 import { createWorkshopTicket } from "../../lib/contact-odoo";
-import { TicketSchema } from "../../lib/validation/ticket.schema";
 import { log } from "../../lib/logger";
+import { TicketSchema } from "../../lib/validation/ticket.schema";
+
+const jsonHeaders = { "Content-Type": "application/json" };
+
+function jsonResponse(body: Record<string, unknown>, status: number) {
+  return new Response(JSON.stringify(body), { status, headers: jsonHeaders });
+}
 
 export const POST: APIRoute = async ({ request }) => {
+  let body: unknown;
+
   try {
-    const body = await request.json();
-    const result = TicketSchema.safeParse(body);
+    body = await request.json();
+  } catch {
+    return jsonResponse({ success: false, error: "Invalid request" }, 400);
+  }
 
-    if (!result.success) {
-      const errors = result.error.flatten();
+  if (
+    body &&
+    typeof body === "object" &&
+    !Array.isArray(body) &&
+    typeof (body as Record<string, unknown>).company === "string" &&
+    (body as Record<string, string>).company.trim()
+  ) {
+    return jsonResponse({ success: false, error: "Invalid request" }, 400);
+  }
 
-      log("warn", "ticket_validation_failed", {
-        errors,
-      });
+  const result = TicketSchema.safeParse(body);
 
-      return new Response(
-        JSON.stringify({
-          success: false,
-          errors,
-        }),
-        {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-    }
+  if (!result.success) {
+    log("warn", "ticket_validation_failed");
+    return jsonResponse({ success: false, error: "Invalid request" }, 400);
+  }
 
-    const data = result.data;
-
-    const ticketId = await createWorkshopTicket({
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      serviceType: data.serviceType,
-      brand: data.brand,
-      model: data.model || undefined,
-      serialNumber: data.serialNumber || undefined,
-      message: data.message,
-    });
-
-    log("info", "ticket_created", {
-      id: ticketId,
-      brand: data.brand,
-      backend: "odoo18",
-    });
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        id: ticketId,
-      }),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
+  try {
+    const { ticketId, quotationId } = await createWorkshopTicket(
+      result.data,
+      (error, createdTicketId) => {
+        log("error", "workshop_quotation_creation_failed", {
+          ticketId: createdTicketId,
+          message: error instanceof Error ? error.message : "Unknown Odoo error",
+        });
       }
     );
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
 
-    console.error("Workshop Odoo error:", message);
-
-    log("error", "ticket_creation_failed", {
-      message,
+    log("info", "workshop_ticket_and_quotation_created", {
+      ticketId,
+      quotationId,
       backend: "odoo18",
     });
 
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: "Server error",
-      }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
+    return jsonResponse({ success: true, ticketId, quotationId }, 200);
+  } catch (error) {
+    log("error", "workshop_request_failed", {
+      message: error instanceof Error ? error.message : "Unknown Odoo error",
+      backend: "odoo18",
+    });
+    return jsonResponse(
+      { success: false, error: "Unable to process workshop request" },
+      502
     );
   }
 };
