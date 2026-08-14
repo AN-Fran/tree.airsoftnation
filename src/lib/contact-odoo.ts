@@ -57,6 +57,7 @@ type WorkshopPostTicketStage =
   | "quotation_line"
   | "ticket_link";
 
+const WORKSHOP_PROJECT_NAME = "Taller Airsoft Nation";
 const WORKSHOP_QUOTE_PRODUCT_CODE = "TALLER-PRESUPUESTO";
 const WORKSHOP_QUOTE_PRODUCT_NAME = "Presupuesto Servicio Técnico";
 const WORKSHOP_QUOTE_PRICE = 30;
@@ -109,6 +110,16 @@ async function getHelpdeskTeam() {
   }
 
   return team;
+}
+
+async function getWorkshopProjectId() {
+  const projectId = await findIdByName("project.project", WORKSHOP_PROJECT_NAME);
+
+  if (!projectId) {
+    throw new Error(`Odoo project "${WORKSHOP_PROJECT_NAME}" not found`);
+  }
+
+  return projectId;
 }
 
 function buildDescription(payload: ContactPayload) {
@@ -192,7 +203,6 @@ function reasonLabel(reason: string) {
 }
 
 function normalizeTicketType(serviceType: string) {
-  // Odoo currently contains the typo "Grantía" instead of "Garantía".
   return serviceType === "Garantía" ? "Grantía" : serviceType;
 }
 
@@ -286,9 +296,10 @@ async function runPostTicketStep<T>(
 }
 
 export async function createHelpdeskTicket(payload: ContactPayload) {
-  const [team, typeId] = await Promise.all([
+  const [team, typeId, projectId] = await Promise.all([
     getHelpdeskTeam(),
     findIdByName("helpdesk.ticket.type", "Consulta"),
+    getWorkshopProjectId(),
   ]);
 
   if (!typeId) {
@@ -301,6 +312,7 @@ export async function createHelpdeskTicket(payload: ContactPayload) {
     team_id: team.id,
     type_id: typeId,
     company_id: team.company_id[0],
+    project_id: projectId,
     partner_name: payload.name,
     partner_email: payload.email,
   };
@@ -317,9 +329,10 @@ export async function createWorkshopTicket(
   ) => void
 ): Promise<WorkshopResult> {
   const odooTypeName = normalizeTicketType(payload.serviceType);
-  const [team, typeId] = await Promise.all([
+  const [team, typeId, projectId] = await Promise.all([
     getHelpdeskTeam(),
     findIdByName("helpdesk.ticket.type", odooTypeName),
+    getWorkshopProjectId(),
   ]);
 
   if (!typeId) {
@@ -334,6 +347,7 @@ export async function createWorkshopTicket(
     team_id: team.id,
     type_id: typeId,
     company_id: team.company_id[0],
+    project_id: projectId,
     partner_id: partnerId,
     partner_name: payload.name,
     partner_email: payload.email.trim().toLowerCase(),
