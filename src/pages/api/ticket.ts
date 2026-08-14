@@ -1,88 +1,80 @@
-import type { APIRoute } from "astro"
-import { TicketSchema } from "../../lib/validation/ticket.schema"
-import { createEspoEntity } from "../../lib/espo"
-import { log } from "../../lib/logger"
+import type { APIRoute } from "astro";
+import { createWorkshopTicket } from "../../lib/contact-odoo";
+import { TicketSchema } from "../../lib/validation/ticket.schema";
+import { log } from "../../lib/logger";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const body = await request.json()
+    const body = await request.json();
+    const result = TicketSchema.safeParse(body);
 
-    const result = TicketSchema.safeParse(body)
-
-    // 🔎 VALIDACIÓN ZOD
     if (!result.success) {
-
-      const errors = result.error.flatten()
-
-      console.log("❌ VALIDATION ERROR:", errors)
+      const errors = result.error.flatten();
 
       log("warn", "ticket_validation_failed", {
-        errors
-      })
+        errors,
+      });
 
       return new Response(
         JSON.stringify({
           success: false,
-          errors
+          errors,
         }),
-        { status: 400 }
-      )
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     }
 
-    const data = result.data
+    const data = result.data;
 
-    // 🔧 Payload para Espo
-    const payload = {
-      name: `Taller - ${data.brand} ${data.model || ""}`.trim(),
-
-      description: data.message,
-
-      emailAddress: data.email,
-      phoneNumber: data.phone,
-
-      status: "New",
-
-      // Campos personalizados
-      cMarca: data.brand,
-      cModelo: data.model || "",
-      cNumerserie: data.serialNumber || "",
-
-     cTipoServicio: data.serviceType,
-      cEstadoServicio: "Recibido",
-      cPrioridadTecnica: "Media"
-    }
-
-    console.log("📦 PAYLOAD ENVIADO A ESPO:", payload)
-
-    const espoResponse = await createEspoEntity("Case", payload)
+    const ticketId = await createWorkshopTicket({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      serviceType: data.serviceType,
+      brand: data.brand,
+      model: data.model || undefined,
+      serialNumber: data.serialNumber || undefined,
+      message: data.message,
+    });
 
     log("info", "ticket_created", {
-      id: espoResponse.id,
-      brand: data.brand
-    })
+      id: ticketId,
+      brand: data.brand,
+      backend: "odoo18",
+    });
 
     return new Response(
       JSON.stringify({
         success: true,
-        id: espoResponse.id
+        id: ticketId,
       }),
-      { status: 200 }
-    )
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
 
-  } catch (error: any) {
-
-    console.log("🔥 ERROR SERVIDOR:", error)
+    console.error("Workshop Odoo error:", message);
 
     log("error", "ticket_creation_failed", {
-      message: error.message
-    })
+      message,
+      backend: "odoo18",
+    });
 
     return new Response(
       JSON.stringify({
         success: false,
-        error: error.message
+        error: "Server error",
       }),
-      { status: 500 }
-    )
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
-}
+};
