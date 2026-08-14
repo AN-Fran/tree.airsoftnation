@@ -106,6 +106,20 @@ export async function createOdooRecord(
   return executeOdoo<number>(model, "create", [values]);
 }
 
+export async function writeOdooRecords(
+  model: string,
+  ids: number[],
+  values: Record<string, unknown>
+) {
+  const uniqueIds = [...new Set(ids)];
+
+  if (!uniqueIds.length || uniqueIds.some((id) => !Number.isInteger(id) || id <= 0)) {
+    throw new Error("Odoo write requires valid record IDs");
+  }
+
+  return executeOdoo<boolean>(model, "write", [uniqueIds, values]);
+}
+
 export type OdooFieldDefinition = {
   type?: string;
   relation?: string;

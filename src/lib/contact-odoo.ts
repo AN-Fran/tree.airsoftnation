@@ -2,6 +2,7 @@ import {
   createOdooRecord,
   fieldsGetOdoo,
   searchReadOdoo,
+  writeOdooRecords,
 } from "./odoo";
 
 type ContactPayload = {
@@ -46,7 +47,22 @@ type PartnerRecord = {
   id: number;
 };
 
+type ProductRecord = {
+  id: number;
+};
+
+type WorkshopPostTicketStage =
+  | "product"
+  | "quotation"
+  | "quotation_line"
+  | "ticket_link";
+
+const WORKSHOP_QUOTE_PRODUCT_CODE = "TALLER-PRESUPUESTO";
+const WORKSHOP_QUOTE_PRODUCT_NAME = "Presupuesto Servicio Técnico";
+const WORKSHOP_QUOTE_PRICE = 30;
+
 const cache = new Map<string, number>();
+let workshopQuoteProductPromise: Promise<number> | null = null;
 
 async function findIdByName(
   model: string,
@@ -146,21 +162,19 @@ function buildWorkshopDescription(payload: WorkshopTicketPayload) {
   return lines.join("\n");
 }
 
-function buildWorkshopQuotationNote(
-  payload: WorkshopTicketPayload,
-  ticketId: number,
-  ticketName: string
-) {
+function buildWorkshopQuotationLineName(payload: WorkshopTicketPayload) {
   return [
-    `Ticket: #${ticketId} — ${ticketName}`,
+    WORKSHOP_QUOTE_PRODUCT_NAME,
+    "",
     `Tipo de servicio: ${payload.serviceType}`,
     `Marca: ${payload.brand}`,
     `Modelo: ${payload.model || "No indicado"}`,
     `Número de serie: ${payload.serialNumber || "No indicado"}`,
-    `Teléfono: ${payload.phone}`,
     "",
     "Solicitud:",
     payload.message,
+    "",
+    "Importe correspondiente a diagnóstico y elaboración de presupuesto. Se descontará íntegramente del importe final si se acepta y realiza la reparación.",
   ].join("\n");
 }
 
@@ -202,8 +216,43 @@ async function findOrCreatePartner(payload: WorkshopTicketPayload) {
   });
 }
 
+async function findOrCreateWorkshopQuoteProduct() {
+  const [product] = await searchReadOdoo<ProductRecord>(
+    "product.product",
+    [["default_code", "=", WORKSHOP_QUOTE_PRODUCT_CODE]],
+    ["id"],
+    1
+  );
+
+  if (product) {
+    return product.id;
+  }
+
+  return createOdooRecord("product.product", {
+    name: WORKSHOP_QUOTE_PRODUCT_NAME,
+    default_code: WORKSHOP_QUOTE_PRODUCT_CODE,
+    type: "service",
+    list_price: WORKSHOP_QUOTE_PRICE,
+    sale_ok: true,
+    purchase_ok: false,
+  });
+}
+
+function getWorkshopQuoteProductId() {
+  if (!workshopQuoteProductPromise) {
+    workshopQuoteProductPromise = findOrCreateWorkshopQuoteProduct().catch(
+      (error) => {
+        workshopQuoteProductPromise = null;
+        throw error;
+      }
+    );
+  }
+
+  return workshopQuoteProductPromise;
+}
+
 async function assertWorkshopSaleOrderFields() {
-  const requiredFields = ["partner_id", "company_id", "origin", "note"];
+  const requiredFields = ["partner_id", "company_id", "origin"];
   const fields = await fieldsGetOdoo("sale.order", requiredFields);
   const missingFields = requiredFields.filter((field) => !fields[field]);
 
@@ -215,6 +264,24 @@ async function assertWorkshopSaleOrderFields() {
 
   if (fields.partner_id.relation !== "res.partner") {
     throw new Error("Odoo sale.order partner_id has an unexpected relation");
+  }
+}
+
+async function runPostTicketStep<T>(
+  ticketId: number,
+  stage: WorkshopPostTicketStage,
+  operation: () => Promise<T>,
+  onError?: (
+    error: unknown,
+    ticketId: number,
+    stage: WorkshopPostTicketStage
+  ) => void
+) {
+  try {
+    return await operation();
+  } catch (error) {
+    onError?.(error, ticketId, stage);
+    throw error;
   }
 }
 
@@ -243,7 +310,11 @@ export async function createHelpdeskTicket(payload: ContactPayload) {
 
 export async function createWorkshopTicket(
   payload: WorkshopTicketPayload,
-  onQuotationError?: (error: unknown, ticketId: number) => void
+  onPostTicketError?: (
+    error: unknown,
+    ticketId: number,
+    stage: WorkshopPostTicketStage
+  ) => void
 ): Promise<WorkshopResult> {
   const odooTypeName = normalizeTicketType(payload.serviceType);
   const [team, typeId] = await Promise.all([
@@ -268,20 +339,52 @@ export async function createWorkshopTicket(
     partner_email: payload.email.trim().toLowerCase(),
   });
 
-  try {
-    await assertWorkshopSaleOrderFields();
-    const quotationId = await createOdooRecord("sale.order", {
-      partner_id: partnerId,
-      company_id: team.company_id[0],
-      origin: `Taller / Ticket #${ticketId}`,
-      note: buildWorkshopQuotationNote(payload, ticketId, ticketName),
-    });
+  const productId = await runPostTicketStep(
+    ticketId,
+    "product",
+    getWorkshopQuoteProductId,
+    onPostTicketError
+  );
 
-    return { ticketId, quotationId };
-  } catch (error) {
-    onQuotationError?.(error, ticketId);
-    throw error;
-  }
+  const quotationId = await runPostTicketStep(
+    ticketId,
+    "quotation",
+    async () => {
+      await assertWorkshopSaleOrderFields();
+      return createOdooRecord("sale.order", {
+        partner_id: partnerId,
+        company_id: team.company_id[0],
+        origin: `Taller / Ticket #${ticketId}`,
+      });
+    },
+    onPostTicketError
+  );
+
+  await runPostTicketStep(
+    ticketId,
+    "quotation_line",
+    () =>
+      createOdooRecord("sale.order.line", {
+        order_id: quotationId,
+        product_id: productId,
+        name: buildWorkshopQuotationLineName(payload),
+        product_uom_qty: 1,
+        price_unit: WORKSHOP_QUOTE_PRICE,
+      }),
+    onPostTicketError
+  );
+
+  await runPostTicketStep(
+    ticketId,
+    "ticket_link",
+    () =>
+      writeOdooRecords("helpdesk.ticket", [ticketId], {
+        sale_order_ids: [[4, quotationId]],
+      }),
+    onPostTicketError
+  );
+
+  return { ticketId, quotationId };
 }
 
 export async function createCrmLead(payload: ContactPayload) {

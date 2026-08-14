@@ -38,9 +38,10 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const { ticketId, quotationId } = await createWorkshopTicket(
       result.data,
-      (error, createdTicketId) => {
-        log("error", "workshop_quotation_creation_failed", {
+      (error, createdTicketId, stage) => {
+        log("error", "workshop_post_ticket_step_failed", {
           ticketId: createdTicketId,
+          stage,
           message: error instanceof Error ? error.message : "Unknown Odoo error",
         });
       }
