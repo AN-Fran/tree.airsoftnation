@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { createEspoEntity } from "../../lib/espo";
+import { createCrmLead } from "../../lib/contact-odoo";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -18,21 +18,24 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response("Missing fields", { status: 400 });
     }
 
-    await createEspoEntity("Lead", {
+    await createCrmLead({
       name,
-      emailAddress: email,
-      phoneNumber: phone,
-      description: message,
-      source: "Tree HPA",
-      status: "New"
+      email,
+      phone: phone || null,
+      reason: "hpa",
+      message,
+      utmSource: "Tree HPA",
+      utmMedium: "Website",
     });
 
     return new Response(JSON.stringify({ success: true }), {
-      status: 200
+      status: 200,
+      headers: { "Content-Type": "application/json" },
     });
-
   } catch (error) {
-    console.error("HPA API error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error("HPA Odoo error:", message);
+
     return new Response("Server error", { status: 500 });
   }
 };
