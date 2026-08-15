@@ -1,4 +1,12 @@
 ---
+import {
+  closures,
+  holidays,
+  scheduleOverrides,
+  specialOpenings,
+  weeklySchedule,
+} from "../config/store-hours";
+
 const now = new Date();
 const madridTime = new Date(
   now.toLocaleString("en-US", { timeZone: "Europe/Madrid" })
@@ -9,54 +17,76 @@ const hour = madridTime.getHours();
 const minutes = madridTime.getMinutes();
 const todayStr = madridTime.toISOString().split("T")[0];
 
-const nationalHolidays = [
-  "2026-01-01",
-  "2026-01-06",
-  "2026-05-01",
-  "2026-08-15",
-  "2026-10-12",
-  "2026-11-01",
-  "2026-12-06",
-  "2026-12-08",
-  "2026-12-25"
-];
+function timeToMinutes(value: string) {
+  const [hours, mins] = value.split(":").map(Number);
+  return hours * 60 + mins;
+}
 
-const isHoliday = nationalHolidays.includes(todayStr);
+function isWithinRange(date: string, from: string, to: string) {
+  return date >= from && date <= to;
+}
 
-const schedule = {
-  1: { morning: [11, 14], afternoon: [16, 20] },
-  2: { morning: [11, 14], afternoon: [16, 20] },
-  3: { morning: [11, 14], afternoon: [16, 20] },
-  4: { morning: [11, 14], afternoon: [16, 20] },
-  5: { morning: [11, 14], afternoon: [16, 21] },
-  6: null,
-  0: null
-};
+function formatPeriods(periods: [string, string][]) {
+  return periods.map(([open, close]) => `${open}-${close}`).join(" / ");
+}
+
+const closure = closures.find(({ from, to }) =>
+  isWithinRange(todayStr, from, to)
+);
+
+const specialOpening = specialOpenings.find(({ date }) => date === todayStr);
+
+const scheduleOverride = scheduleOverrides.find(({ from, to }) =>
+  isWithinRange(todayStr, from, to)
+);
+
+const isHoliday = holidays.includes(todayStr);
 
 let isOpen = false;
 let message = "";
+let detail = "";
 
-if (isHoliday) {
-  message = "Cerrado · Festivo nacional";
+if (closure) {
+  message = `Cerrado · ${closure.reason}`;
 } else {
-  const todaySchedule = schedule[day];
+  let periods: [string, string][] = [];
+  let contextLabel = "";
 
-  if (todaySchedule) {
-    const current = hour + minutes / 60;
-    const [mOpen, mClose] = todaySchedule.morning;
-    const [aOpen, aClose] = todaySchedule.afternoon;
-
-    if (
-      (current >= mOpen && current < mClose) ||
-      (current >= aOpen && current < aClose)
-    ) {
-      isOpen = true;
-      message = "Abierto ahora";
-    } else {
-      message = `Cerrado · 11-14 / 16-${day === 5 ? "21" : "20"}`;
-    }
+  if (specialOpening) {
+    periods = specialOpening.periods;
+    contextLabel = specialOpening.reason || "Horario especial";
+  } else if (isHoliday) {
+    message = "Cerrado · Festivo nacional";
+  } else if (scheduleOverride) {
+    periods = scheduleOverride.schedule[day] || [];
+    contextLabel = scheduleOverride.label;
   } else {
-    message = "Cerrado hoy";
+    periods = weeklySchedule[day] || [];
+  }
+
+  if (!message) {
+    if (periods.length === 0) {
+      message = contextLabel ? `Cerrado · ${contextLabel}` : "Cerrado hoy";
+      if (scheduleOverride) {
+        detail = "Mié-Vie 17:00-21:00";
+      }
+    } else {
+      const currentMinutes = hour * 60 + minutes;
+      isOpen = periods.some(([open, close]) => {
+        return (
+          currentMinutes >= timeToMinutes(open) &&
+          currentMinutes < timeToMinutes(close)
+        );
+      });
+
+      if (isOpen) {
+        message = contextLabel ? `Abierto ahora · ${contextLabel}` : "Abierto ahora";
+      } else {
+        message = contextLabel ? `Cerrado · ${contextLabel}` : "Cerrado";
+      }
+
+      detail = formatPeriods(periods);
+    }
   }
 }
 ---
@@ -65,8 +95,9 @@ if (isHoliday) {
 
   <div class="hero-inner">
 
-    <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" class="logo" />
-
+    <a href="/" class="logo-link" aria-label="Ir a la página principal de Airsoft Nation">
+      <img src="/logo_airsoft_nation.svg" alt="Airsoft Nation" class="logo" />
+    </a>
 
     <p class="tagline">
       Comunidad · Juego · Evolución táctica
@@ -74,7 +105,10 @@ if (isHoliday) {
 
     <div class={`store-status ${isOpen ? "open" : "closed"}`}>
       <i class={`bi ${isOpen ? "bi-circle-fill" : "bi-x-circle-fill"}`}></i>
-      <span>{message}</span>
+      <div class="store-status-copy">
+        <span>{message}</span>
+        {detail && <small>{detail}</small>}
+      </div>
     </div>
 
   </div>
@@ -92,6 +126,10 @@ if (isHoliday) {
   width: 100%;
   max-width: 380px;
   text-align: center;
+}
+
+.logo-link {
+  display: inline-block;
 }
 
 .logo {
@@ -126,6 +164,19 @@ if (isHoliday) {
   background: var(--bg-card);
 }
 
+.store-status-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.store-status-copy small {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
 .store-status.open {
   color: #22c55e;
 }
@@ -138,4 +189,3 @@ if (isHoliday) {
   font-size: 10px;
 }
 </style>
-

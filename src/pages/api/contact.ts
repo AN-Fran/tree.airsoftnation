@@ -1,8 +1,5 @@
 import type { APIRoute } from "astro";
-
-/* =========================
-   CONFIG
-========================= */
+import { createCrmLead, createWorkshopTicket } from "../../lib/contact-odoo";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -10,195 +7,80 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
-const LEAD_CAPTURE_TOKEN = process.env.ESPO_LEAD_CAPTURE_TOKEN;
+const VALID_REASONS = new Set([
+  "general", "product_order", "workshop", "upgrade_hpa", "quotation", "events_business", "other",
+  "technical_service", "hpa", "events_fields",
+]);
+const WORKSHOP_SERVICE_TYPES = new Set(["Reparación", "Upgrade", "Mantenimiento", "Diagnóstico", "Garantía", "Consulta"]);
+const HPA_WORKSHOP_NEEDS = new Set(["installation", "technical_problem", "technical_quote"]);
 
-/* =========================
-   HELPERS
-========================= */
-
-function splitName(fullName: string) {
-  const parts = fullName.trim().split(/\s+/);
-  if (parts.length === 1) {
-    return { firstName: parts[0], lastName: "(Web)" };
-  }
-  const firstName = parts.shift() || "";
-  const lastName = parts.join(" ");
-  return { firstName, lastName };
+function jsonResponse(body: Record<string, unknown>, status = 200) {
+  return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 }
+function stringValue(value: unknown) { return typeof value === "string" ? value.trim() : ""; }
 
-function getClientIp(request: Request) {
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  return request.headers.get("x-real-ip") || "";
-}
-
-function calculateSpamScore(message: string) {
-  const suspicious = ["viagra", "casino", "crypto", "loan", "http://", "https://"];
-  let score = 0;
-
-  suspicious.forEach(word => {
-    if (message.toLowerCase().includes(word)) score += 20;
-  });
-
-  if (message.length > 1500) score += 30;
-
-  return Math.min(score, 100);
-}
-
-/* =========================
-   OPTIONS
-========================= */
-
-export const OPTIONS: APIRoute = async () => {
-  return new Response(null, { status: 200, headers: corsHeaders });
-};
-
-/* =========================
-   POST
-========================= */
+export const OPTIONS: APIRoute = async () => new Response(null, { status: 200, headers: corsHeaders });
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    if (!LEAD_CAPTURE_TOKEN) {
-      return new Response(
-        JSON.stringify({ error: "CRM not configured" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    let body: Record<string, unknown>;
+    try {
+      const parsed: unknown = await request.json();
+      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return jsonResponse({ error: "Invalid JSON" }, 400);
+      body = parsed as Record<string, unknown>;
+    } catch { return jsonResponse({ error: "Invalid JSON" }, 400); }
+
+    const name = stringValue(body.name);
+    const email = stringValue(body.email).toLowerCase();
+    const phone = stringValue(body.phone);
+    const reason = stringValue(body.reason);
+    const need = stringValue(body.need);
+    const message = stringValue(body.message);
+    const company = stringValue(body.company);
+    const consent = body.consent === true;
+    const serviceType = stringValue(body.serviceType);
+    const brand = stringValue(body.brand);
+    const model = stringValue(body.model);
+    const serialNumber = stringValue(body.serialNumber);
+
+    if (company) return jsonResponse({ error: "Spam detected" }, 400);
+    if (!name || !email || !message || !reason) return jsonResponse({ error: "Missing required fields" }, 400);
+    if (!VALID_REASONS.has(reason)) return jsonResponse({ error: "Invalid reason" }, 400);
+    if (!consent) return jsonResponse({ error: "Consent required" }, 400);
+    if (message.length > 2000) return jsonResponse({ error: "Message too long" }, 400);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return jsonResponse({ error: "Invalid email" }, 400);
+
+    let formattedPhone: string | null = null;
+    if (phone) {
+      const compactPhone = phone.replace(/[\s().-]/g, "").replace(/^00/, "+");
+      if (!/^\+[0-9]{8,15}$/.test(compactPhone)) return jsonResponse({ error: "Invalid phone" }, 400);
+      formattedPhone = compactPhone;
     }
 
-    const body = await request.json();
+    const isWorkshop = reason === "workshop" || reason === "technical_service" || (reason === "upgrade_hpa" && HPA_WORKSHOP_NEEDS.has(need));
 
-    const {
-      name,
-      email,
-      phone,
-      message,
-      utmSource,
-      utmMedium,
-      utmCampaign,
-      utmTerm,
-      utmContent,
-      consent,
-      company,
-    } = body;
+    if (isWorkshop) {
+      if (!formattedPhone || !brand) return jsonResponse({ error: "Workshop requires phone and brand" }, 400);
+      const resolvedServiceType = reason === "upgrade_hpa"
+        ? (need === "technical_problem" ? "Diagnóstico" : "Upgrade")
+        : serviceType;
+      if (!WORKSHOP_SERVICE_TYPES.has(resolvedServiceType)) return jsonResponse({ error: "Invalid workshop service type" }, 400);
 
-    /* =========================
-       VALIDATION
-    ========================= */
-
-    if (company) {
-      return new Response(
-        JSON.stringify({ error: "Spam detected" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      const result = await createWorkshopTicket({
+        name, email, phone: formattedPhone, serviceType: resolvedServiceType, brand, model, serialNumber, message,
+      });
+      return jsonResponse({ success: true, route: "workshop", ticketId: result.ticketId, quotationId: result.quotationId });
     }
 
-    if (!name || !email || !message) {
-      return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    if (!consent) {
-      return new Response(
-        JSON.stringify({ error: "Consent required" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    if (message.length > 2000) {
-      return new Response(
-        JSON.stringify({ error: "Message too long" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return new Response(
-        JSON.stringify({ error: "Invalid email" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    const { firstName, lastName } = splitName(name);
-
-    const ipAddress = getClientIp(request);
-    const userAgent = request.headers.get("user-agent") || "";
-    const spamScore = calculateSpamScore(message);
-
-    /* =========================
-       PHONE VALIDATION
-    ========================= */
-
-    const formattedPhone =
-      phone && /^\+[0-9]{8,15}$/.test(phone.trim())
-        ? phone.trim()
-        : null;
-
-    /* =========================
-       SEND TO ESPOCRM
-    ========================= */
-
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
-
-    const espoResponse = await fetch(
-      `http://medusa_espocrm-app/api/v1/LeadCapture/${LEAD_CAPTURE_TOKEN}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        signal: controller.signal,
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          emailAddress: email,
-          description: message,
-
-          ...(formattedPhone ? { phoneNumber: formattedPhone } : {}),
-
-          cNsource: "web-contact",
-          cSpamScore: spamScore,
-          cConsentGiven: true,
-          cUserAgent: userAgent,
-          cWhatsappSent: false,
-          cUtmSource: utmSource || "",
-          cUtmMedium: utmMedium || "",
-          cUtmCampaign: utmCampaign || "",
-          cUtmTerm: utmTerm || "",
-          cUtmContent: utmContent || "",
-          cIpAddress: ipAddress,
-        }),
-      }
-    );
-
-    clearTimeout(timeout);
-
-    if (espoResponse.status < 200 || espoResponse.status >= 300) {
-      const errorText = await espoResponse.text().catch(() => "No response body");
-      console.error("EspoCRM error:", espoResponse.status, errorText);
-
-      return new Response(
-        JSON.stringify({ error: "CRM error" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    return new Response(
-      JSON.stringify({ success: true }),
-      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
-
+    await createCrmLead({
+      name, email, phone: formattedPhone, reason, message: need ? `${message}\n\nNecesidad: ${need}` : message,
+      utmSource: stringValue(body.utmSource), utmMedium: stringValue(body.utmMedium),
+      utmCampaign: stringValue(body.utmCampaign), utmTerm: stringValue(body.utmTerm),
+      utmContent: stringValue(body.utmContent), landing: stringValue(body.landing),
+    });
+    return jsonResponse({ success: true, route: "crm" });
   } catch (error) {
-    console.error("Server error:", error);
-
-    return new Response(
-      JSON.stringify({ error: "Server error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    console.error("Contact Odoo error:", error);
+    return jsonResponse({ error: "Server error" }, 500);
   }
 };
-
