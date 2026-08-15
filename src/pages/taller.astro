@@ -2,149 +2,20 @@
 import FormLayout from "../layouts/FormLayout.astro";
 import Hero from "../components/hero.astro";
 ---
-
 <FormLayout title="Servicio Técnico | Airsoft Nation">
-
   <Hero />
-
-  <section class="contact-container">
-
-    <h1 class="form-title">Servicio Técnico</h1>
-    <p class="subtitle">
-      Envíanos los datos de tu réplica y crearemos tu orden de trabajo.
-    </p>
-
-    <form id="ticket-form" class="form-grid" novalidate>
-
-      <!-- Honeypot anti-spam (oculto) -->
-      <input type="text" name="company" class="hidden-field" autocomplete="off" />
-
-      <!-- Datos cliente -->
-      <input type="text" name="name" placeholder="Nombre y apellidos" required />
-      <input type="tel" name="phone" placeholder="Teléfono (+34660000000)" required />
-      <input type="email" name="email" placeholder="Email" required />
-
-      <!-- Tipo de servicio -->
-      <select name="serviceType" required>
-        <option value="">Tipo de servicio</option>
-        <option value="Reparación">Reparación</option>
-        <option value="Upgrade">Upgrade</option>
-        <option value="Mantenimiento">Mantenimiento</option>
-        <option value="Diagnóstico">Diagnóstico</option>
-        <option value="Garantía">Garantía</option>
-        <option value="Consulta">Consulta</option>
-      </select>
-
-      <!-- Datos réplica -->
-      <select name="brand" required>
-        <option value="">Marca de la réplica</option>
-        <option value="Tokyo Marui">Tokyo Marui</option>
-        <option value="Specna Arms">Specna Arms</option>
-        <option value="VFC">VFC</option>
-        <option value="G&G">G&G</option>
-        <option value="ICS">ICS</option>
-        <option value="LCT">LCT</option>
-        <option value="E&L">E&L</option>
-        <option value="Cyma">Cyma</option>
-        <option value="Ares">Ares</option>
-        <option value="KWA">KWA</option>
-        <option value="WE">WE</option>
-        <option value="Krytac">Krytac</option>
-        <option value="Classic Army">Classic Army</option>
-        <option value="Umarex">Umarex</option>
-        <option value="ASG">ASG</option>
-        <option value="Arcturus">Arcturus</option>
-        <option value="Double Eagle">Double Eagle</option>
-        <option value="Otra">Otra</option>
-      </select>
-
-      <input type="text" name="model" placeholder="Modelo (ej: M4 / AR15)" />
-      <input type="text" name="serialNumber" placeholder="Número de serie" />
-
-      <textarea
-        name="message"
-        placeholder="Describe el problema o servicio que necesitas"
-        required
-      ></textarea>
-
-      <!-- Privacidad -->
-      <label class="privacy">
-        <input type="checkbox" id="privacy-check" required />
-        <span>
-          He leído y acepto la
-          <a href="https://airsoftnation.eu/politica-de-privacidad/" target="_blank">
-            política de privacidad
-          </a>
-        </span>
-      </label>
-
-      <button type="button" id="ticket-submit" class="btn-submit">
-        Crear orden de servicio
-      </button>
-
-      <p id="form-message" class="form-message"></p>
-
-    </form>
-
+  <section class="workshop-wrapper">
+    <div class="workshop-header">
+      <h1>Servicio Técnico Airsoft Nation</h1>
+      <p>Reparación, mantenimiento, diagnóstico, garantías y upgrades para tu réplica.</p>
+    </div>
+    <div class="workshop-card">
+      <h2>Cuéntanos qué necesita tu réplica</h2>
+      <p>Usamos un único formulario para recoger tus datos y enviarlos directamente al flujo de Taller. Si el trabajo requiere diagnóstico y presupuesto, mantenemos el proceso operativo habitual del servicio técnico.</p>
+      <a class="cta" href="/contacto-form?motivo=workshop">Solicitar servicio técnico</a>
+    </div>
   </section>
-
 </FormLayout>
-
 <style>
-.hidden-field {
-  display: none;
-}
-
-.contact-container {
-  max-width: 520px;
-  margin: 0 auto;
-  padding: 2rem 1rem 3rem;
-}
-
-.form-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border-radius: 6px;
-  border: none;
-  font-size: 0.95rem;
-}
-
-textarea {
-  min-height: 120px;
-  resize: vertical;
-}
-
-.privacy {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-}
-
-.btn-submit {
-  background: #ffffff;
-  color: #000;
-  padding: 0.8rem;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.form-message.success {
-  color: #3ddc84;
-}
-
-.form-message.error {
-  color: #ff6b6b;
-}
+.workshop-wrapper{max-width:760px;margin:0 auto;padding:40px 20px 60px}.workshop-header{margin-bottom:28px}.workshop-header h1{font-size:1.9rem;margin-bottom:8px}.workshop-header p,.workshop-card p{opacity:.8;line-height:1.6}.workshop-card{padding:26px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.04)}.workshop-card h2{margin:0 0 10px;font-size:1.25rem}.cta{display:inline-block;margin-top:14px;padding:12px 16px;border-radius:8px;background:#fff;color:#111;text-decoration:none;font-weight:600}
 </style>
-
-<script src="/scripts/taller.js" defer></script>

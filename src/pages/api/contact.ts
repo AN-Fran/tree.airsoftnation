@@ -1,8 +1,5 @@
 import type { APIRoute } from "astro";
-import {
-  createCrmLead,
-  createHelpdeskTicket,
-} from "../../lib/contact-odoo";
+import { createCrmLead, createWorkshopTicket } from "../../lib/contact-odoo";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -11,194 +8,79 @@ const corsHeaders = {
 };
 
 const VALID_REASONS = new Set([
-  "general",
-  "product_order",
-  "technical_service",
-  "hpa",
-  "events_fields",
-  "other",
+  "general", "product_order", "workshop", "upgrade_hpa", "quotation", "events_business", "other",
+  "technical_service", "hpa", "events_fields",
 ]);
+const WORKSHOP_SERVICE_TYPES = new Set(["Reparación", "Upgrade", "Mantenimiento", "Diagnóstico", "Garantía", "Consulta"]);
+const HPA_WORKSHOP_NEEDS = new Set(["installation", "technical_problem", "technical_quote"]);
 
-function jsonResponse(
-  body: Record<string, unknown>,
-  status = 200
-) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      ...corsHeaders,
-      "Content-Type": "application/json",
-    },
-  });
+function jsonResponse(body: Record<string, unknown>, status = 200) {
+  return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 }
+function stringValue(value: unknown) { return typeof value === "string" ? value.trim() : ""; }
 
-export const OPTIONS: APIRoute = async () => {
-  return new Response(null, {
-    status: 200,
-    headers: corsHeaders,
-  });
-};
+export const OPTIONS: APIRoute = async () => new Response(null, { status: 200, headers: corsHeaders });
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     let body: Record<string, unknown>;
-
     try {
-      body = await request.json();
-    } catch {
-      return jsonResponse(
-        { error: "Invalid JSON" },
-        400
-      );
-    }
+      const parsed: unknown = await request.json();
+      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return jsonResponse({ error: "Invalid JSON" }, 400);
+      body = parsed as Record<string, unknown>;
+    } catch { return jsonResponse({ error: "Invalid JSON" }, 400); }
 
-    const name =
-      typeof body.name === "string"
-        ? body.name.trim()
-        : "";
-
-    const email =
-      typeof body.email === "string"
-        ? body.email.trim()
-        : "";
-
-    const phone =
-      typeof body.phone === "string"
-        ? body.phone.trim()
-        : "";
-
-    const reason =
-      typeof body.reason === "string"
-        ? body.reason.trim()
-        : "";
-
-    const message =
-      typeof body.message === "string"
-        ? body.message.trim()
-        : "";
-
-    const company =
-      typeof body.company === "string"
-        ? body.company.trim()
-        : "";
-
+    const name = stringValue(body.name);
+    const email = stringValue(body.email).toLowerCase();
+    const phone = stringValue(body.phone);
+    const reason = stringValue(body.reason);
+    const need = stringValue(body.need);
+    const message = stringValue(body.message);
+    const company = stringValue(body.company);
     const consent = body.consent === true;
+    const serviceType = stringValue(body.serviceType);
+    const brand = stringValue(body.brand);
+    const model = stringValue(body.model);
+    const serialNumber = stringValue(body.serialNumber);
 
-    const marketingConsent =
-      body.marketingConsent === true;
-
-    const utmSource =
-      typeof body.utmSource === "string"
-        ? body.utmSource.trim()
-        : "";
-
-    const utmMedium =
-      typeof body.utmMedium === "string"
-        ? body.utmMedium.trim()
-        : "";
-
-    const utmCampaign =
-      typeof body.utmCampaign === "string"
-        ? body.utmCampaign.trim()
-        : "";
-
-    const utmTerm =
-      typeof body.utmTerm === "string"
-        ? body.utmTerm.trim()
-        : "";
-
-    const utmContent =
-      typeof body.utmContent === "string"
-        ? body.utmContent.trim()
-        : "";
-
-    if (company) {
-      return jsonResponse(
-        { error: "Spam detected" },
-        400
-      );
-    }
-
-    if (!name || !email || !message || !reason) {
-      return jsonResponse(
-        { error: "Missing required fields" },
-        400
-      );
-    }
-
-    if (!VALID_REASONS.has(reason)) {
-      return jsonResponse(
-        { error: "Invalid reason" },
-        400
-      );
-    }
-
-    if (!consent) {
-      return jsonResponse(
-        { error: "Consent required" },
-        400
-      );
-    }
-
-    if (message.length > 2000) {
-      return jsonResponse(
-        { error: "Message too long" },
-        400
-      );
-    }
-
-    const emailRegex =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      return jsonResponse(
-        { error: "Invalid email" },
-        400
-      );
-    }
+    if (company) return jsonResponse({ error: "Spam detected" }, 400);
+    if (!name || !email || !message || !reason) return jsonResponse({ error: "Missing required fields" }, 400);
+    if (!VALID_REASONS.has(reason)) return jsonResponse({ error: "Invalid reason" }, 400);
+    if (!consent) return jsonResponse({ error: "Consent required" }, 400);
+    if (message.length > 2000) return jsonResponse({ error: "Message too long" }, 400);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return jsonResponse({ error: "Invalid email" }, 400);
 
     let formattedPhone: string | null = null;
-
     if (phone) {
-      if (!/^\+[0-9]{8,15}$/.test(phone)) {
-        return jsonResponse(
-          { error: "Invalid phone" },
-          400
-        );
-      }
-
-      formattedPhone = phone;
+      const compactPhone = phone.replace(/[\s().-]/g, "").replace(/^00/, "+");
+      if (!/^\+[0-9]{8,15}$/.test(compactPhone)) return jsonResponse({ error: "Invalid phone" }, 400);
+      formattedPhone = compactPhone;
     }
 
-    const payload = {
-      name,
-      email,
-      phone: formattedPhone,
-      reason,
-      message,
-      utmSource,
-      utmMedium,
-      utmCampaign,
-      utmTerm,
-      utmContent,
-      marketingConsent,
-    };
+    const isWorkshop = reason === "workshop" || reason === "technical_service" || (reason === "upgrade_hpa" && HPA_WORKSHOP_NEEDS.has(need));
 
-    if (reason === "technical_service") {
-      await createHelpdeskTicket(payload);
-    } else {
-      await createCrmLead(payload);
+    if (isWorkshop) {
+      if (!formattedPhone || !brand) return jsonResponse({ error: "Workshop requires phone and brand" }, 400);
+      const resolvedServiceType = reason === "upgrade_hpa"
+        ? (need === "technical_problem" ? "Diagnóstico" : "Upgrade")
+        : serviceType;
+      if (!WORKSHOP_SERVICE_TYPES.has(resolvedServiceType)) return jsonResponse({ error: "Invalid workshop service type" }, 400);
+
+      const result = await createWorkshopTicket({
+        name, email, phone: formattedPhone, serviceType: resolvedServiceType, brand, model, serialNumber, message,
+      });
+      return jsonResponse({ success: true, route: "workshop", ticketId: result.ticketId, quotationId: result.quotationId });
     }
 
-    return jsonResponse({
-      success: true,
+    await createCrmLead({
+      name, email, phone: formattedPhone, reason, message: need ? `${message}\n\nNecesidad: ${need}` : message,
+      utmSource: stringValue(body.utmSource), utmMedium: stringValue(body.utmMedium),
+      utmCampaign: stringValue(body.utmCampaign), utmTerm: stringValue(body.utmTerm),
+      utmContent: stringValue(body.utmContent), landing: stringValue(body.landing),
     });
+    return jsonResponse({ success: true, route: "crm" });
   } catch (error) {
     console.error("Contact Odoo error:", error);
-
-    return jsonResponse(
-      { error: "Server error" },
-      500
-    );
+    return jsonResponse({ error: "Server error" }, 500);
   }
 };
