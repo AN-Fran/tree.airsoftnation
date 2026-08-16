@@ -91,6 +91,14 @@ export const hpaFactoryReplicas: HpaFactoryReplica[] = [
     evidenceStatus: "manufacturer_verified",
   },
   {
+    name: "Hybrid Series H-15 Carbine HPA",
+    manufacturer: "ASG",
+    format: "AR15 / M4",
+    summary: "Carabina HPA completa de la serie Hybrid H-15. ASG la equipa con motor Backdraft Innovations Phoenix, FCU inalámbrica y controles configurables, dentro de una plataforma de estética AR con chasis metálico.",
+    sourceUrl: "https://actionsportgames.com/hybrid-series-h-15-carbine-hpa-black-20248",
+    evidenceStatus: "manufacturer_verified",
+  },
+  {
     name: "CZ Scorpion EVO 3 A1 HPA",
     manufacturer: "ASG",
     format: "EVO / SMG",
