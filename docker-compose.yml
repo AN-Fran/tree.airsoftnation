@@ -1,0 +1,25 @@
+services:
+  tree_app:
+    container_name: tree_app
+    build: .
+    env_file:
+      - /opt/tree/.env
+    restart: unless-stopped
+
+    networks:
+      - proxy2
+      - airsoft_net
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tree.rule=Host(`tree.airsoftnation.eu`)"
+      - "traefik.http.routers.tree.entrypoints=websecure"
+      - "traefik.http.routers.tree.tls.certresolver=le"
+      - "traefik.http.services.tree.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy2"
+
+networks:
+  proxy2:
+    external: true
+  airsoft_net:
+    external: true
