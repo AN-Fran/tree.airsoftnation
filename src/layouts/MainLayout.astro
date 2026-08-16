@@ -4,8 +4,19 @@ import Footer from "../components/footer.astro";
 
 const {
   title = "Airsoft Nation",
-  description = "Comunidad, eventos y juego de airsoft."
+  description = "Comunidad, eventos y juego de airsoft.",
+  canonical,
+  image = "/logo_airsoft_nation.svg",
+  type = "website",
+  structuredData = []
 } = Astro.props;
+
+const siteUrl = "https://tree.airsoftnation.eu";
+const canonicalUrl = canonical
+  ? new URL(canonical, siteUrl).toString()
+  : undefined;
+const imageUrl = new URL(image, siteUrl).toString();
+const jsonLd = Array.isArray(structuredData) ? structuredData : [structuredData];
 ---
 
 <!DOCTYPE html>
@@ -19,7 +30,25 @@ const {
 
   <title>{title}</title>
   <meta name="description" content={description} />
-  {Astro.head}
+  {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:site_name" content="Airsoft Nation" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content={type} />
+  <meta property="og:image" content={imageUrl} />
+  {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={imageUrl} />
+
+  {jsonLd.map((data) => (
+    <script type="application/ld+json" set:html={JSON.stringify(data)} />
+  ))}
+  <slot name="head" />
 
   <!-- PWA -->
   <link rel="manifest" href="/manifest.json" />
