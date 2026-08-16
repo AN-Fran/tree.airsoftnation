@@ -20,7 +20,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: "https://tree.airsoftnation.eu/" },
     { "@type": "ListItem", position: 2, name: "HPA", item: "https://tree.airsoftnation.eu/hpa/" },
-    { "@type": "ListItem", position: 3, name: "Engines", item: "https://tree.airsoftnation.eu/hpa/guia/" },
+    { "@type": "ListItem", position: 3, name: "Engines", item: "https://tree.airsoftnation.eu/hpa/engines/" },
     { "@type": "ListItem", position: 4, name: "Bolt abierto, cerrado e híbrido", item: canonical },
   ],
 };
@@ -28,7 +28,7 @@ const breadcrumbSchema = {
 
 <MainLayout title={title} description={description} canonical={canonical} image="/icons/icon-512.png" type="article" structuredData={[articleSchema, breadcrumbSchema]}>
   <article class="bolt-guide">
-    <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/hpa/guia/">Guía HPA</a><span>/</span><span>Tipos de bolt</span></nav>
+    <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/hpa/guia/">Guía HPA</a><span>/</span><a href="/hpa/engines/">Engines</a><span>/</span><span>Tipos de bolt</span></nav>
     <header>
       <p class="eyebrow">Ciclo del engine</p>
       <h1>Bolt abierto, cerrado o híbrido</h1>
@@ -88,7 +88,7 @@ const breadcrumbSchema = {
     <aside>La clasificación ayuda a elegir y ajustar, pero no sustituye una prueba reproducible. Las futuras fichas de engine indicarán ciclo, secuencia disponible y resultados medidos por separado.</aside>
 
     <footer>
-      <a href="https://www.wolverineairsoft.com/inferno/" target="_blank" rel="noopener noreferrer">Tecnología INFERNO oficial ↗</a>
+      <a href="/hpa/engines/">Comparar los cuatro engines</a>
       <a href="/contacto-form?motivo=upgrade_hpa">Consultar una build HPA</a>
     </footer>
   </article>

@@ -1,0 +1,88 @@
+---
+import MainLayout from "../../../layouts/MainLayout.astro";
+import { evidenceLabels, hpaEngines, type HpaEngine } from "../../../data/hpa-products";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return hpaEngines.map((engine) => ({ params: { slug: engine.slug }, props: { engine } }));
+}
+
+const { engine } = Astro.props as { engine: HpaEngine };
+const canonical = `https://tree.airsoftnation.eu${engine.route}`;
+const title = `${engine.name}: ficha del engine HPA | Airsoft Nation`;
+const description = `${engine.name}: funcionamiento, ciclo ${engine.cycle.toLowerCase()}, datos oficiales y comprobaciones antes de instalarlo en una build HPA.`;
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: `${engine.name}: ficha del engine HPA`,
+  description,
+  mainEntityOfPage: canonical,
+  image: engine.imageUrl,
+  inLanguage: "es",
+  about: { "@type": "Product", name: engine.name, brand: engine.manufacturer },
+  author: { "@type": "Organization", name: "Airsoft Nation" },
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://tree.airsoftnation.eu/" },
+    { "@type": "ListItem", position: 2, name: "HPA", item: "https://tree.airsoftnation.eu/hpa/" },
+    { "@type": "ListItem", position: 3, name: "Engines HPA", item: "https://tree.airsoftnation.eu/hpa/engines/" },
+    { "@type": "ListItem", position: 4, name: engine.name, item: canonical },
+  ],
+};
+---
+
+<MainLayout title={title} description={description} canonical={canonical} image={engine.imageUrl} type="article" structuredData={[articleSchema, breadcrumbSchema]}>
+  <article class="sheet">
+    <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/hpa/guia/">Guía HPA</a><span>/</span><a href="/hpa/engines/">Engines</a><span>/</span><span>{engine.name}</span></nav>
+    <header>
+      <p class="eyebrow">{engine.manufacturer}</p>
+      <h1>{engine.name}</h1>
+      <div class="tags"><span>{engine.cycle}</span><span>{engine.solenoids}</span></div>
+      <a class="hero-image" href={engine.destinationUrl} target="_blank" rel="noopener noreferrer">
+        <img src={engine.imageUrl} alt={engine.imageAlt} />
+        <span>{engine.destinationLabel} ↗</span>
+      </a>
+    </header>
+
+    <section>
+      <code>{engine.evidenceStatus}</code>
+      <h2>Qué es</h2>
+      <p>{engine.summary}</p>
+    </section>
+
+    <section>
+      <h2>Datos publicados</h2>
+      <dl class="facts">
+        {engine.facts.map((fact) => <div><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}
+      </dl>
+      <p class="note">Son límites o resultados del fabricante, no una promesa para cualquier réplica. La energía, cadencia y consumo cambian con la instalación y los ajustes.</p>
+    </section>
+
+    <section>
+      <h2>Qué permite priorizar</h2>
+      <ul>{engine.whatItPrioritizes.map((item) => <li>{item}</li>)}</ul>
+    </section>
+
+    <section>
+      <h2>Antes de elegirlo</h2>
+      <ul>{engine.checkBeforeBuying.map((item) => <li>{item}</li>)}</ul>
+    </section>
+
+    <section class="evidence">
+      <h2>Estado de la evidencia</h2>
+      <p><strong>{evidenceLabels[engine.evidenceStatus]}.</strong> Esta ficha resume la página de producto, el manual o la ayuda oficial. No está marcada como <code>airsoftnation_tested</code> porque todavía no incorpora un protocolo propio de banco y cronógrafo.</p>
+      <a href={engine.sourceUrl} target="_blank" rel="noopener noreferrer">Consultar fuente oficial ↗</a>
+    </section>
+
+    <aside>Instala y ajusta siempre con el manual vigente, regulador compatible y cronógrafo. No superes la presión máxima publicada para el engine.</aside>
+    <nav class="next"><a href="/hpa/engines/">‹ Ver todos los engines</a><a href="/contacto-form?motivo=upgrade_hpa">Consultar una build</a></nav>
+  </article>
+</MainLayout>
+
+<style>
+.sheet{max-width:720px;margin:0 auto;padding-bottom:46px}.breadcrumbs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:26px;color:var(--text-muted);font-size:.73rem}.eyebrow{margin:0 0 8px;color:#6ee7d1;font-size:.71rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.sheet h1{font-size:clamp(2rem,10vw,3.1rem);line-height:1.05}.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.tags span{padding:5px 8px;border-radius:999px;background:rgba(0,184,148,.12);color:#8ce9d9;font-size:.69rem}.hero-image{position:relative;display:block;aspect-ratio:16/9;margin-top:18px;border-radius:14px;overflow:hidden;background:#eef1f3}.hero-image img{width:100%;height:100%;object-fit:contain;padding:10px}.hero-image span{position:absolute;left:10px;bottom:10px;padding:7px 9px;border-radius:7px;background:rgba(6,22,48,.92);font-size:.7rem;font-weight:600}.sheet section{margin-top:32px}.sheet section>code{display:inline-block;margin-bottom:10px;color:#6ee7d1;font-size:.68rem}.sheet h2{font-size:1.35rem;margin-bottom:12px}.sheet p,.sheet li{color:var(--text-soft);line-height:1.65}.sheet ul{padding-left:20px}.sheet li+li{margin-top:8px}.facts{display:grid;gap:8px}.facts div{display:grid;gap:3px;padding:12px;border:1px solid var(--border-soft);border-radius:10px;background:rgba(255,255,255,.025)}.facts dt{color:var(--text-muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.04em}.facts dd{margin:0;font-size:.88rem;font-weight:600}.note{margin-top:10px;font-size:.76rem}.evidence{padding:17px;border:1px solid var(--border-soft);border-radius:12px}.evidence code{color:#6ee7d1;overflow-wrap:anywhere}.evidence a{display:inline-block;margin-top:12px;color:#6ee7d1;font-size:.82rem;font-weight:600}.sheet aside{margin-top:24px;padding:15px;border-left:3px solid #6ee7d1;background:rgba(0,184,148,.08);color:var(--text-soft);font-size:.8rem;line-height:1.55}.next{display:grid;gap:9px;margin-top:28px}.next a{padding:12px 14px;border:1px solid var(--border-soft);border-radius:9px;text-align:center;font-size:.82rem}.next a:last-child{background:var(--primary);border-color:var(--primary);font-weight:600}@media(min-width:560px){.facts{grid-template-columns:1fr 1fr}.next{grid-template-columns:1fr 1fr}}
+</style>
