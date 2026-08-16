@@ -1,43 +1,98 @@
-# Astro Starter Kit: Minimal
+# Airsoft Nation Tree
+
+Astro application for `tree.airsoftnation.eu`, including the unified contact routing to Odoo and the authenticated contact-flow healthcheck used by Uptime Kuma.
+
+## Runtime
+
+- Node.js 20
+- Astro with `@astrojs/node`
+- Docker Compose
+- Traefik on the external `proxy2` network
+- Odoo connectivity through the API credentials supplied at runtime
+
+## Local build
 
 ```sh
-npm create astro@latest -- --template minimal
+npm ci
+npm run build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Never commit environment files. `.env` and `.env.production` are intentionally ignored.
 
-## 🚀 Project Structure
+## Production layout
 
-Inside of your Astro project, you'll see the following folders and files:
+The Git repository is maintained at:
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+/root/tree_airsoftnation_repo
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+The running deployment is a separate copy at:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```text
+/opt/tree
+```
 
-Any static assets, like images, can be placed in the `public/` directory.
+Production secrets live only in:
 
-## 🧞 Commands
+```text
+/opt/tree/.env
+```
 
-All commands are run from the root of the project, from a terminal:
+`docker-compose.yml` explicitly loads that file. Do not point production at a `.env` inside the Git working copy.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Required runtime variables currently include the Odoo credentials, Brevo configuration and `KUMA_HEALTH_TOKEN`.
 
-## 👀 Want to learn more?
+## Production deployment
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+After a change has been merged to `main`, deploy from the repository working copy:
+
+```sh
+cd /root/tree_airsoftnation_repo
+sh scripts/deploy-production.sh
+```
+
+The script:
+
+1. updates local `main` using fast-forward only;
+2. synchronizes the repository into `/opt/tree` while preserving `/opt/tree/.env`;
+3. validates the Compose configuration;
+4. builds and recreates `tree_app`;
+5. checks the authenticated Tree/Odoo health endpoint.
+
+A deployment is not considered complete until the healthcheck returns successfully.
+
+## Healthcheck
+
+Endpoint:
+
+```text
+GET https://tree.airsoftnation.eu/api/health/contact
+```
+
+It requires:
+
+```text
+Authorization: Bearer <KUMA_HEALTH_TOKEN>
+```
+
+A valid request returns HTTP 200 and reports the `tree-contact` service plus Odoo status. Requests without the token must return HTTP 401.
+
+Uptime Kuma should send the same bearer token in its HTTP monitor and alert through the configured Discord notification channel.
+
+## Operational checks
+
+```sh
+cd /opt/tree
+
+docker compose ps tree_app
+docker compose logs --tail=200 tree_app
+```
+
+For contact-flow observability:
+
+```sh
+docker compose logs --tail=200 tree_app | grep 'contact\.'
+```
+
+Expected successful events include `contact.accepted` followed by `contact.completed`.
