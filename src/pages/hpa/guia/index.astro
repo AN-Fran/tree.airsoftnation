@@ -1,25 +1,20 @@
 ---
 import MainLayout from "../../../layouts/MainLayout.astro";
-import { evidenceLabels, hpaFactoryReplicas, hpaProducts } from "../../../data/hpa-products";
+import { evidenceLabels } from "../../../data/hpa-products";
 
-const title = "Guía HPA airsoft: sistemas, fusiles y reguladores | Airsoft Nation";
-const description = "Guía para entender el HPA en airsoft, conocer los fusiles Wolverine MTW y ASG de serie, elegir componentes y distinguir datos verificados de experiencias.";
+const title = "Guía HPA airsoft: empieza por aquí | Airsoft Nation";
+const description = "Índice móvil para entender el HPA en airsoft: componentes, fusiles HPA de fábrica, reguladores SLP y fichas técnicas con fuentes identificadas.";
 const canonical = "https://tree.airsoftnation.eu/hpa/guia/";
-const engines = hpaProducts.filter(({ category }) => category === "engine");
-const regulators = hpaProducts.filter(({ category }) => category === "regulator");
-
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "Guía HPA airsoft: sistemas, fusiles y reguladores",
+  headline: "Guía HPA airsoft: empieza por aquí",
   description,
   mainEntityOfPage: canonical,
   inLanguage: "es",
   author: { "@type": "Organization", name: "Airsoft Nation", url: "https://tree.airsoftnation.eu/" },
-  publisher: { "@type": "Organization", name: "Airsoft Nation", url: "https://tree.airsoftnation.eu/", logo: { "@type": "ImageObject", url: "https://tree.airsoftnation.eu/logo_airsoft_nation.svg" } },
-  about: ["HPA airsoft", "fusiles HPA de serie", "Wolverine MTW", "ASG H-15 HPA", "ASG CZ Scorpion EVO HPA", "HPA engines", "reguladores HPA"],
+  publisher: { "@type": "Organization", name: "Airsoft Nation", url: "https://tree.airsoftnation.eu/" },
 };
-
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -31,132 +26,47 @@ const breadcrumbSchema = {
 };
 ---
 
-<MainLayout
-  title={title}
-  description={description}
-  canonical={canonical}
-  image="/icons/icon-512.png"
-  type="article"
-  structuredData={[articleSchema, breadcrumbSchema]}
->
-  <article class="knowledge-guide">
-    <nav class="breadcrumbs" aria-label="Migas de pan">
-      <a href="/">Inicio</a><span aria-hidden="true">/</span><a href="/hpa/">HPA</a><span aria-hidden="true">/</span><span>Guía</span>
-    </nav>
-
-    <header class="guide-hero">
+<MainLayout title={title} description={description} canonical={canonical} image="/icons/icon-512.png" type="article" structuredData={[articleSchema, breadcrumbSchema]}>
+  <article class="hub">
+    <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span>/</span><a href="/hpa/">HPA</a><span>/</span><span>Guía</span></nav>
+    <header>
       <p class="eyebrow">HPA Knowledge</p>
-      <h1>Guía HPA para airsoft</h1>
-      <p class="lead">Qué piezas forman un sistema HPA, qué debes valorar antes de elegir y cómo separaremos los datos comprobados de las experiencias todavía no verificadas.</p>
+      <h1>HPA, sin perderte</h1>
+      <p class="lead">Una entrada rápida al sistema. Cada tema y cada réplica se desarrolla en su propia página para que resulte cómodo consultarlo desde el móvil.</p>
     </header>
 
-    <nav class="toc" aria-label="Contenido de la guía">
-      <strong>En esta guía</strong>
-      <a href="#que-es-hpa">Qué es HPA</a>
-      <a href="#componentes">Componentes</a>
-      <a href="#como-elegir">Cómo elegir</a>
-      <a href="#replicas-de-serie">Fusiles HPA de serie</a>
-      <a href="#productos">Engines y reguladores</a>
-      <a href="#metodologia">Cómo verificamos</a>
-    </nav>
-
-    <section id="que-es-hpa">
-      <h2>Qué es un sistema HPA en airsoft</h2>
-      <p>Un sistema HPA utiliza aire comprimido como fuente de energía. Su funcionamiento depende del conjunto completo: engine, regulador, botella, línea y configuración. Por eso una elección responsable no puede reducirse a comparar una sola cifra o una afirmación comercial.</p>
-      <p>Esta guía ofrece el marco general. Las futuras fichas profundizarán en instalación, compatibilidad, mantenimiento, comportamiento y diagnóstico de cada producto cuando existan fuentes suficientes.</p>
+    <section class="basics">
+      <h2>El sistema en cuatro piezas</h2>
+      <ol>
+        <li><strong>Botella</strong><span>Almacena el aire comprimido.</span></li>
+        <li><strong>Regulación</strong><span>Reduce la presión en etapas compatibles.</span></li>
+        <li><strong>Línea</strong><span>Conduce el aire hasta la réplica.</span></li>
+        <li><strong>Engine</strong><span>Dosifica el aire que impulsa la bola.</span></li>
+      </ol>
     </section>
 
-    <section id="componentes">
-      <h2>Componentes principales</h2>
-      <div class="concept-grid">
-        <div><h3>Engine</h3><p>Es el mecanismo neumático que sustituye o integra el sistema interno de disparo. Su elección debe partir de la réplica, el tipo de uso y la instalación prevista.</p></div>
-        <div><h3>Regulador</h3><p>Reduce y gestiona la presión que llega desde la botella. Debe evaluarse como parte de un conjunto compatible y seguro.</p></div>
-        <div><h3>Botella y línea</h3><p>Almacenan y conducen el aire. Conexiones, estado, montaje y mantenimiento influyen en la fiabilidad del sistema completo.</p></div>
+    <section class="paths" aria-label="Temas HPA">
+      <a href="/hpa/fusiles/">
+        <span class="icon" aria-hidden="true">01</span><span><strong>Fusiles HPA de fábrica</strong><small>Wolverine MTW y ASG, una ficha por modelo.</small></span><b aria-hidden="true">›</b>
+      </a>
+      <a href="/hpa/reguladores/slp-vs-estandar/">
+        <span class="icon" aria-hidden="true">02</span><span><strong>SLP frente a estándar</strong><small>Qué presión entrega cada botella y qué acepta el regulador.</small></span><b aria-hidden="true">›</b>
+      </a>
+      <div class="planned">
+        <span class="icon" aria-hidden="true">03</span><span><strong>Engines y reguladores</strong><small>Fichas individuales en preparación.</small></span>
       </div>
     </section>
 
-    <section id="como-elegir">
-      <h2>Cómo elegir un sistema HPA</h2>
-      <p>Antes de comparar modelos, define el punto de partida: réplica, espacio disponible, modalidad de juego, expectativas de respuesta, mantenimiento asumible y presupuesto total. Después confirma compatibilidad e instalación con documentación vigente o con un técnico.</p>
-      <ul>
-        <li><strong>Compatibilidad:</strong> plataforma, gearbox, nozzle, electrónica, conexiones y montaje.</li>
-        <li><strong>Uso real:</strong> semiautomático, automático cuando sea legal y permitido, cadencia esperada y autonomía.</li>
-        <li><strong>Consistencia:</strong> estabilidad y recuperación del conjunto bajo condiciones repetibles.</li>
-        <li><strong>Servicio:</strong> acceso a repuestos, mantenimiento, soporte e instalación.</li>
-      </ul>
-      <aside class="notice">Los límites de potencia y las reglas de juego dependen de la normativa y del campo. Comprueba siempre las condiciones aplicables antes de configurar o usar una réplica.</aside>
+    <section class="evidence">
+      <h2>Cómo leer las fichas</h2>
+      <p><code>manufacturer_verified</code> — {evidenceLabels.manufacturer_verified}. Las pruebas propias usarán <code>airsoftnation_tested</code>; las experiencias sin verificar, <code>community_reported</code>.</p>
+      <p>No publicamos una especificación si no podemos atribuirla. Tampoco usamos una presión universal por rol: el ajuste depende del conjunto, la energía medida y las reglas aplicables.</p>
     </section>
 
-    <section id="replicas-de-serie">
-      <h2>Fusiles y réplicas HPA de serie</h2>
-      <p>Una réplica HPA de fábrica no es simplemente una AEG a la que se le ha instalado un engine. El fabricante diseña el conjunto alrededor del sistema neumático, lo que permite integrar la alineación, la alimentación, la electrónica y los controles desde el origen.</p>
-
-      <h3 class="brand-heading">Wolverine Airsoft MTW</h3>
-      <p>MTW significa <em>Modular Training Weapon</em>. Es una arquitectura propia construida alrededor de HPA, con diferentes formatos y acabados. Los nombres X, B y R de algunas variantes indican respectivamente INFERNO XTS, control BLINC y retroceso QUAKE; por eso conviene confirmar siempre el acabado exacto y no atribuir las mismas características a toda la familia.</p>
-      <div class="replica-grid">
-        {hpaFactoryReplicas.filter(({ manufacturer }) => manufacturer === "Wolverine Airsoft").map((replica) => (
-          <details class="replica-card">
-            <summary><span><strong>{replica.name}</strong><small>{replica.format}</small></span><i aria-hidden="true"></i></summary>
-            <div class="replica-body">
-              <code>{replica.evidenceStatus}</code>
-              <p>{replica.summary}</p>
-              <a href={replica.sourceUrl} target="_blank" rel="noopener noreferrer">Fuente oficial de Wolverine <span aria-hidden="true">↗</span></a>
-            </div>
-          </details>
-        ))}
-      </div>
-
-      <h3 class="brand-heading">ASG H-15 y CZ Scorpion EVO HPA</h3>
-      <p>ASG publica actualmente dos réplicas HPA completas: la carabina Hybrid Series H-15 y el CZ Scorpion EVO 3 A1. Este último debe distinguirse tanto de los EVO AEG como del kit oficial para convertir un EVO eléctrico existente.</p>
-      <div class="replica-grid">
-        {hpaFactoryReplicas.filter(({ manufacturer }) => manufacturer === "ASG").map((replica) => (
-          <details class="replica-card featured">
-            <summary><span><strong>{replica.name}</strong><small>{replica.format}</small></span><i aria-hidden="true"></i></summary>
-            <div class="replica-body">
-              <code>{replica.evidenceStatus}</code>
-              <p>{replica.summary}</p>
-              <a href={replica.sourceUrl} target="_blank" rel="noopener noreferrer">Fuente oficial de ASG <span aria-hidden="true">↗</span></a>
-            </div>
-          </details>
-        ))}
-      </div>
-      <aside class="notice">“De serie” significa que la réplica se comercializa ya configurada como HPA. No significa que incluya necesariamente botella, regulador externo, línea o todos los accesorios necesarios para jugar; hay que revisar el contenido de cada referencia y mercado.</aside>
-    </section>
-
-    <section id="productos">
-      <h2>Arquitectura inicial de fichas HPA</h2>
-      <p>Este es el alcance editorial de la primera fase. Los nombres identifican las fichas previstas; no implican todavía una valoración ni publican especificaciones.</p>
-      <div class="product-columns">
-        <details class="product-group">
-          <summary><strong>Engines</strong><span>{engines.length} fichas previstas</span></summary>
-          <ul class="product-list">{engines.map((product) => <li><span>{product.name}</span><small>Ficha en preparación</small></li>)}</ul>
-        </details>
-        <details class="product-group">
-          <summary><strong>Reguladores</strong><span>{regulators.length} fichas previstas</span></summary>
-          <ul class="product-list">{regulators.map((product) => <li><span>{product.name}</span><small>Ficha en preparación</small></li>)}</ul>
-        </details>
-      </div>
-    </section>
-
-    <section id="metodologia">
-      <h2>Cómo distinguimos cada afirmación</h2>
-      <p>Cada dato técnico o conclusión de las futuras fichas llevará una procedencia visible. Una afirmación puede cambiar de estado cuando aparezca documentación nueva o se complete una prueba reproducible.</p>
-      <dl class="evidence-list">
-        <div><dt><code>manufacturer_verified</code></dt><dd><strong>{evidenceLabels.manufacturer_verified}.</strong> Procede de documentación oficial identificable y vigente.</dd></div>
-        <div><dt><code>airsoftnation_tested</code></dt><dd><strong>{evidenceLabels.airsoftnation_tested}.</strong> Resultado obtenido mediante un protocolo documentado, con condiciones y límites de la prueba.</dd></div>
-        <div><dt><code>community_reported</code></dt><dd><strong>{evidenceLabels.community_reported}.</strong> Experiencia útil como pista, pero no tratada como hecho hasta poder contrastarla.</dd></div>
-      </dl>
-      <p>Si un dato no puede atribuirse con claridad, no se publicará como especificación. Las comparativas explicarán además qué se midió, con qué montaje y bajo qué condiciones.</p>
-    </section>
-
-    <section class="commercial-cta">
-      <h2>¿Necesitas ayuda con tu configuración?</h2>
-      <p>La guía es informativa. Para valorar una instalación concreta, cuéntanos qué réplica tienes y qué objetivo buscas.</p>
-      <a href="/contacto-form?motivo=upgrade_hpa">Solicitar asesoramiento HPA</a>
-    </section>
+    <aside>Antes de usar o ajustar una réplica, confirma compatibilidad, manual vigente, energía real con cronógrafo y límites del campo.</aside>
   </article>
 </MainLayout>
 
 <style>
-.knowledge-guide{max-width:760px;margin:0 auto;padding:18px 2px 50px}.breadcrumbs{display:flex;flex-wrap:wrap;gap:8px;color:var(--text-muted);font-size:.78rem;margin-bottom:28px}.breadcrumbs a:hover{text-decoration:underline}.guide-hero{padding-bottom:28px;border-bottom:1px solid var(--border-soft)}.eyebrow{margin:0 0 10px;color:#6ee7d1;font-size:.75rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase}.guide-hero h1{font-size:clamp(2rem,8vw,3.3rem);line-height:1.05;letter-spacing:.01em}.lead{margin-top:16px;font-size:1.05rem;line-height:1.7}.toc{display:grid;gap:10px;margin:24px 0;padding:18px;border:1px solid var(--border-soft);border-radius:12px;background:var(--bg-card)}.toc strong{font-family:var(--font-title);letter-spacing:.04em}.toc a{color:#6ee7d1;font-size:.9rem}.knowledge-guide section{scroll-margin-top:20px;margin-top:42px}.knowledge-guide h2{font-size:1.55rem;margin-bottom:14px}.knowledge-guide h3{font-size:1.08rem;margin-bottom:8px}.knowledge-guide p,.knowledge-guide li,.knowledge-guide dd{line-height:1.7}.knowledge-guide section>p+p{margin-top:12px}.knowledge-guide ul:not(.product-list){padding-left:22px;color:var(--text-soft)}.knowledge-guide li+li{margin-top:8px}.concept-grid,.product-columns,.replica-grid{display:grid;gap:10px}.concept-grid>div,.product-group,.replica-card{border:1px solid var(--border-soft);border-radius:12px;background:rgba(255,255,255,.025)}.concept-grid>div{padding:18px}.brand-heading{margin-top:26px!important;font-size:1.25rem!important}.replica-grid{margin-top:14px}.replica-card{overflow:hidden}.replica-card summary,.product-group summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;list-style:none}.replica-card summary::-webkit-details-marker,.product-group summary::-webkit-details-marker{display:none}.replica-card summary span{display:grid;gap:3px}.replica-card summary strong{font-family:var(--font-title);font-size:1rem;letter-spacing:.03em}.replica-card summary small{color:var(--text-muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em}.replica-card summary i{width:9px;height:9px;border-right:2px solid #6ee7d1;border-bottom:2px solid #6ee7d1;transform:rotate(45deg);transition:transform .2s}.replica-card[open] summary i{transform:rotate(225deg)}.replica-body{padding:0 16px 16px;border-top:1px solid var(--border-soft)}.replica-body code{display:inline-block;margin-top:14px;color:#6ee7d1;font-size:.66rem}.replica-body p{margin-top:8px;font-size:.9rem}.replica-body a{display:inline-block;margin-top:10px;color:#6ee7d1;font-size:.82rem;font-weight:600}.replica-body a:hover{text-decoration:underline}.replica-card.featured{border-color:rgba(0,184,148,.45);background:rgba(0,184,148,.06)}.notice{margin-top:20px;padding:16px;border-left:3px solid #6ee7d1;background:rgba(0,184,148,.08);color:var(--text-soft);line-height:1.6}.product-group{overflow:hidden}.product-group summary strong{font-family:var(--font-title)}.product-group summary span{color:var(--text-muted);font-size:.74rem}.product-list{list-style:none;margin:0;padding:0 16px 10px;border-top:1px solid var(--border-soft)}.product-list li{display:flex;flex-direction:column;gap:2px;padding:9px 0;border-bottom:1px solid var(--border-soft)}.product-list li:last-child{border-bottom:0}.product-list small{color:var(--text-muted)}.evidence-list{display:grid;gap:12px}.evidence-list>div{padding:16px;border:1px solid var(--border-soft);border-radius:10px}.evidence-list dt{margin-bottom:8px}.evidence-list code{color:#6ee7d1;overflow-wrap:anywhere}.evidence-list dd{margin:0;color:var(--text-soft)}.commercial-cta{padding:22px;border:1px solid rgba(0,184,148,.45);border-radius:14px;background:rgba(0,184,148,.08)}.commercial-cta a{display:inline-block;margin-top:16px;padding:12px 16px;border-radius:8px;background:var(--primary);font-weight:600}.commercial-cta p{margin-top:0!important}@media(min-width:640px){.concept-grid{grid-template-columns:repeat(3,1fr)}.product-columns,.replica-grid{grid-template-columns:1fr 1fr}}
+.hub{max-width:720px;margin:0 auto;padding-bottom:44px}.breadcrumbs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:28px;color:var(--text-muted);font-size:.76rem}.breadcrumbs a:hover{text-decoration:underline}.eyebrow{margin:0 0 9px;color:#6ee7d1;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}.hub h1{font-size:clamp(2.15rem,11vw,3.4rem);line-height:1;margin:0}.lead{margin-top:15px;color:var(--text-soft);font-size:1rem;line-height:1.65}.hub section{margin-top:34px}.hub h2{font-size:1.35rem;margin-bottom:14px}.basics ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}.basics li{display:grid;gap:3px;padding:13px;border:1px solid var(--border-soft);border-radius:11px;background:rgba(255,255,255,.025)}.basics strong{font-family:var(--font-title)}.basics span{color:var(--text-muted);font-size:.76rem;line-height:1.45}.paths{display:grid;gap:10px}.paths>a,.planned{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--border-soft);border-radius:12px;background:var(--bg-card)}.paths>a:hover{border-color:#6ee7d1}.paths>a>span:nth-child(2),.planned>span:nth-child(2){display:grid;gap:3px;flex:1}.paths strong{font-family:var(--font-title);font-size:1rem}.paths small{color:var(--text-muted);line-height:1.4}.paths b{color:#6ee7d1;font-size:1.7rem}.icon{display:grid;place-items:center;flex:0 0 36px;height:36px;border-radius:50%;background:rgba(0,184,148,.13);color:#6ee7d1;font:600 .72rem var(--font-title)}.planned{opacity:.75}.evidence{padding:18px;border:1px solid var(--border-soft);border-radius:12px}.evidence p{color:var(--text-soft);font-size:.86rem;line-height:1.65}.evidence p+p{margin-top:10px}.evidence code{color:#6ee7d1;overflow-wrap:anywhere}.hub aside{margin-top:24px;padding:15px;border-left:3px solid #6ee7d1;background:rgba(0,184,148,.08);color:var(--text-soft);font-size:.82rem;line-height:1.55}@media(min-width:640px){.basics ol{grid-template-columns:repeat(4,1fr)}}
 </style>

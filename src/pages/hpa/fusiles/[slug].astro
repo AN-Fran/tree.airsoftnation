@@ -1,0 +1,78 @@
+---
+import MainLayout from "../../../layouts/MainLayout.astro";
+import { evidenceLabels, hpaFactoryReplicas, type HpaFactoryReplica } from "../../../data/hpa-products";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return hpaFactoryReplicas.map((replica) => ({ params: { slug: replica.slug }, props: { replica } }));
+}
+
+const { replica } = Astro.props as { replica: HpaFactoryReplica };
+const canonical = `https://tree.airsoftnation.eu${replica.route}`;
+const title = `${replica.name}: ficha HPA | Airsoft Nation`;
+const description = `${replica.summary} Ficha informativa con fuente oficial y enlace de compra o distribuidor.`;
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: `${replica.name}: ficha HPA`,
+  description,
+  mainEntityOfPage: canonical,
+  image: new URL(replica.imageUrl, "https://tree.airsoftnation.eu").toString(),
+  inLanguage: "es",
+  about: { "@type": "Product", name: replica.name, brand: replica.manufacturer },
+  author: { "@type": "Organization", name: "Airsoft Nation" },
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://tree.airsoftnation.eu/" },
+    { "@type": "ListItem", position: 2, name: "HPA", item: "https://tree.airsoftnation.eu/hpa/" },
+    { "@type": "ListItem", position: 3, name: "Fusiles HPA", item: "https://tree.airsoftnation.eu/hpa/fusiles/" },
+    { "@type": "ListItem", position: 4, name: replica.name, item: canonical },
+  ],
+};
+---
+
+<MainLayout title={title} description={description} canonical={canonical} image={replica.imageUrl} type="article" structuredData={[articleSchema, breadcrumbSchema]}>
+  <article class="sheet">
+    <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/hpa/guia/">Guía HPA</a><span>/</span><a href="/hpa/fusiles/">Fusiles</a><span>/</span><span>{replica.name}</span></nav>
+    <header>
+      <p class="eyebrow">{replica.manufacturer} · {replica.format}</p>
+      <h1>{replica.name}</h1>
+      <a class="hero-image" href={replica.destinationUrl} target="_blank" rel="noopener noreferrer">
+        <img src={replica.imageUrl} alt={replica.imageAlt} />
+        <span>{replica.destinationLabel} ↗</span>
+      </a>
+    </header>
+
+    <section>
+      <code>{replica.evidenceStatus}</code>
+      <h2>Qué es</h2>
+      <p>{replica.summary}</p>
+    </section>
+
+    <section>
+      <h2>Qué debes comprobar antes de elegir</h2>
+      <ul>
+        <li>El acabado exacto: una misma familia puede cambiar de engine, electrónica o alimentación según la variante.</li>
+        <li>Qué incluye la referencia: botella, regulador, línea y batería no siempre forman parte del paquete.</li>
+        <li>Compatibilidad de cargadores, conexiones y accesorios con la configuración concreta.</li>
+        <li>Disponibilidad, precio y ficha comercial vigentes en el distribuidor.</li>
+      </ul>
+    </section>
+
+    <section class="source">
+      <h2>Procedencia de la información</h2>
+      <p><strong>{evidenceLabels[replica.evidenceStatus]}.</strong> La descripción anterior se limita a la información publicada por la marca. No es todavía una prueba de Airsoft Nation.</p>
+      <a href={replica.sourceUrl} target="_blank" rel="noopener noreferrer">Consultar fuente oficial ↗</a>
+    </section>
+
+    <nav class="next"><a href="/hpa/fusiles/">‹ Volver a todos los fusiles HPA</a><a href="/contacto-form?motivo=upgrade_hpa">Pedir asesoramiento</a></nav>
+  </article>
+</MainLayout>
+
+<style>
+.sheet{max-width:720px;margin:0 auto;padding-bottom:46px}.breadcrumbs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:26px;color:var(--text-muted);font-size:.73rem}.eyebrow{margin:0 0 8px;color:#6ee7d1;font-size:.71rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.sheet h1{font-size:clamp(2rem,10vw,3.1rem);line-height:1.05}.hero-image{position:relative;display:block;aspect-ratio:16/10;margin-top:20px;border-radius:14px;overflow:hidden;background:#eef1f3}.hero-image img{width:100%;height:100%;object-fit:contain;padding:10px}.hero-image span{position:absolute;left:10px;bottom:10px;padding:7px 9px;border-radius:7px;background:rgba(6,22,48,.92);font-size:.7rem;font-weight:600}.sheet section{margin-top:34px}.sheet section>code{display:inline-block;margin-bottom:10px;color:#6ee7d1;font-size:.68rem}.sheet h2{font-size:1.35rem;margin-bottom:12px}.sheet p,.sheet li{color:var(--text-soft);line-height:1.7}.sheet ul{padding-left:20px}.sheet li+li{margin-top:8px}.source{padding:18px;border:1px solid var(--border-soft);border-radius:12px}.source a{display:inline-block;margin-top:12px;color:#6ee7d1;font-size:.82rem;font-weight:600}.next{display:grid;gap:9px;margin-top:28px}.next a{padding:12px 14px;border:1px solid var(--border-soft);border-radius:9px;text-align:center;font-size:.82rem}.next a:last-child{background:var(--primary);border-color:var(--primary);font-weight:600}@media(min-width:560px){.next{grid-template-columns:1fr 1fr}}
+</style>

@@ -1,0 +1,45 @@
+---
+import MainLayout from "../../../layouts/MainLayout.astro";
+import { hpaFactoryReplicas } from "../../../data/hpa-products";
+
+const title = "Fusiles HPA de fábrica: Wolverine MTW y ASG | Airsoft Nation";
+const description = "Índice visual de fusiles y réplicas HPA de fábrica Wolverine MTW y ASG, con una ficha independiente por modelo y enlaces al distribuidor o fabricante.";
+const canonical = "https://tree.airsoftnation.eu/hpa/fusiles/";
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://tree.airsoftnation.eu/" },
+    { "@type": "ListItem", position: 2, name: "HPA", item: "https://tree.airsoftnation.eu/hpa/" },
+    { "@type": "ListItem", position: 3, name: "Fusiles HPA", item: canonical },
+  ],
+};
+---
+
+<MainLayout title={title} description={description} canonical={canonical} image="/wolverine/01 - MTW-MK18-2026-Angled.webp" structuredData={[breadcrumbSchema]}>
+  <main class="catalogue">
+    <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span>/</span><a href="/hpa/guia/">Guía HPA</a><span>/</span><span>Fusiles</span></nav>
+    <header><p class="eyebrow">HPA de fábrica</p><h1>Una réplica, una ficha</h1><p>La imagen abre la tienda o la página oficial. El nombre abre nuestra ficha informativa, donde se distingue la fuente de cada afirmación.</p></header>
+
+    <div class="grid">
+      {hpaFactoryReplicas.map((replica) => (
+        <article class="card">
+          <a class="image-link" href={replica.destinationUrl} target="_blank" rel="noopener noreferrer" aria-label={`${replica.destinationLabel}: ${replica.name}`}>
+            <img src={replica.imageUrl} alt={replica.imageAlt} loading="lazy" />
+            <span>{replica.destinationLabel} ↗</span>
+          </a>
+          <div class="copy">
+            <small>{replica.manufacturer} · {replica.format}</small>
+            <h2><a href={replica.route}>{replica.name}</a></h2>
+            <p>{replica.summary}</p>
+            <a class="read" href={replica.route}>Leer ficha <span aria-hidden="true">›</span></a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </main>
+</MainLayout>
+
+<style>
+.catalogue{max-width:760px;margin:0 auto;padding-bottom:48px}.breadcrumbs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:28px;color:var(--text-muted);font-size:.76rem}.eyebrow{margin:0 0 9px;color:#6ee7d1;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}.catalogue h1{font-size:clamp(2rem,10vw,3.2rem);line-height:1.05}.catalogue header>p:last-child{margin-top:14px;color:var(--text-soft);line-height:1.6}.grid{display:grid;gap:14px;margin-top:28px}.card{overflow:hidden;border:1px solid var(--border-soft);border-radius:14px;background:var(--bg-card)}.image-link{position:relative;display:block;aspect-ratio:16/10;background:#eef1f3;overflow:hidden}.image-link img{width:100%;height:100%;object-fit:contain;padding:9px;transition:transform .25s}.image-link:hover img{transform:scale(1.025)}.image-link span{position:absolute;left:9px;bottom:9px;padding:6px 8px;border-radius:7px;background:rgba(6,22,48,.9);color:#fff;font-size:.68rem;font-weight:600}.copy{padding:15px}.copy small{color:#6ee7d1;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}.copy h2{margin:6px 0 8px;font-size:1.15rem}.copy h2 a:hover{color:#6ee7d1}.copy p{display:-webkit-box;overflow:hidden;-webkit-line-clamp:3;-webkit-box-orient:vertical;color:var(--text-soft);font-size:.82rem;line-height:1.55}.read{display:inline-flex;gap:6px;margin-top:12px;color:#6ee7d1;font-size:.8rem;font-weight:600}@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+</style>
