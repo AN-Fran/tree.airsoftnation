@@ -1,0 +1,99 @@
+---
+import MainLayout from "../../../../layouts/MainLayout.astro";
+
+const title = "HPA bolt abierto, cerrado e híbrido | Airsoft Nation";
+const description = "Diferencias entre motores HPA de bolt abierto, bolt cerrado e híbrido, funcionamiento del PolarStar F2 y criterios para fusilero, DMR o speedsoft.";
+const canonical = "https://tree.airsoftnation.eu/hpa/engines/bolt-abierto-cerrado-hibrido/";
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Motores HPA: bolt abierto, cerrado e híbrido",
+  description,
+  mainEntityOfPage: canonical,
+  inLanguage: "es",
+  author: { "@type": "Organization", name: "Airsoft Nation" },
+  publisher: { "@type": "Organization", name: "Airsoft Nation" },
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://tree.airsoftnation.eu/" },
+    { "@type": "ListItem", position: 2, name: "HPA", item: "https://tree.airsoftnation.eu/hpa/" },
+    { "@type": "ListItem", position: 3, name: "Engines", item: "https://tree.airsoftnation.eu/hpa/guia/" },
+    { "@type": "ListItem", position: 4, name: "Bolt abierto, cerrado e híbrido", item: canonical },
+  ],
+};
+---
+
+<MainLayout title={title} description={description} canonical={canonical} image="/icons/icon-512.png" type="article" structuredData={[articleSchema, breadcrumbSchema]}>
+  <article class="bolt-guide">
+    <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/hpa/guia/">Guía HPA</a><span>/</span><span>Tipos de bolt</span></nav>
+    <header>
+      <p class="eyebrow">Ciclo del engine</p>
+      <h1>Bolt abierto, cerrado o híbrido</h1>
+      <p class="lead">La posición de reposo del nozzle y el orden de carga y disparo influyen en el ajuste, la alimentación y la repetibilidad. No determinan por sí solos la precisión ni la cadencia.</p>
+    </header>
+
+    <section class="cycles" aria-label="Comparación de ciclos HPA">
+      <article>
+        <small>Bolt abierto</small>
+        <h2>Carga y dispara en el avance</h2>
+        <div class="sequence"><span>Nozzle atrás</span><b>→</b><span>Carga</span><b>→</b><span>Dispara</span></div>
+        <p>En reposo el nozzle está retraído. Al accionar el gatillo avanza, introduce la bola y la dispara dentro del mismo movimiento. PolarStar clasifica así los F1 y JACK.</p>
+      </article>
+      <article>
+        <small>Bolt cerrado</small>
+        <h2>La bola espera en la cámara</h2>
+        <div class="sequence"><span>Bola cargada</span><b>→</b><span>Dispara</span><b>→</b><span>Recarga</span></div>
+        <p>El nozzle reposa adelantado y la bola está asentada antes del disparo. PolarStar indica que resulta más tolerante con la configuración de hop-up porque el conjunto deja de moverse antes de liberar el aire.</p>
+      </article>
+      <article>
+        <small>Híbrido Wolverine</small>
+        <h2>Carga, pausa y dispara</h2>
+        <div class="sequence"><span>Carga</span><b>→</b><span>Pausa</span><b>→</b><span>Dispara</span></div>
+        <p>INFERNO Gen 2 y XTS separan los movimientos de carga y disparo mediante su diseño de nozzle y poppet. Wolverine lo presenta como un equilibrio entre la facilidad del bolt abierto y el asentamiento asociado al cerrado.</p>
+      </article>
+    </section>
+
+    <section>
+      <h2>El caso del PolarStar F2</h2>
+      <p>El F2 utiliza dos solenoides para controlar de forma independiente el nozzle y el poppet. PolarStar lo define como un sistema de bolt cerrado, pero su FCU permite elegir la secuencia:</p>
+      <dl class="modes">
+        <div><dt><code>Closed Bolt</code></dt><dd>Primero dispara y después cicla el nozzle para dejar cargada la siguiente bola. Da una respuesta inicial más directa, pero tras vaciar el cargador el primer accionamiento puede ser un disparo en vacío.</dd></div>
+        <div><dt><code>AEG Mode</code></dt><dd>Primero cicla el nozzle para cargar y después dispara. Evita ese primer disparo en vacío. PolarStar lo denomina “AEG Mode”, no un open bolt idéntico al F1 o al JACK.</dd></div>
+      </dl>
+      <p class="source-line"><code>manufacturer_verified</code> · <a href="https://polarstarairsoft.com/apps/help-center" target="_blank" rel="noopener noreferrer">FAQ oficial de PolarStar ↗</a></p>
+    </section>
+
+    <section>
+      <h2>Qué aporta según el uso</h2>
+      <div class="uses">
+        <article><h3>DMR y semiautomático</h3><p>Un ciclo cerrado o híbrido puede facilitar un asentamiento repetible de la bola y un ajuste menos sensible del hop-up. La agrupación final sigue dependiendo del cañón, goma, alineación, munición, presión y puesta a punto.</p></article>
+        <article><h3>Fusilero</h3><p>El híbrido ofrece un compromiso atractivo, pero un open bolt bien ajustado o un F2 también pueden rendir de forma consistente. Importan más el conjunto y la calidad del ajuste que la etiqueta aislada.</p></article>
+        <article><h3>Speedsoft y alta cadencia</h3><p>El bolt abierto es sencillo y puede favorecer ciclos rápidos, pero no posee automáticamente mayor ROF. Un F2 de doble solenoide permite ajustar alimentación y aire por separado y también puede trabajar a cadencias altas si cargadores y montaje acompañan.</p></article>
+      </div>
+    </section>
+
+    <section class="factors">
+      <h2>La cadencia no depende solo del bolt</h2>
+      <ul>
+        <li>Tiempo de apertura del poppet y recorrido del nozzle.</li>
+        <li>Presión, caudal y recuperación del regulador.</li>
+        <li>Velocidad de alimentación del cargador y ajuste del hop-up.</li>
+        <li>FCU, solenoide, batería y límites configurados.</li>
+      </ul>
+    </section>
+
+    <aside>La clasificación ayuda a elegir y ajustar, pero no sustituye una prueba reproducible. Las futuras fichas de engine indicarán ciclo, secuencia disponible y resultados medidos por separado.</aside>
+
+    <footer>
+      <a href="https://www.wolverineairsoft.com/inferno/" target="_blank" rel="noopener noreferrer">Tecnología INFERNO oficial ↗</a>
+      <a href="/contacto-form?motivo=upgrade_hpa">Consultar una build HPA</a>
+    </footer>
+  </article>
+</MainLayout>
+
+<style>
+.bolt-guide{max-width:720px;margin:0 auto;padding-bottom:48px}.breadcrumbs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:28px;color:var(--text-muted);font-size:.75rem}.eyebrow{margin:0 0 9px;color:#6ee7d1;font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase}.bolt-guide h1{font-size:clamp(2rem,10vw,3.15rem);line-height:1.04}.lead{margin-top:15px;color:var(--text-soft);line-height:1.65}.bolt-guide section{margin-top:34px}.bolt-guide h2{font-size:1.35rem;margin-bottom:12px}.bolt-guide p,.bolt-guide li,.bolt-guide dd{color:var(--text-soft);line-height:1.7}.cycles{display:grid;gap:11px}.cycles article,.uses article{padding:16px;border:1px solid var(--border-soft);border-radius:12px;background:rgba(255,255,255,.025)}.cycles small{color:#6ee7d1;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}.cycles h2{margin:5px 0 11px;font-size:1.05rem}.cycles p,.uses p{font-size:.82rem}.sequence{display:flex;align-items:center;gap:5px;overflow-x:auto;margin-bottom:11px}.sequence span{white-space:nowrap;padding:6px 7px;border-radius:7px;background:var(--bg-card);color:var(--text-muted);font-size:.66rem}.sequence b{color:#6ee7d1}.modes{display:grid;gap:10px}.modes>div{padding:15px;border:1px solid var(--border-soft);border-radius:11px}.modes dt{margin-bottom:7px}.modes code,.source-line code{color:#6ee7d1}.modes dd{margin:0;font-size:.83rem}.source-line{margin-top:12px;font-size:.74rem}.source-line a{color:#6ee7d1}.uses{display:grid;gap:10px}.uses h3{font-size:1rem;margin-bottom:7px}.factors{padding:18px;border:1px solid var(--border-soft);border-radius:12px}.factors ul{margin:0;padding-left:20px}.factors li+li{margin-top:7px}.bolt-guide aside{margin-top:24px;padding:15px;border-left:3px solid #6ee7d1;background:rgba(0,184,148,.08);color:var(--text-soft);font-size:.82rem;line-height:1.6}.bolt-guide footer{display:grid;gap:9px;margin-top:26px}.bolt-guide footer a{padding:12px 14px;border:1px solid var(--border-soft);border-radius:9px;text-align:center;font-size:.8rem}.bolt-guide footer a:last-child{background:var(--primary);border-color:var(--primary);font-weight:600}@media(min-width:640px){.uses{grid-template-columns:repeat(3,1fr)}.bolt-guide footer{grid-template-columns:1fr 1fr}}
+</style>

@@ -9,6 +9,7 @@ const routes = [
   "/hpa/",
   "/hpa/guia/",
   "/hpa/fusiles/",
+  "/hpa/engines/bolt-abierto-cerrado-hibrido/",
   "/hpa/reguladores/slp-vs-estandar/",
   ...hpaFactoryReplicas.map(({ route }) => route),
   "/ir-a-jugar/",
