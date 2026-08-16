@@ -1,13 +1,13 @@
 ---
 import MainLayout from "../../../../layouts/MainLayout.astro";
 
-const title = "Regulador SLP vs estándar en HPA airsoft | Airsoft Nation";
-const description = "Diferencia entre botella SLP y estándar, función del regulador secundario y compatibilidad documentada de PolarStar Micro Reg Gen2 y Wolverine STORM Category 5.";
+const title = "Preset SLP vs estándar en HPA airsoft | Airsoft Nation";
+const description = "Cómo el preset de la botella reduce la presión almacenada, diferencia entre salida SLP y estándar, y función del regulador secundario de airsoft.";
 const canonical = "https://tree.airsoftnation.eu/hpa/reguladores/slp-vs-estandar/";
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "Regulador SLP frente a estándar en HPA airsoft",
+  headline: "Preset SLP frente a estándar en HPA airsoft",
   description,
   mainEntityOfPage: canonical,
   inLanguage: "es",
@@ -29,19 +29,20 @@ const breadcrumbSchema = {
 <MainLayout title={title} description={description} canonical={canonical} image="/icons/icon-512.png" type="article" structuredData={[articleSchema, breadcrumbSchema]}>
   <article class="explain">
     <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/hpa/guia/">Guía HPA</a><span>/</span><span>SLP vs estándar</span></nav>
-    <header><p class="eyebrow">Regulación HPA</p><h1>SLP no es lo mismo que presión de disparo</h1><p class="lead">La confusión aparece porque en una instalación con botella externa normalmente hay dos reducciones de presión.</p></header>
+    <header><p class="eyebrow">Regulación HPA</p><h1>Del aire almacenado a la presión de trabajo</h1><p class="lead">Toda botella necesita un regulador primario o <em>preset</em>. Después, un regulador secundario adapta esa salida a la presión que admite la réplica.</p></header>
 
     <section class="flow" aria-label="Recorrido de la presión">
-      <div><small>1 · Almacenamiento</small><strong>Botella</strong><span>Aire a alta presión</span></div><b aria-hidden="true">↓</b>
-      <div><small>2 · Primera etapa</small><strong>Regulador de botella</strong><span>Salida SLP o estándar</span></div><b aria-hidden="true">↓</b>
+      <div><small>1 · Almacenamiento</small><strong>Botella</strong><span>Normalmente 3.000 o 4.500 psi</span></div><b aria-hidden="true">↓</b>
+      <div><small>2 · Primera etapa obligatoria</small><strong>Preset de botella</strong><span>Salida SLP o estándar</span></div><b aria-hidden="true">↓</b>
       <div><small>3 · Segunda etapa</small><strong>Regulador HPA</strong><span>Ajuste para la réplica</span></div><b aria-hidden="true">↓</b>
       <div><small>4 · Consumo</small><strong>Engine</strong><span>Usa el aire regulado</span></div>
     </section>
 
     <section>
-      <h2>La diferencia práctica</h2>
-      <p>PolarStar define una botella SLP como aquella cuyo regulador primario entrega como máximo 300 psi, mientras que una salida tradicional supera los 800 psi. Es la presión de salida de la botella —no la presión almacenada ni un ajuste universal de la réplica— la que determina esta clasificación.</p>
-      <p>Después, el regulador HPA secundario reduce esa entrada al rango que admita el engine. Por eso la pregunta correcta no es solo «¿SLP o HPA?», sino «¿qué presión entrega mi botella y qué presión de entrada admite mi regulador secundario?».</p>
+      <h2>Preset no significa necesariamente SLP</h2>
+      <p>El <em>preset</em> va roscado en la botella y constituye la primera reducción: baja los 3.000 o 4.500 psi almacenados a una salida mucho menor. Todas las configuraciones con botella necesitan esta etapa; SLP es un tipo de preset, no un componente adicional distinto.</p>
+      <p>PolarStar define la salida SLP como 300 psi o menos, mientras que una salida tradicional ronda o supera los 800 psi. Esas presiones pueden alimentar equipos de paintball, pero siguen siendo demasiado elevadas para conectarlas directamente a un engine de airsoft.</p>
+      <p>El regulador secundario de airsoft recibe la salida del preset y la reduce de nuevo. Muchos sistemas trabajan aproximadamente entre 60 y 130 psi, pero el intervalo válido y el ajuste final dependen del fabricante, el engine y la energía medida con cronógrafo.</p>
     </section>
 
     <section>
@@ -56,7 +57,7 @@ const breadcrumbSchema = {
     <section class="avoid">
       <h2>Dos errores que evitamos</h2>
       <ul>
-        <li><strong>«Siempre necesitas regulador SLP».</strong> No: depende de la presión de entrada admitida por el regulador secundario.</li>
+        <li><strong>«Preset y SLP son dos reguladores diferentes».</strong> No: todas las botellas necesitan preset; SLP identifica una de sus posibles presiones de salida.</li>
         <li><strong>«80, 100 o 120 psi equivalen a un rol».</strong> No existe una tabla universal. La energía cambia con el engine, nozzle, cañón, dwell, munición y montaje; se confirma con cronógrafo.</li>
       </ul>
     </section>
