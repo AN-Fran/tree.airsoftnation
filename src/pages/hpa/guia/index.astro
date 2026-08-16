@@ -1,0 +1,125 @@
+---
+import MainLayout from "../../../layouts/MainLayout.astro";
+import { evidenceLabels, hpaProducts } from "../../../data/hpa-products";
+
+const title = "Guía HPA para airsoft: sistemas, engines y reguladores | Airsoft Nation";
+const description = "Guía para entender un sistema HPA de airsoft, elegir engine y regulador y diferenciar datos del fabricante, pruebas propias y reportes de la comunidad.";
+const canonical = "https://tree.airsoftnation.eu/hpa/guia/";
+const engines = hpaProducts.filter(({ category }) => category === "engine");
+const regulators = hpaProducts.filter(({ category }) => category === "regulator");
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Guía HPA para airsoft: sistemas, engines y reguladores",
+  description,
+  mainEntityOfPage: canonical,
+  inLanguage: "es",
+  author: { "@type": "Organization", name: "Airsoft Nation", url: "https://tree.airsoftnation.eu/" },
+  publisher: { "@type": "Organization", name: "Airsoft Nation", url: "https://tree.airsoftnation.eu/", logo: { "@type": "ImageObject", url: "https://tree.airsoftnation.eu/logo_airsoft_nation.svg" } },
+  about: ["HPA airsoft", "HPA engines", "reguladores HPA"],
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://tree.airsoftnation.eu/" },
+    { "@type": "ListItem", position: 2, name: "HPA", item: "https://tree.airsoftnation.eu/hpa/" },
+    { "@type": "ListItem", position: 3, name: "Guía HPA", item: canonical },
+  ],
+};
+---
+
+<MainLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  image="/icons/icon-512.png"
+  type="article"
+  structuredData={[articleSchema, breadcrumbSchema]}
+>
+  <article class="knowledge-guide">
+    <nav class="breadcrumbs" aria-label="Migas de pan">
+      <a href="/">Inicio</a><span aria-hidden="true">/</span><a href="/hpa/">HPA</a><span aria-hidden="true">/</span><span>Guía</span>
+    </nav>
+
+    <header class="guide-hero">
+      <p class="eyebrow">HPA Knowledge</p>
+      <h1>Guía HPA para airsoft</h1>
+      <p class="lead">Qué piezas forman un sistema HPA, qué debes valorar antes de elegir y cómo separaremos los datos comprobados de las experiencias todavía no verificadas.</p>
+    </header>
+
+    <nav class="toc" aria-label="Contenido de la guía">
+      <strong>En esta guía</strong>
+      <a href="#que-es-hpa">Qué es HPA</a>
+      <a href="#componentes">Componentes</a>
+      <a href="#como-elegir">Cómo elegir</a>
+      <a href="#productos">Engines y reguladores</a>
+      <a href="#metodologia">Cómo verificamos</a>
+    </nav>
+
+    <section id="que-es-hpa">
+      <h2>Qué es un sistema HPA en airsoft</h2>
+      <p>Un sistema HPA utiliza aire comprimido como fuente de energía. Su funcionamiento depende del conjunto completo: engine, regulador, botella, línea y configuración. Por eso una elección responsable no puede reducirse a comparar una sola cifra o una afirmación comercial.</p>
+      <p>Esta guía ofrece el marco general. Las futuras fichas profundizarán en instalación, compatibilidad, mantenimiento, comportamiento y diagnóstico de cada producto cuando existan fuentes suficientes.</p>
+    </section>
+
+    <section id="componentes">
+      <h2>Componentes principales</h2>
+      <div class="concept-grid">
+        <div><h3>Engine</h3><p>Es el mecanismo neumático que sustituye o integra el sistema interno de disparo. Su elección debe partir de la réplica, el tipo de uso y la instalación prevista.</p></div>
+        <div><h3>Regulador</h3><p>Reduce y gestiona la presión que llega desde la botella. Debe evaluarse como parte de un conjunto compatible y seguro.</p></div>
+        <div><h3>Botella y línea</h3><p>Almacenan y conducen el aire. Conexiones, estado, montaje y mantenimiento influyen en la fiabilidad del sistema completo.</p></div>
+      </div>
+    </section>
+
+    <section id="como-elegir">
+      <h2>Cómo elegir un sistema HPA</h2>
+      <p>Antes de comparar modelos, define el punto de partida: réplica, espacio disponible, modalidad de juego, expectativas de respuesta, mantenimiento asumible y presupuesto total. Después confirma compatibilidad e instalación con documentación vigente o con un técnico.</p>
+      <ul>
+        <li><strong>Compatibilidad:</strong> plataforma, gearbox, nozzle, electrónica, conexiones y montaje.</li>
+        <li><strong>Uso real:</strong> semiautomático, automático cuando sea legal y permitido, cadencia esperada y autonomía.</li>
+        <li><strong>Consistencia:</strong> estabilidad y recuperación del conjunto bajo condiciones repetibles.</li>
+        <li><strong>Servicio:</strong> acceso a repuestos, mantenimiento, soporte e instalación.</li>
+      </ul>
+      <aside class="notice">Los límites de potencia y las reglas de juego dependen de la normativa y del campo. Comprueba siempre las condiciones aplicables antes de configurar o usar una réplica.</aside>
+    </section>
+
+    <section id="productos">
+      <h2>Arquitectura inicial de fichas HPA</h2>
+      <p>Este es el alcance editorial de la primera fase. Los nombres identifican las fichas previstas; no implican todavía una valoración ni publican especificaciones.</p>
+      <div class="product-columns">
+        <div>
+          <h3>Engines</h3>
+          <ul class="product-list">{engines.map((product) => <li><span>{product.name}</span><small>Ficha en preparación</small></li>)}</ul>
+        </div>
+        <div>
+          <h3>Reguladores</h3>
+          <ul class="product-list">{regulators.map((product) => <li><span>{product.name}</span><small>Ficha en preparación</small></li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="metodologia">
+      <h2>Cómo distinguimos cada afirmación</h2>
+      <p>Cada dato técnico o conclusión de las futuras fichas llevará una procedencia visible. Una afirmación puede cambiar de estado cuando aparezca documentación nueva o se complete una prueba reproducible.</p>
+      <dl class="evidence-list">
+        <div><dt><code>manufacturer_verified</code></dt><dd><strong>{evidenceLabels.manufacturer_verified}.</strong> Procede de documentación oficial identificable y vigente.</dd></div>
+        <div><dt><code>airsoftnation_tested</code></dt><dd><strong>{evidenceLabels.airsoftnation_tested}.</strong> Resultado obtenido mediante un protocolo documentado, con condiciones y límites de la prueba.</dd></div>
+        <div><dt><code>community_reported</code></dt><dd><strong>{evidenceLabels.community_reported}.</strong> Experiencia útil como pista, pero no tratada como hecho hasta poder contrastarla.</dd></div>
+      </dl>
+      <p>Si un dato no puede atribuirse con claridad, no se publicará como especificación. Las comparativas explicarán además qué se midió, con qué montaje y bajo qué condiciones.</p>
+    </section>
+
+    <section class="commercial-cta">
+      <h2>¿Necesitas ayuda con tu configuración?</h2>
+      <p>La guía es informativa. Para valorar una instalación concreta, cuéntanos qué réplica tienes y qué objetivo buscas.</p>
+      <a href="/contacto-form?motivo=upgrade_hpa">Solicitar asesoramiento HPA</a>
+    </section>
+  </article>
+</MainLayout>
+
+<style>
+.knowledge-guide{max-width:760px;margin:0 auto;padding:18px 2px 50px}.breadcrumbs{display:flex;flex-wrap:wrap;gap:8px;color:var(--text-muted);font-size:.78rem;margin-bottom:28px}.breadcrumbs a:hover{text-decoration:underline}.guide-hero{padding-bottom:28px;border-bottom:1px solid var(--border-soft)}.eyebrow{margin:0 0 10px;color:#6ee7d1;font-size:.75rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase}.guide-hero h1{font-size:clamp(2rem,8vw,3.3rem);line-height:1.05;letter-spacing:.01em}.lead{margin-top:16px;font-size:1.05rem;line-height:1.7}.toc{display:grid;gap:10px;margin:24px 0;padding:18px;border:1px solid var(--border-soft);border-radius:12px;background:var(--bg-card)}.toc strong{font-family:var(--font-title);letter-spacing:.04em}.toc a{color:#6ee7d1;font-size:.9rem}.knowledge-guide section{scroll-margin-top:20px;margin-top:42px}.knowledge-guide h2{font-size:1.55rem;margin-bottom:14px}.knowledge-guide h3{font-size:1.08rem;margin-bottom:8px}.knowledge-guide p,.knowledge-guide li,.knowledge-guide dd{line-height:1.7}.knowledge-guide section>p+p{margin-top:12px}.knowledge-guide ul:not(.product-list){padding-left:22px;color:var(--text-soft)}.knowledge-guide li+li{margin-top:8px}.concept-grid,.product-columns{display:grid;gap:14px}.concept-grid>div,.product-columns>div{padding:18px;border:1px solid var(--border-soft);border-radius:12px;background:rgba(255,255,255,.025)}.notice{margin-top:20px;padding:16px;border-left:3px solid #6ee7d1;background:rgba(0,184,148,.08);color:var(--text-soft);line-height:1.6}.product-list{list-style:none;margin:0;padding:0}.product-list li{display:flex;flex-direction:column;gap:2px;padding:10px 0;border-bottom:1px solid var(--border-soft)}.product-list li:last-child{border-bottom:0}.product-list small{color:var(--text-muted)}.evidence-list{display:grid;gap:12px}.evidence-list>div{padding:16px;border:1px solid var(--border-soft);border-radius:10px}.evidence-list dt{margin-bottom:8px}.evidence-list code{color:#6ee7d1;overflow-wrap:anywhere}.evidence-list dd{margin:0;color:var(--text-soft)}.commercial-cta{padding:22px;border:1px solid rgba(0,184,148,.45);border-radius:14px;background:rgba(0,184,148,.08)}.commercial-cta a{display:inline-block;margin-top:16px;padding:12px 16px;border-radius:8px;background:var(--primary);font-weight:600}.commercial-cta p{margin-top:0!important}@media(min-width:640px){.concept-grid{grid-template-columns:repeat(3,1fr)}.product-columns{grid-template-columns:1fr 1fr}}
+</style>

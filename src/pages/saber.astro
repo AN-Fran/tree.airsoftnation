@@ -3,8 +3,16 @@ import MainLayout from "../layouts/MainLayout.astro";
 ---
 
 <MainLayout title="Saber · Airsoft Nation">
-  <main class="page">
+  <section class="page">
     <h1>Centro Técnico</h1>
-    <p>Sección en desarrollo.</p>
-  </main>
+    <p>Guías para entender, elegir y mantener tu equipamiento de airsoft.</p>
+    <a class="guide-link" href="/hpa/guia/">
+      <strong>Guía HPA para airsoft</strong>
+      <span>Componentes, criterios de elección y metodología de verificación.</span>
+    </a>
+  </section>
 </MainLayout>
+
+<style>
+.page{display:grid;gap:14px}.guide-link{display:grid;gap:6px;padding:18px;border:1px solid var(--border-soft);border-radius:var(--radius);background:var(--bg-card)}.guide-link span{color:var(--text-muted);font-size:.88rem;line-height:1.5}
+</style>
