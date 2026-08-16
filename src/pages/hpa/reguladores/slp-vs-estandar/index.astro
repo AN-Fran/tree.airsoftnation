@@ -1,0 +1,76 @@
+---
+import MainLayout from "../../../../layouts/MainLayout.astro";
+
+const title = "Preset SLP vs estándar en HPA airsoft | Airsoft Nation";
+const description = "Cómo el preset de la botella reduce la presión almacenada, diferencia entre salida SLP y estándar, y función del regulador secundario de airsoft.";
+const canonical = "https://tree.airsoftnation.eu/hpa/reguladores/slp-vs-estandar/";
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Preset SLP frente a estándar en HPA airsoft",
+  description,
+  mainEntityOfPage: canonical,
+  inLanguage: "es",
+  author: { "@type": "Organization", name: "Airsoft Nation" },
+  publisher: { "@type": "Organization", name: "Airsoft Nation" },
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://tree.airsoftnation.eu/" },
+    { "@type": "ListItem", position: 2, name: "HPA", item: "https://tree.airsoftnation.eu/hpa/" },
+    { "@type": "ListItem", position: 3, name: "Reguladores", item: "https://tree.airsoftnation.eu/hpa/guia/" },
+    { "@type": "ListItem", position: 4, name: "SLP vs estándar", item: canonical },
+  ],
+};
+---
+
+<MainLayout title={title} description={description} canonical={canonical} image="/icons/icon-512.png" type="article" structuredData={[articleSchema, breadcrumbSchema]}>
+  <article class="explain">
+    <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/hpa/guia/">Guía HPA</a><span>/</span><span>SLP vs estándar</span></nav>
+    <header><p class="eyebrow">Regulación HPA</p><h1>Del aire almacenado a la presión de trabajo</h1><p class="lead">Toda botella necesita un regulador primario o <em>preset</em>. Después, un regulador secundario adapta esa salida a la presión que admite la réplica.</p></header>
+
+    <section class="flow" aria-label="Recorrido de la presión">
+      <div><small>1 · Almacenamiento</small><strong>Botella</strong><span>Normalmente 3.000 o 4.500 psi</span></div><b aria-hidden="true">↓</b>
+      <div><small>2 · Primera etapa obligatoria</small><strong>Preset de botella</strong><span>Salida SLP o estándar</span></div><b aria-hidden="true">↓</b>
+      <div><small>3 · Segunda etapa</small><strong>Regulador HPA</strong><span>Ajuste para la réplica</span></div><b aria-hidden="true">↓</b>
+      <div><small>4 · Consumo</small><strong>Engine</strong><span>Usa el aire regulado</span></div>
+    </section>
+
+    <section>
+      <h2>Preset no significa necesariamente SLP</h2>
+      <p>El <em>preset</em> va roscado en la botella y constituye la primera reducción: baja los 3.000 o 4.500 psi almacenados a una salida mucho menor. Todas las configuraciones con botella necesitan esta etapa; SLP es un tipo de preset, no un componente adicional distinto.</p>
+      <p>PolarStar define la salida SLP como 300 psi o menos, mientras que una salida tradicional ronda o supera los 800 psi. Esas presiones pueden alimentar equipos de paintball, pero siguen siendo demasiado elevadas para conectarlas directamente a un engine de airsoft.</p>
+      <p>El regulador secundario de airsoft recibe la salida del preset y la reduce de nuevo. Muchos sistemas trabajan aproximadamente entre 60 y 130 psi, pero el intervalo válido y el ajuste final dependen del fabricante, el engine y la energía medida con cronógrafo.</p>
+    </section>
+
+    <section>
+      <h2>Compatibilidad documentada</h2>
+      <div class="compat">
+        <article><h3>Regulador exclusivamente SLP</h3><p>Debe alimentarse con una botella SLP. PolarStar advierte que un air rig exclusivamente SLP no debe conectarse a una salida tradicional.</p><span>Comprueba el manual del modelo</span></article>
+        <article><h3>PolarStar Micro Reg Gen2</h3><p>El fabricante declara compatibilidad con botellas HPA estándar y SLP, con una presión máxima de entrada de 900 psi.</p><a href="https://polarstarairsoft.com/products/micro-reg%E2%84%A2-gen2" target="_blank" rel="noopener noreferrer">Fuente oficial ↗</a></article>
+        <article><h3>Wolverine STORM Category 5</h3><p>Su manual declara una entrada de 300 a 1.000 psi y compatibilidad con botellas de salida estándar o de baja presión.</p><a href="https://www.wolverineairsoft.com/files/documentation/STORM%20Category%205%20Owner%27s%20Manual.pdf" target="_blank" rel="noopener noreferrer">Manual oficial ↗</a></article>
+      </div>
+    </section>
+
+    <section class="avoid">
+      <h2>Dos errores que evitamos</h2>
+      <ul>
+        <li><strong>«Preset y SLP son dos reguladores diferentes».</strong> No: todas las botellas necesitan preset; SLP identifica una de sus posibles presiones de salida.</li>
+        <li><strong>«80, 100 o 120 psi equivalen a un rol».</strong> No existe una tabla universal. La energía cambia con el engine, nozzle, cañón, dwell, munición y montaje; se confirma con cronógrafo.</li>
+      </ul>
+    </section>
+
+    <aside><strong>Seguridad:</strong> no desmontes el regulador primario de una botella presurizada. Respeta las presiones máximas, el manual de cada componente y los procedimientos de inspección y llenado.</aside>
+
+    <footer>
+      <a href="https://polarstarairsoft.com/apps/help-center" target="_blank" rel="noopener noreferrer">FAQ técnica de PolarStar ↗</a>
+      <a href="/contacto-form?motivo=upgrade_hpa">Consultar una configuración</a>
+    </footer>
+  </article>
+</MainLayout>
+
+<style>
+.explain{max-width:720px;margin:0 auto;padding-bottom:48px}.breadcrumbs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:28px;color:var(--text-muted);font-size:.75rem}.eyebrow{margin:0 0 9px;color:#6ee7d1;font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase}.explain h1{font-size:clamp(2rem,10vw,3.15rem);line-height:1.04}.lead{margin-top:15px;color:var(--text-soft);line-height:1.65}.explain section{margin-top:34px}.explain h2{font-size:1.38rem;margin-bottom:12px}.explain p,.explain li{color:var(--text-soft);line-height:1.7}.explain section>p+p{margin-top:12px}.flow{display:grid!important;gap:7px;margin-top:26px!important}.flow div{display:grid;gap:2px;padding:13px 15px;border:1px solid var(--border-soft);border-radius:11px;background:var(--bg-card)}.flow small{color:#6ee7d1;font-size:.66rem;text-transform:uppercase}.flow strong{font-family:var(--font-title)}.flow span{color:var(--text-muted);font-size:.75rem}.flow b{text-align:center;color:#6ee7d1}.compat{display:grid;gap:10px}.compat article{padding:16px;border:1px solid var(--border-soft);border-radius:12px;background:rgba(255,255,255,.025)}.compat h3{font-size:1rem;margin-bottom:7px}.compat p{font-size:.82rem}.compat a,.compat span{display:inline-block;margin-top:9px;color:#6ee7d1;font-size:.74rem;font-weight:600}.avoid{padding:18px;border:1px solid var(--border-soft);border-radius:12px}.avoid ul{margin:0;padding-left:20px}.avoid li+li{margin-top:10px}.explain aside{margin-top:24px;padding:15px;border-left:3px solid #e1b12c;background:rgba(225,177,44,.09);color:var(--text-soft);font-size:.82rem;line-height:1.6}.explain footer{display:grid;gap:9px;margin-top:26px}.explain footer a{padding:12px 14px;border:1px solid var(--border-soft);border-radius:9px;text-align:center;font-size:.8rem}.explain footer a:last-child{background:var(--primary);border-color:var(--primary);font-weight:600}@media(min-width:640px){.compat{grid-template-columns:repeat(3,1fr)}.explain footer{grid-template-columns:1fr 1fr}}
+</style>
