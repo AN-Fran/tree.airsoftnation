@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { hpaFactoryReplicas } from "../data/hpa-products";
+import { hpaEngines, hpaFactoryReplicas } from "../data/hpa-products";
 
 const routes = [
   "/",
@@ -9,8 +9,10 @@ const routes = [
   "/hpa/",
   "/hpa/guia/",
   "/hpa/fusiles/",
+  "/hpa/engines/",
   "/hpa/engines/bolt-abierto-cerrado-hibrido/",
   "/hpa/reguladores/slp-vs-estandar/",
+  ...hpaEngines.map(({ route }) => route),
   ...hpaFactoryReplicas.map(({ route }) => route),
   "/ir-a-jugar/",
   "/novedades/",
