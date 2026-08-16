@@ -1,9 +1,9 @@
 ---
 import MainLayout from "../../../layouts/MainLayout.astro";
-import { evidenceLabels, hpaProducts } from "../../../data/hpa-products";
+import { evidenceLabels, hpaFactoryReplicas, hpaProducts } from "../../../data/hpa-products";
 
-const title = "Guía HPA para airsoft: sistemas, engines y reguladores | Airsoft Nation";
-const description = "Guía para entender un sistema HPA de airsoft, elegir engine y regulador y diferenciar datos del fabricante, pruebas propias y reportes de la comunidad.";
+const title = "Guía HPA airsoft: sistemas, fusiles y reguladores | Airsoft Nation";
+const description = "Guía para entender el HPA en airsoft, conocer los fusiles Wolverine MTW y ASG de serie, elegir componentes y distinguir datos verificados de experiencias.";
 const canonical = "https://tree.airsoftnation.eu/hpa/guia/";
 const engines = hpaProducts.filter(({ category }) => category === "engine");
 const regulators = hpaProducts.filter(({ category }) => category === "regulator");
@@ -11,13 +11,13 @@ const regulators = hpaProducts.filter(({ category }) => category === "regulator"
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "Guía HPA para airsoft: sistemas, engines y reguladores",
+  headline: "Guía HPA airsoft: sistemas, fusiles y reguladores",
   description,
   mainEntityOfPage: canonical,
   inLanguage: "es",
   author: { "@type": "Organization", name: "Airsoft Nation", url: "https://tree.airsoftnation.eu/" },
   publisher: { "@type": "Organization", name: "Airsoft Nation", url: "https://tree.airsoftnation.eu/", logo: { "@type": "ImageObject", url: "https://tree.airsoftnation.eu/logo_airsoft_nation.svg" } },
-  about: ["HPA airsoft", "HPA engines", "reguladores HPA"],
+  about: ["HPA airsoft", "fusiles HPA de serie", "Wolverine MTW", "ASG CZ Scorpion EVO HPA", "HPA engines", "reguladores HPA"],
 };
 
 const breadcrumbSchema = {
@@ -55,6 +55,7 @@ const breadcrumbSchema = {
       <a href="#que-es-hpa">Qué es HPA</a>
       <a href="#componentes">Componentes</a>
       <a href="#como-elegir">Cómo elegir</a>
+      <a href="#replicas-de-serie">Fusiles HPA de serie</a>
       <a href="#productos">Engines y reguladores</a>
       <a href="#metodologia">Cómo verificamos</a>
     </nav>
@@ -84,6 +85,38 @@ const breadcrumbSchema = {
         <li><strong>Servicio:</strong> acceso a repuestos, mantenimiento, soporte e instalación.</li>
       </ul>
       <aside class="notice">Los límites de potencia y las reglas de juego dependen de la normativa y del campo. Comprueba siempre las condiciones aplicables antes de configurar o usar una réplica.</aside>
+    </section>
+
+    <section id="replicas-de-serie">
+      <h2>Fusiles y réplicas HPA de serie</h2>
+      <p>Una réplica HPA de fábrica no es simplemente una AEG a la que se le ha instalado un engine. El fabricante diseña el conjunto alrededor del sistema neumático, lo que permite integrar la alineación, la alimentación, la electrónica y los controles desde el origen.</p>
+
+      <h3 class="brand-heading">Wolverine Airsoft MTW</h3>
+      <p>MTW significa <em>Modular Training Weapon</em>. Es una arquitectura propia construida alrededor de HPA, con diferentes formatos y acabados. Los nombres X, B y R de algunas variantes indican respectivamente INFERNO XTS, control BLINC y retroceso QUAKE; por eso conviene confirmar siempre el acabado exacto y no atribuir las mismas características a toda la familia.</p>
+      <div class="replica-grid">
+        {hpaFactoryReplicas.filter(({ manufacturer }) => manufacturer === "Wolverine Airsoft").map((replica) => (
+          <article class="replica-card">
+            <div class="replica-meta"><span>{replica.format}</span><code>{replica.evidenceStatus}</code></div>
+            <h3>{replica.name}</h3>
+            <p>{replica.summary}</p>
+            <a href={replica.sourceUrl} target="_blank" rel="noopener noreferrer">Fuente oficial de Wolverine <span aria-hidden="true">↗</span></a>
+          </article>
+        ))}
+      </div>
+
+      <h3 class="brand-heading">ASG CZ Scorpion EVO HPA</h3>
+      <p>En el catálogo actual de ASG, la referencia HPA completa de la familia EVO es el CZ Scorpion EVO 3 A1 HPA. Debe distinguirse tanto de los EVO AEG como del kit oficial que permite convertir un EVO eléctrico existente.</p>
+      <div class="replica-grid single">
+        {hpaFactoryReplicas.filter(({ manufacturer }) => manufacturer === "ASG").map((replica) => (
+          <article class="replica-card featured">
+            <div class="replica-meta"><span>{replica.format}</span><code>{replica.evidenceStatus}</code></div>
+            <h3>{replica.name}</h3>
+            <p>{replica.summary}</p>
+            <a href={replica.sourceUrl} target="_blank" rel="noopener noreferrer">Fuente oficial de ASG <span aria-hidden="true">↗</span></a>
+          </article>
+        ))}
+      </div>
+      <aside class="notice">“De serie” significa que la réplica se comercializa ya configurada como HPA. No significa que incluya necesariamente botella, regulador externo, línea o todos los accesorios necesarios para jugar; hay que revisar el contenido de cada referencia y mercado.</aside>
     </section>
 
     <section id="productos">
@@ -121,5 +154,5 @@ const breadcrumbSchema = {
 </MainLayout>
 
 <style>
-.knowledge-guide{max-width:760px;margin:0 auto;padding:18px 2px 50px}.breadcrumbs{display:flex;flex-wrap:wrap;gap:8px;color:var(--text-muted);font-size:.78rem;margin-bottom:28px}.breadcrumbs a:hover{text-decoration:underline}.guide-hero{padding-bottom:28px;border-bottom:1px solid var(--border-soft)}.eyebrow{margin:0 0 10px;color:#6ee7d1;font-size:.75rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase}.guide-hero h1{font-size:clamp(2rem,8vw,3.3rem);line-height:1.05;letter-spacing:.01em}.lead{margin-top:16px;font-size:1.05rem;line-height:1.7}.toc{display:grid;gap:10px;margin:24px 0;padding:18px;border:1px solid var(--border-soft);border-radius:12px;background:var(--bg-card)}.toc strong{font-family:var(--font-title);letter-spacing:.04em}.toc a{color:#6ee7d1;font-size:.9rem}.knowledge-guide section{scroll-margin-top:20px;margin-top:42px}.knowledge-guide h2{font-size:1.55rem;margin-bottom:14px}.knowledge-guide h3{font-size:1.08rem;margin-bottom:8px}.knowledge-guide p,.knowledge-guide li,.knowledge-guide dd{line-height:1.7}.knowledge-guide section>p+p{margin-top:12px}.knowledge-guide ul:not(.product-list){padding-left:22px;color:var(--text-soft)}.knowledge-guide li+li{margin-top:8px}.concept-grid,.product-columns{display:grid;gap:14px}.concept-grid>div,.product-columns>div{padding:18px;border:1px solid var(--border-soft);border-radius:12px;background:rgba(255,255,255,.025)}.notice{margin-top:20px;padding:16px;border-left:3px solid #6ee7d1;background:rgba(0,184,148,.08);color:var(--text-soft);line-height:1.6}.product-list{list-style:none;margin:0;padding:0}.product-list li{display:flex;flex-direction:column;gap:2px;padding:10px 0;border-bottom:1px solid var(--border-soft)}.product-list li:last-child{border-bottom:0}.product-list small{color:var(--text-muted)}.evidence-list{display:grid;gap:12px}.evidence-list>div{padding:16px;border:1px solid var(--border-soft);border-radius:10px}.evidence-list dt{margin-bottom:8px}.evidence-list code{color:#6ee7d1;overflow-wrap:anywhere}.evidence-list dd{margin:0;color:var(--text-soft)}.commercial-cta{padding:22px;border:1px solid rgba(0,184,148,.45);border-radius:14px;background:rgba(0,184,148,.08)}.commercial-cta a{display:inline-block;margin-top:16px;padding:12px 16px;border-radius:8px;background:var(--primary);font-weight:600}.commercial-cta p{margin-top:0!important}@media(min-width:640px){.concept-grid{grid-template-columns:repeat(3,1fr)}.product-columns{grid-template-columns:1fr 1fr}}
+.knowledge-guide{max-width:760px;margin:0 auto;padding:18px 2px 50px}.breadcrumbs{display:flex;flex-wrap:wrap;gap:8px;color:var(--text-muted);font-size:.78rem;margin-bottom:28px}.breadcrumbs a:hover{text-decoration:underline}.guide-hero{padding-bottom:28px;border-bottom:1px solid var(--border-soft)}.eyebrow{margin:0 0 10px;color:#6ee7d1;font-size:.75rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase}.guide-hero h1{font-size:clamp(2rem,8vw,3.3rem);line-height:1.05;letter-spacing:.01em}.lead{margin-top:16px;font-size:1.05rem;line-height:1.7}.toc{display:grid;gap:10px;margin:24px 0;padding:18px;border:1px solid var(--border-soft);border-radius:12px;background:var(--bg-card)}.toc strong{font-family:var(--font-title);letter-spacing:.04em}.toc a{color:#6ee7d1;font-size:.9rem}.knowledge-guide section{scroll-margin-top:20px;margin-top:42px}.knowledge-guide h2{font-size:1.55rem;margin-bottom:14px}.knowledge-guide h3{font-size:1.08rem;margin-bottom:8px}.knowledge-guide p,.knowledge-guide li,.knowledge-guide dd{line-height:1.7}.knowledge-guide section>p+p{margin-top:12px}.knowledge-guide ul:not(.product-list){padding-left:22px;color:var(--text-soft)}.knowledge-guide li+li{margin-top:8px}.concept-grid,.product-columns,.replica-grid{display:grid;gap:14px}.concept-grid>div,.product-columns>div,.replica-card{padding:18px;border:1px solid var(--border-soft);border-radius:12px;background:rgba(255,255,255,.025)}.brand-heading{margin-top:26px!important;font-size:1.25rem!important}.replica-grid{margin-top:16px}.replica-card h3{margin:12px 0 8px}.replica-card p{font-size:.92rem}.replica-card a{display:inline-block;margin-top:12px;color:#6ee7d1;font-size:.84rem;font-weight:600}.replica-card a:hover{text-decoration:underline}.replica-card.featured{border-color:rgba(0,184,148,.45);background:rgba(0,184,148,.06)}.replica-meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;color:var(--text-muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em}.replica-meta code{color:#6ee7d1;font-size:.66rem;text-transform:none;letter-spacing:0}.notice{margin-top:20px;padding:16px;border-left:3px solid #6ee7d1;background:rgba(0,184,148,.08);color:var(--text-soft);line-height:1.6}.product-list{list-style:none;margin:0;padding:0}.product-list li{display:flex;flex-direction:column;gap:2px;padding:10px 0;border-bottom:1px solid var(--border-soft)}.product-list li:last-child{border-bottom:0}.product-list small{color:var(--text-muted)}.evidence-list{display:grid;gap:12px}.evidence-list>div{padding:16px;border:1px solid var(--border-soft);border-radius:10px}.evidence-list dt{margin-bottom:8px}.evidence-list code{color:#6ee7d1;overflow-wrap:anywhere}.evidence-list dd{margin:0;color:var(--text-soft)}.commercial-cta{padding:22px;border:1px solid rgba(0,184,148,.45);border-radius:14px;background:rgba(0,184,148,.08)}.commercial-cta a{display:inline-block;margin-top:16px;padding:12px 16px;border-radius:8px;background:var(--primary);font-weight:600}.commercial-cta p{margin-top:0!important}@media(min-width:640px){.concept-grid{grid-template-columns:repeat(3,1fr)}.product-columns,.replica-grid{grid-template-columns:1fr 1fr}.replica-grid.single{grid-template-columns:1fr}}
 </style>
