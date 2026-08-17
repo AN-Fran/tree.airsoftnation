@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Footer from "../components/footer.astro";
+import HpaKnowledgeHeader from "../components/HpaKnowledgeHeader.astro";
 
 const {
   title = "Airsoft Nation",
@@ -17,6 +18,8 @@ const canonicalUrl = canonical
   : undefined;
 const imageUrl = new URL(image, siteUrl).toString();
 const jsonLd = Array.isArray(structuredData) ? structuredData : [structuredData];
+const currentPath = Astro.url.pathname;
+const showHpaKnowledgeHeader = currentPath.startsWith("/hpa/") && currentPath !== "/hpa/";
 ---
 
 <!DOCTYPE html>
@@ -65,6 +68,8 @@ const jsonLd = Array.isArray(structuredData) ? structuredData : [structuredData]
 <body>
 
   <div class="app-wrapper">
+
+    {showHpaKnowledgeHeader && <HpaKnowledgeHeader />}
 
     <main class="content page-transition">
       <slot />
