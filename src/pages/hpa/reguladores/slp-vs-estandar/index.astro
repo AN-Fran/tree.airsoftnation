@@ -20,7 +20,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: "https://tree.airsoftnation.eu/" },
     { "@type": "ListItem", position: 2, name: "HPA", item: "https://tree.airsoftnation.eu/hpa/" },
-    { "@type": "ListItem", position: 3, name: "Reguladores", item: "https://tree.airsoftnation.eu/hpa/guia/" },
+    { "@type": "ListItem", position: 3, name: "Reguladores", item: "https://tree.airsoftnation.eu/hpa/reguladores/" },
     { "@type": "ListItem", position: 4, name: "SLP vs estándar", item: canonical },
   ],
 };
@@ -28,7 +28,7 @@ const breadcrumbSchema = {
 
 <MainLayout title={title} description={description} canonical={canonical} image="/icons/icon-512.png" type="article" structuredData={[articleSchema, breadcrumbSchema]}>
   <article class="explain">
-    <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/hpa/guia/">Guía HPA</a><span>/</span><span>SLP vs estándar</span></nav>
+    <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/hpa/guia/">Guía HPA</a><span>/</span><a href="/hpa/reguladores/">Reguladores</a><span>/</span><span>SLP vs estándar</span></nav>
     <header><p class="eyebrow">Regulación HPA</p><h1>Del aire almacenado a la presión de trabajo</h1><p class="lead">Toda botella necesita un regulador primario o <em>preset</em>. Después, un regulador secundario adapta esa salida a la presión que admite la réplica.</p></header>
 
     <section class="flow" aria-label="Recorrido de la presión">
@@ -65,7 +65,7 @@ const breadcrumbSchema = {
     <aside><strong>Seguridad:</strong> no desmontes el regulador primario de una botella presurizada. Respeta las presiones máximas, el manual de cada componente y los procedimientos de inspección y llenado.</aside>
 
     <footer>
-      <a href="https://polarstarairsoft.com/apps/help-center" target="_blank" rel="noopener noreferrer">FAQ técnica de PolarStar ↗</a>
+      <a href="/hpa/reguladores/">Ver fichas de reguladores</a>
       <a href="/contacto-form?motivo=upgrade_hpa">Consultar una configuración</a>
     </footer>
   </article>

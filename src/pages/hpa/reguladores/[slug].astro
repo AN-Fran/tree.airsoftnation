@@ -1,0 +1,91 @@
+---
+import MainLayout from "../../../layouts/MainLayout.astro";
+import { evidenceLabels, hpaRegulators, type HpaRegulator } from "../../../data/hpa-products";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return hpaRegulators.map((regulator) => ({ params: { slug: regulator.slug }, props: { regulator } }));
+}
+
+const { regulator } = Astro.props as { regulator: HpaRegulator };
+const canonical = `https://tree.airsoftnation.eu${regulator.route}`;
+const title = `${regulator.name}: ficha del regulador HPA | Airsoft Nation`;
+const description = `${regulator.name}: rango publicado, formato, compatibilidad y protocolo para comprobar creep y refresh antes de usarlo en airsoft.`;
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: `${regulator.name}: ficha del regulador HPA`,
+  description,
+  mainEntityOfPage: canonical,
+  image: regulator.imageUrl,
+  inLanguage: "es",
+  about: { "@type": "Product", name: regulator.name, brand: regulator.manufacturer },
+  author: { "@type": "Organization", name: "Airsoft Nation" },
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://tree.airsoftnation.eu/" },
+    { "@type": "ListItem", position: 2, name: "HPA", item: "https://tree.airsoftnation.eu/hpa/" },
+    { "@type": "ListItem", position: 3, name: "Reguladores HPA", item: "https://tree.airsoftnation.eu/hpa/reguladores/" },
+    { "@type": "ListItem", position: 4, name: regulator.name, item: canonical },
+  ],
+};
+---
+
+<MainLayout title={title} description={description} canonical={canonical} image={regulator.imageUrl} type="article" structuredData={[articleSchema, breadcrumbSchema]}>
+  <article class="sheet">
+    <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/hpa/guia/">Guía HPA</a><span>/</span><a href="/hpa/reguladores/">Reguladores</a><span>/</span><span>{regulator.name}</span></nav>
+    <header>
+      <p class="eyebrow">{regulator.manufacturer}</p>
+      <h1>{regulator.name}</h1>
+      <div class="tags"><span>{regulator.format}</span></div>
+      <a class="hero-image" href={regulator.destinationUrl} target="_blank" rel="noopener noreferrer">
+        <img src={regulator.imageUrl} alt={regulator.imageAlt} />
+        <span>{regulator.destinationLabel} ↗</span>
+      </a>
+    </header>
+
+    <section>
+      <code>{regulator.evidenceStatus}</code>
+      <h2>Qué es</h2>
+      <p>{regulator.summary}</p>
+    </section>
+
+    <section>
+      <h2>Datos publicados</h2>
+      <dl class="facts">{regulator.facts.map((fact) => <div><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
+      <p class="note">Son datos de la fuente indicada, no mediciones de banco de Airsoft Nation. Comprueba siempre el manual y la versión exacta del producto.</p>
+    </section>
+
+    <section><h2>Qué prioriza</h2><ul>{regulator.whatItPrioritizes.map((item) => <li>{item}</li>)}</ul></section>
+    <section><h2>Antes de comprar</h2><ul>{regulator.checkBeforeBuying.map((item) => <li>{item}</li>)}</ul></section>
+
+    <section>
+      <h2>Creep y refresh: cómo comprobarlo</h2>
+      <p>{regulator.creepFocus}</p>
+      <ol>
+        <li>Ajusta la presión con cronógrafo y realiza una serie corta de disparos.</li>
+        <li>Anota la presión justo al parar y tras 1 y 5 minutos sin disparar. Una subida progresiva indica creep.</li>
+        <li>Haz una ráfaga controlada y observa cuánto cae la aguja y cuánto tarda en recuperar: eso orienta sobre el refresh del conjunto.</li>
+        <li>Repite con la botella alta, media y baja. Línea, conectores, preset, suciedad y juntas también pueden alterar el resultado.</li>
+      </ol>
+      <p class="note">No compenses creep subiendo o bajando a ciegas. Si la presión continúa aumentando, deja de usar el sistema y revisa asiento, juntas y lubricación conforme al fabricante.</p>
+    </section>
+
+    <section class="evidence">
+      <h2>Estado de la evidencia</h2>
+      <p><strong>{evidenceLabels[regulator.evidenceStatus]}.</strong> {regulator.sourceNote} Esta ficha no está marcada como <code>airsoftnation_tested</code> mientras no incorpore resultados propios repetibles.</p>
+      <a href={regulator.sourceUrl} target="_blank" rel="noopener noreferrer">Consultar la fuente ↗</a>
+    </section>
+
+    <aside>El preset de la botella no sustituye al regulador secundario para airsoft. Respeta los límites de entrada y salida y cronografía cada ajuste.</aside>
+    <nav class="next"><a href="/hpa/reguladores/">‹ Ver todos los reguladores</a><a href="/contacto-form?motivo=upgrade_hpa">Consultar una configuración</a></nav>
+  </article>
+</MainLayout>
+
+<style>
+.sheet{max-width:720px;margin:0 auto;padding-bottom:46px}.breadcrumbs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:26px;color:var(--text-muted);font-size:.73rem}.eyebrow{margin:0 0 8px;color:#6ee7d1;font-size:.71rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.sheet h1{font-size:clamp(2rem,10vw,3.1rem);line-height:1.05}.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.tags span{padding:5px 8px;border-radius:999px;background:rgba(0,184,148,.12);color:#8ce9d9;font-size:.69rem}.hero-image{position:relative;display:block;aspect-ratio:16/9;margin-top:18px;border-radius:14px;overflow:hidden;background:#eef1f3}.hero-image img{width:100%;height:100%;object-fit:contain;padding:10px}.hero-image span{position:absolute;left:10px;bottom:10px;padding:7px 9px;border-radius:7px;background:rgba(6,22,48,.92);font-size:.7rem;font-weight:600}.sheet section{margin-top:32px}.sheet section>code{display:inline-block;margin-bottom:10px;color:#6ee7d1;font-size:.68rem}.sheet h2{font-size:1.35rem;margin-bottom:12px}.sheet p,.sheet li{color:var(--text-soft);line-height:1.65}.sheet ul,.sheet ol{padding-left:20px}.sheet li+li{margin-top:8px}.facts{display:grid;gap:8px}.facts div{display:grid;gap:3px;padding:12px;border:1px solid var(--border-soft);border-radius:10px;background:rgba(255,255,255,.025)}.facts dt{color:var(--text-muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.04em}.facts dd{margin:0;font-size:.88rem;font-weight:600}.note{margin-top:10px;font-size:.76rem}.evidence{padding:17px;border:1px solid var(--border-soft);border-radius:12px}.evidence code{color:#6ee7d1;overflow-wrap:anywhere}.evidence a{display:inline-block;margin-top:12px;color:#6ee7d1;font-size:.82rem;font-weight:600}.sheet aside{margin-top:24px;padding:15px;border-left:3px solid #6ee7d1;background:rgba(0,184,148,.08);color:var(--text-soft);font-size:.8rem;line-height:1.55}.next{display:grid;gap:9px;margin-top:28px}.next a{padding:12px 14px;border:1px solid var(--border-soft);border-radius:9px;text-align:center;font-size:.82rem}.next a:last-child{background:var(--primary);border-color:var(--primary);font-weight:600}@media(min-width:560px){.facts{grid-template-columns:1fr 1fr}.next{grid-template-columns:1fr 1fr}}
+</style>
