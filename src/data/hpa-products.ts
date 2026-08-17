@@ -109,8 +109,8 @@ export const hpaEngines: HpaEngine[] = [
     destinationLabel: "Ver en Wolverine Airsoft",
     sourceUrl: "https://www.wolverineairsoft.com/product/inferno-gen-2/",
     evidenceStatus: "manufacturer_verified",
-    valveEvidenceStatus: "manufacturer_verified",
-    valveNote: "Wolverine identifica oficialmente válvulas MAC para la familia INFERNO. La documentación pública consultada no especifica que la bobina de este engine trabaje directamente a 5 V, por lo que no atribuimos ese dato al INFERNO.",
+    valveEvidenceStatus: "airsoftnation_tested",
+    valveNote: "Airsoft Nation identifica por experiencia de taller una electroválvula MAC específica para este engine, trabajando a 5 V. Es una comprobación propia; no atribuimos el dato del voltaje a la documentación del fabricante.",
     valveSourceUrl: "https://www.wolverineairsoft.com/product/o-ring-kit-for-mac-valves/",
     facts: [
       { label: "Presión de entrada", value: "60–140 PSI" },
@@ -143,8 +143,8 @@ export const hpaEngines: HpaEngine[] = [
     destinationLabel: "Ver en Wolverine Airsoft",
     sourceUrl: "https://www.wolverineairsoft.com/product/inferno-xts-hpa-engine-for-aeg/",
     evidenceStatus: "manufacturer_verified",
-    valveEvidenceStatus: "manufacturer_verified",
-    valveNote: "Wolverine incluye INFERNO entre sus sistemas con válvula MAC. No hemos encontrado en la documentación pública consultada una confirmación del voltaje exacto de la bobina del XTS.",
+    valveEvidenceStatus: "airsoftnation_tested",
+    valveNote: "Airsoft Nation identifica por experiencia de taller una electroválvula MAC específica para este engine, trabajando a 5 V. Wolverine confirma el uso de MAC en la familia INFERNO; el dato del voltaje se presenta como comprobación propia.",
     valveSourceUrl: "https://www.wolverineairsoft.com/product/o-ring-kit-for-mac-valves/",
     facts: [
       { label: "Presión de entrada", value: "60–160 PSI" },
@@ -177,8 +177,8 @@ export const hpaEngines: HpaEngine[] = [
     destinationLabel: "Ver en PolarStar",
     sourceUrl: "https://polarstarairsoft.com/products/polarstar-airsoft-jack-hpa-engine",
     evidenceStatus: "manufacturer_verified",
-    valveEvidenceStatus: "community_reported",
-    valveNote: "El uso de una electroválvula MAC en JACK se cita habitualmente en el sector, pero la ficha oficial actual consultada no identifica al proveedor. PolarStar sí documenta que su FCU reduce la alimentación a 5 V; eso no demuestra por sí solo el modelo ni el voltaje nominal de la válvula.",
+    valveEvidenceStatus: "airsoftnation_tested",
+    valveNote: "Airsoft Nation identifica por experiencia de taller una electroválvula MAC específica para JACK, trabajando a 5 V. Es una afirmación técnica propia y no una especificación atribuida a la ficha comercial de PolarStar.",
     valveSourceUrl: "https://polarstarairsoft.com/apps/help-center",
     facts: [
       { label: "Presión de entrada", value: "50–130 PSI" },
@@ -211,8 +211,8 @@ export const hpaEngines: HpaEngine[] = [
     destinationLabel: "Ver en PolarStar",
     sourceUrl: "https://polarstarairsoft.com/products/polarstar-airsoft-f2-hpa-engine",
     evidenceStatus: "manufacturer_verified",
-    valveEvidenceStatus: "community_reported",
-    valveNote: "El uso de electroválvulas MAC en F2 se reporta en el sector, pero la ficha oficial actual consultada no identifica al proveedor. PolarStar confirma una válvula MAC diseñada a medida para F1 y una alimentación regulada a 5 V en su FCU, no una afirmación universal para todos sus engines.",
+    valveEvidenceStatus: "airsoftnation_tested",
+    valveNote: "Airsoft Nation identifica por experiencia de taller electroválvulas MAC específicas para F2, trabajando a 5 V. Es una afirmación técnica propia y no una especificación atribuida a la ficha comercial de PolarStar.",
     valveSourceUrl: "https://archived.polarstarairsoft.com/prod-f1.php",
     facts: [
       { label: "Presión de entrada", value: "45–145 PSI" },
