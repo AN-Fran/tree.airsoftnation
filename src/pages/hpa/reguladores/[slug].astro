@@ -11,7 +11,7 @@ export function getStaticPaths() {
 const { regulator } = Astro.props as { regulator: HpaRegulator };
 const canonical = `https://tree.airsoftnation.eu${regulator.route}`;
 const title = `${regulator.name}: ficha del regulador HPA | Airsoft Nation`;
-const description = `${regulator.name}: rango publicado, formato, compatibilidad y protocolo para comprobar creep y refresh antes de usarlo en airsoft.`;
+const description = `${regulator.name}: datos publicados, formato, disponibilidad y protocolo para comprobar creep y refresh antes de usarlo en airsoft.`;
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -77,7 +77,7 @@ const breadcrumbSchema = {
 
     <section class="evidence">
       <h2>Estado de la evidencia</h2>
-      <p><strong>{evidenceLabels[regulator.evidenceStatus]}.</strong> {regulator.sourceNote} Esta ficha no está marcada como <code>airsoftnation_tested</code> mientras no incorpore resultados propios repetibles.</p>
+      <p><strong>{evidenceLabels[regulator.evidenceStatus]}.</strong> {regulator.sourceNote} {regulator.evidenceStatus === "airsoftnation_tested" ? "Las afirmaciones propias se limitan a la experiencia y documentación de Airsoft Nation." : "La ficha no se marcará como airsoftnation_tested mientras no incorpore resultados propios repetibles."}</p>
       <a href={regulator.sourceUrl} target="_blank" rel="noopener noreferrer">Consultar la fuente ↗</a>
     </section>
 

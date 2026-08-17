@@ -3,7 +3,7 @@ import MainLayout from "../../../layouts/MainLayout.astro";
 import { hpaRegulators } from "../../../data/hpa-products";
 
 const title = "Reguladores HPA para airsoft: guía y fichas | Airsoft Nation";
-const description = "Compara STORM Category 5, Micro Reg Gen2, SPEED Sport, SPEED Ultra y Balystik SMR200 con datos publicados y controles de creep.";
+const description = "Compara STORM Category 5, Micro Reg Gen2, SPEED Sport, SPEED Ultra, Balystik HPR800C y HPR200 con datos publicados y controles de creep.";
 const canonical = "https://tree.airsoftnation.eu/hpa/reguladores/";
 const breadcrumbSchema = {
   "@context": "https://schema.org",
@@ -33,12 +33,18 @@ const itemListSchema = {
     <header>
       <p class="eyebrow">HPA Knowledge</p>
       <h1>Un regulador, una ficha</h1>
-      <p>Datos trazables, formato de montaje y comprobaciones antes de elegir. Las imágenes enlazan con el fabricante o distribuidor que documenta el producto.</p>
+      <p>Datos trazables, formato de montaje y comprobaciones antes de elegir. Las imágenes y botones de compra conducen a Airsoft Nation Store; las fuentes técnicas se muestran dentro de cada ficha.</p>
     </header>
 
     <a class="guide-link" href="/hpa/reguladores/slp-vs-estandar/">
       <span><strong>Antes de conectar una botella</strong><small>Entiende preset, regulador secundario y SLP.</small></span><b aria-hidden="true">›</b>
     </a>
+
+    <a class="guide-link secondary" href="/hpa/marcas/">
+      <span><strong>Quién fabrica estos sistemas</strong><small>PolarStar, Wolverine, SPEED Airsoft y Balystik.</small></span><b aria-hidden="true">›</b>
+    </a>
+
+    <a class="store-link" href="https://airsoftnation.store/shop/category/hpa-reguladores-667" target="_blank" rel="noopener noreferrer">Ver todos los reguladores en Airsoft Nation Store ↗</a>
 
     <div class="grid">
       {hpaRegulators.map((regulator) => (
@@ -61,5 +67,5 @@ const itemListSchema = {
 </MainLayout>
 
 <style>
-.catalogue{max-width:760px;margin:0 auto;padding-bottom:48px}.breadcrumbs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:28px;color:var(--text-muted);font-size:.76rem}.eyebrow{margin:0 0 9px;color:#6ee7d1;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}.catalogue h1{font-size:clamp(2rem,10vw,3.2rem);line-height:1.05}.catalogue header>p:last-child{margin-top:14px;color:var(--text-soft);line-height:1.6}.guide-link{display:flex;align-items:center;gap:12px;margin-top:24px;padding:14px;border:1px solid var(--border-soft);border-radius:12px;background:var(--bg-card)}.guide-link span{display:grid;gap:3px;flex:1}.guide-link small{color:var(--text-muted)}.guide-link b{color:#6ee7d1;font-size:1.7rem}.grid{display:grid;gap:14px;margin-top:18px}.card{overflow:hidden;border:1px solid var(--border-soft);border-radius:14px;background:var(--bg-card)}.image-link{position:relative;display:block;aspect-ratio:16/9;background:#eef1f3;overflow:hidden}.image-link img{width:100%;height:100%;object-fit:contain;padding:10px;transition:transform .25s}.image-link:hover img{transform:scale(1.025)}.image-link span{position:absolute;left:9px;bottom:9px;padding:6px 8px;border-radius:7px;background:rgba(6,22,48,.92);color:#fff;font-size:.68rem;font-weight:600}.copy{padding:15px}.copy>small{color:#6ee7d1;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}.copy h2{margin:6px 0 9px;font-size:1.2rem}.copy h2 a:hover{color:#6ee7d1}.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.tags span{padding:4px 7px;border-radius:999px;background:rgba(0,184,148,.12);color:#8ce9d9;font-size:.66rem}.copy p{display:-webkit-box;overflow:hidden;-webkit-line-clamp:3;-webkit-box-orient:vertical;color:var(--text-soft);font-size:.82rem;line-height:1.55}.read{display:inline-flex;gap:6px;margin-top:12px;color:#6ee7d1;font-size:.8rem;font-weight:600}@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+.catalogue{max-width:760px;margin:0 auto;padding-bottom:48px}.breadcrumbs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:28px;color:var(--text-muted);font-size:.76rem}.eyebrow{margin:0 0 9px;color:#6ee7d1;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}.catalogue h1{font-size:clamp(2rem,10vw,3.2rem);line-height:1.05}.catalogue header>p:last-child{margin-top:14px;color:var(--text-soft);line-height:1.6}.guide-link{display:flex;align-items:center;gap:12px;margin-top:24px;padding:14px;border:1px solid var(--border-soft);border-radius:12px;background:var(--bg-card)}.guide-link.secondary{margin-top:10px}.guide-link span{display:grid;gap:3px;flex:1}.guide-link small{color:var(--text-muted)}.guide-link b{color:#6ee7d1;font-size:1.7rem}.store-link{display:block;margin:10px 0 0;padding:11px 14px;border-radius:10px;background:var(--primary);font-size:.78rem;font-weight:600;text-align:center}.grid{display:grid;gap:14px;margin-top:18px}.card{overflow:hidden;border:1px solid var(--border-soft);border-radius:14px;background:var(--bg-card)}.image-link{position:relative;display:block;aspect-ratio:16/9;background:#eef1f3;overflow:hidden}.image-link img{width:100%;height:100%;object-fit:contain;padding:10px;transition:transform .25s}.image-link:hover img{transform:scale(1.025)}.image-link span{position:absolute;left:9px;bottom:9px;padding:6px 8px;border-radius:7px;background:rgba(6,22,48,.92);color:#fff;font-size:.68rem;font-weight:600}.copy{padding:15px}.copy>small{color:#6ee7d1;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}.copy h2{margin:6px 0 9px;font-size:1.2rem}.copy h2 a:hover{color:#6ee7d1}.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.tags span{padding:4px 7px;border-radius:999px;background:rgba(0,184,148,.12);color:#8ce9d9;font-size:.66rem}.copy p{display:-webkit-box;overflow:hidden;-webkit-line-clamp:3;-webkit-box-orient:vertical;color:var(--text-soft);font-size:.82rem;line-height:1.55}.read{display:inline-flex;gap:6px;margin-top:12px;color:#6ee7d1;font-size:.8rem;font-weight:600}@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
 </style>

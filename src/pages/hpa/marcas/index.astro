@@ -1,0 +1,67 @@
+---
+import MainLayout from "../../../layouts/MainLayout.astro";
+
+const title = "Marcas HPA: PolarStar, Wolverine, SPEED y Balystik | Airsoft Nation";
+const description = "Conoce el origen y enfoque de PolarStar, Wolverine Airsoft, SPEED Airsoft y Balystik, diferenciando historia oficial y experiencia de Airsoft Nation.";
+const canonical = "https://tree.airsoftnation.eu/hpa/marcas/";
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Marcas HPA: quién fabrica cada sistema",
+  description,
+  mainEntityOfPage: canonical,
+  inLanguage: "es",
+  author: { "@type": "Organization", name: "Airsoft Nation" },
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://tree.airsoftnation.eu/" },
+    { "@type": "ListItem", position: 2, name: "HPA", item: "https://tree.airsoftnation.eu/hpa/" },
+    { "@type": "ListItem", position: 3, name: "Marcas HPA", item: canonical },
+  ],
+};
+---
+
+<MainLayout title={title} description={description} canonical={canonical} image="/icons/icon-512.png" type="article" structuredData={[articleSchema, breadcrumbSchema]}>
+  <article class="brands">
+    <nav class="breadcrumbs" aria-label="Migas de pan"><a href="/hpa/guia/">Guía HPA</a><span>/</span><span>Marcas</span></nav>
+    <header><p class="eyebrow">HPA Knowledge</p><h1>Quién hay detrás de cada sistema</h1><p class="lead">La marca explica la filosofía y el soporte, pero no sustituye la comparación del producto concreto. Separamos la historia publicada por cada fabricante de la experiencia propia de Airsoft Nation.</p></header>
+
+    <section class="brand">
+      <code>manufacturer_verified</code><h2>PolarStar</h2>
+      <p>PolarStar Precision Airsoft se constituyó en enero de 2009 para fabricar componentes de precisión orientados al rendimiento y la longevidad. La llegada del Fusion Engine patentado en 2011 desplazó su enfoque hacia sistemas HPA completos que sustituyen la mecánica AEG.</p>
+      <p>Es una división de PolarStar Engineering &amp; Machine, combina ingeniería y mecanizado en Estados Unidos y publica que sus engines y componentes se fabrican en una instalación con certificación ISO 9001:2015.</p>
+      <a href="https://polarstarairsoft.com/pages/about-us" target="_blank" rel="noopener noreferrer">Historia oficial de PolarStar ↗</a>
+    </section>
+
+    <section class="brand">
+      <code>manufacturer_verified</code><h2>Wolverine Airsoft</h2>
+      <p>Wolverine centra su propuesta en ingeniería HPA, rendimiento listo para usar y soporte posterior. Su catálogo abarca engines de conversión, reguladores y la plataforma MTW diseñada desde cero alrededor del HPA.</p>
+      <p>La marca mantiene manuales y una base técnica pública. Además, su directorio europeo incluye a Airsoft Nation entre sus centros técnicos certificados, una relación relevante para instalación, mantenimiento y soporte en España.</p>
+      <div class="links"><a href="https://www.wolverineairsoft.com/" target="_blank" rel="noopener noreferrer">Presentación oficial ↗</a><a href="https://www.wolverineairsoft.com/helpdesk/" target="_blank" rel="noopener noreferrer">Soporte y técnicos certificados ↗</a></div>
+    </section>
+
+    <section class="brand">
+      <code>manufacturer_verified</code><h2>SPEED Airsoft</h2>
+      <p>SPEED comenzó con herramientas y accesorios mecanizados y lanzó su gatillo ajustable para M4 AEG en 2011. Con el crecimiento del HPA presentó su gatillo HPA y el regulador Pro en 2015; después llegaron Sport y, en 2025, Ultra como sistema integrado en la réplica.</p>
+      <p>La empresa pertenece a SPEED Laboratories y declara diseñar y fabricar sus productos en Canadá, con una trayectoria especialmente vinculada al speedsoft y al ajuste del disparador.</p>
+      <a href="https://www.speedairsoft.com/about" target="_blank" rel="noopener noreferrer">Historia oficial de SPEED ↗</a>
+    </section>
+
+    <section class="brand">
+      <code>airsoftnation_tested</code><h2>Balystik</h2>
+      <p>Balystik ofrece componentes y regulación HPA con una posición de precio más accesible. Airsoft Nation ha trabajado con varias generaciones de sus reguladores y actualmente mantiene las últimas unidades del HPR800C junto al nuevo HPR200.</p>
+      <p>No hemos localizado una página corporativa primaria equivalente a las anteriores. Por eso esta presentación se apoya en el catálogo y la experiencia de Airsoft Nation, sin atribuir a la marca una historia empresarial no publicada.</p>
+      <a href="https://airsoftnation.store/shop/category/hpa-reguladores-667" target="_blank" rel="noopener noreferrer">Ver reguladores Balystik en Airsoft Nation Store ↗</a>
+    </section>
+
+    <aside>Una marca reconocida no garantiza por sí sola que un modelo sea el adecuado. Compara rango de entrada y salida, formato, mantenimiento, conectores y comportamiento medido en tu configuración.</aside>
+    <nav class="next"><a href="/hpa/reguladores/">Ver reguladores</a><a href="/hpa/engines/">Ver engines</a></nav>
+  </article>
+</MainLayout>
+
+<style>
+.brands{max-width:720px;margin:0 auto;padding-bottom:48px}.breadcrumbs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:28px;color:var(--text-muted);font-size:.75rem}.eyebrow{margin:0 0 9px;color:#6ee7d1;font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase}.brands h1{font-size:clamp(2rem,10vw,3.15rem);line-height:1.04}.lead{margin-top:15px;color:var(--text-soft);line-height:1.65}.brand{margin-top:18px;padding:17px;border:1px solid var(--border-soft);border-radius:13px;background:var(--bg-card)}.brand:first-of-type{margin-top:30px}.brand code{display:inline-block;margin-bottom:8px;color:#6ee7d1;font-size:.68rem}.brand h2{margin-bottom:9px;font-size:1.35rem}.brand p{color:var(--text-soft);font-size:.84rem;line-height:1.65}.brand p+p{margin-top:9px}.brand a{display:inline-block;margin-top:12px;color:#6ee7d1;font-size:.76rem;font-weight:600}.links{display:flex;gap:12px;flex-wrap:wrap}.brands aside{margin-top:24px;padding:15px;border-left:3px solid #6ee7d1;background:rgba(0,184,148,.08);color:var(--text-soft);font-size:.8rem;line-height:1.6}.next{display:grid;gap:9px;margin-top:26px}.next a{padding:12px 14px;border:1px solid var(--border-soft);border-radius:9px;text-align:center;font-size:.8rem}@media(min-width:560px){.next{grid-template-columns:1fr 1fr}}
+</style>
