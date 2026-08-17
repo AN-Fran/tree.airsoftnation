@@ -8,6 +8,7 @@ const routes = [
   "/eventos/",
   "/hpa/",
   "/hpa/guia/",
+  "/hpa/marcas/",
   "/hpa/fusiles/",
   "/hpa/engines/",
   "/hpa/engines/bolt-abierto-cerrado-hibrido/",
