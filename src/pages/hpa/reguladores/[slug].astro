@@ -78,11 +78,11 @@ const breadcrumbSchema = {
     <section class="evidence">
       <h2>Estado de la evidencia</h2>
       <p><strong>{evidenceLabels[regulator.evidenceStatus]}.</strong> {regulator.sourceNote} {regulator.evidenceStatus === "airsoftnation_tested" ? "Las afirmaciones propias se limitan a la experiencia y documentación de Airsoft Nation." : "La ficha no se marcará como airsoftnation_tested mientras no incorpore resultados propios repetibles."}</p>
-      <a href={regulator.sourceUrl} target="_blank" rel="noopener noreferrer">Consultar la fuente ↗</a>
+      <a href={regulator.sourceUrl} target="_blank" rel="noopener noreferrer">{regulator.evidenceStatus === "airsoftnation_tested" ? "Fuente de la ficha" : "Fuente técnica del fabricante"} ↗</a>
     </section>
 
     <aside>El preset de la botella no sustituye al regulador secundario para airsoft. Respeta los límites de entrada y salida y cronografía cada ajuste.</aside>
-    <nav class="next"><a href="/hpa/reguladores/">‹ Ver todos los reguladores</a><a href="/contacto-form?motivo=upgrade_hpa">Consultar una configuración</a></nav>
+    <nav class="next"><a href="/hpa/reguladores/">‹ Ver todas las fichas</a><a href="https://airsoftnation.store/shop/category/hpa-reguladores-667" target="_blank" rel="noopener noreferrer">Reguladores en Airsoft Nation ↗</a></nav>
   </article>
 </MainLayout>
 

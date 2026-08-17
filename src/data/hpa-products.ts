@@ -43,7 +43,7 @@ export interface HpaEngine {
 
 export interface HpaRegulator {
   name: string;
-  manufacturer: "Wolverine Airsoft" | "PolarStar" | "SPEED Airsoft" | "Balystik";
+  manufacturer: "Wolverine Airsoft" | "Heretic Labs" | "PolarStar" | "SPEED Airsoft" | "Balystik";
   slug: string;
   route: string;
   format: string;
@@ -88,6 +88,7 @@ export const hpaProducts: HpaProduct[] = [
   { name: "PolarStar JACK", manufacturer: "PolarStar", category: "engine", slug: "polarstar-jack", route: "/hpa/engines/polarstar-jack/", publicationStatus: "published" },
   { name: "PolarStar F2", manufacturer: "PolarStar", category: "engine", slug: "polarstar-f2", route: "/hpa/engines/polarstar-f2/", publicationStatus: "published" },
   { name: "Wolverine STORM Category 5", manufacturer: "Wolverine", category: "regulator", slug: "wolverine-storm-category-5", route: "/hpa/reguladores/wolverine-storm-category-5/", publicationStatus: "published" },
+  { name: "Heretic Labs Tank Grip", manufacturer: "Heretic Labs", category: "regulator", slug: "heretic-labs-tank-grip", route: "/hpa/reguladores/heretic-labs-tank-grip/", publicationStatus: "published" },
   { name: "PolarStar Micro Reg Gen2", manufacturer: "PolarStar", category: "regulator", slug: "polarstar-micro-reg-gen2", route: "/hpa/reguladores/polarstar-micro-reg-gen2/", publicationStatus: "published" },
   { name: "SPEED Airsoft Sport", manufacturer: "SPEED Airsoft", category: "regulator", slug: "speed-airsoft-sport", route: "/hpa/reguladores/speed-airsoft-sport/", publicationStatus: "published" },
   { name: "SPEED Airsoft Ultra", manufacturer: "SPEED Airsoft", category: "regulator", slug: "speed-airsoft-ultra", route: "/hpa/reguladores/speed-airsoft-ultra/", publicationStatus: "published" },
@@ -266,6 +267,38 @@ export const hpaRegulators: HpaRegulator[] = [
       "Si el paquete incluye línea y qué tipo de conectores utiliza.",
     ],
     creepFocus: "Registrar la presión al conectar, tras varios disparos y después de 1 y 5 minutos sin disparar. Wolverine no publica en la ficha una cifra de creep que sustituya esa prueba.",
+  },
+  {
+    name: "Heretic Labs Tank Grip",
+    manufacturer: "Heretic Labs",
+    slug: "heretic-labs-tank-grip",
+    route: "/hpa/reguladores/heretic-labs-tank-grip/",
+    format: "Regulador integrado en grip / on-gun",
+    summary: "Grip para montar una botella HPA directamente en una réplica MTW-Spec. Integra un regulador STORM Category 5, espacio para batería y línea y acceso a la batería sin herramientas.",
+    imageUrl: "https://airsoftnation.store/web/image/product.template/6059/image_1920",
+    imageAlt: "Heretic Labs Tank Grip con regulador STORM Category 5 integrado",
+    destinationUrl: "https://airsoftnation.store/shop/regulador-tank-grip-for-mtw-article-series-heretic-labs-6059?category=667",
+    destinationLabel: "Ver Tank Grip en Airsoft Nation Store",
+    sourceUrl: "https://www.wolverineairsoft.com/product/heretic-labs-tank-grip/",
+    evidenceStatus: "manufacturer_verified",
+    sourceNote: "Página de producto y manual oficial de Heretic Labs y Wolverine Airsoft.",
+    facts: [
+      { label: "Regulador integrado", value: "STORM Category 5" },
+      { label: "Salida publicada", value: "60–180 PSI" },
+      { label: "Botella", value: "Acepta botellas HPA estándar" },
+      { label: "Construcción", value: "Nailon reforzado con fibra de vidrio" },
+    ],
+    whatItPrioritizes: [
+      "Eliminar la línea externa y llevar la botella directamente en la réplica.",
+      "Integrar regulación, batería y línea dentro del grip.",
+      "Bloqueo de torneo integrado para configuraciones competitivas.",
+    ],
+    checkBeforeBuying: [
+      "Es compatible oficialmente con MTW M4 y MTW-9.",
+      "No figura como compatible con MTW-308, MTW Shotgun ni MTW AK.",
+      "Comprobar espacio, batería y ergonomía con la botella que se va a utilizar.",
+    ],
+    creepFocus: "Al integrar un STORM Category 5, se aplica el mismo control: medir presión al conectar, después de disparar y tras 1 y 5 minutos en reposo, con especial atención a las conexiones internas del grip.",
   },
   {
     name: "PolarStar Micro Reg Gen2",
