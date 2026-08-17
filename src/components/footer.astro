@@ -2,6 +2,7 @@
 import { Astro } from "astro";
 
 const currentPath = Astro.url.pathname;
+const currentYear = new Date().getFullYear();
 
 const items = [
   { href: "/", icon: "bi-house", label: "Inicio" },
@@ -12,42 +13,55 @@ const items = [
 ];
 ---
 
-<nav class="bottom-nav">
-  {items.map(item => {
-    const isActive =
-      !item.external &&
-      (item.href === "/"
-        ? currentPath === "/"
-        : currentPath.startsWith(item.href));
+<footer class="app-footer">
+  <nav class="bottom-nav" aria-label="Navegación principal">
+    {items.map(item => {
+      const isActive =
+        !item.external &&
+        (item.href === "/"
+          ? currentPath === "/"
+          : currentPath.startsWith(item.href));
 
-    return (
-      <a
-        href={item.href}
-        class={`nav-item ${isActive ? "active" : ""}`}
-        target={item.external ? "_blank" : undefined}
-        rel={item.external ? "noopener" : undefined}
-      >
-        <i class={`bi ${item.icon}`}></i>
-        <span>{item.label}</span>
-      </a>
-    );
-  })}
-</nav>
+      return (
+        <a
+          href={item.href}
+          class={`nav-item ${isActive ? "active" : ""}`}
+          target={item.external ? "_blank" : undefined}
+          rel={item.external ? "noopener" : undefined}
+        >
+          <i class={`bi ${item.icon}`}></i>
+          <span>{item.label}</span>
+        </a>
+      );
+    })}
+  </nav>
+
+  <div class="legal-bar" aria-label="Información legal de Airsoft Nation">
+    <span>© {currentYear} Airsoft Nation</span>
+    <span aria-hidden="true"> · </span>
+    <span>Marca de la Unión Europea registrada n.º 19040186 ®</span>
+  </div>
+</footer>
 
 <style>
-.bottom-nav {
+.app-footer {
   position: fixed;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%);
+  z-index: 100;
   width: 100%;
   max-width: 520px;
+  transform: translateX(-50%);
   background: var(--bg-card);
+  box-shadow: 0 -4px 14px rgba(0,0,0,0.35);
+}
+
+.bottom-nav {
   display: flex;
   justify-content: space-around;
-  padding: 8px 0 calc(10px + env(safe-area-inset-bottom));
-  box-shadow: 0 -4px 14px rgba(0,0,0,0.35);
-  z-index: 100;
+  padding: 7px 0 6px;
+  border-top: 1px solid var(--border-soft);
+  background: var(--bg-card);
 }
 
 .nav-item {
@@ -58,15 +72,34 @@ const items = [
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  font-size: 0.65rem;
+  gap: 3px;
+  font-size: 0.63rem;
 }
 
 .nav-item i {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
 }
 
 .nav-item.active {
   color: var(--primary);
+}
+
+.legal-bar {
+  position: static;
+  width: 100%;
+  padding: 5px 8px calc(5px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border-soft);
+  background: #050f22;
+  color: var(--text-muted);
+  font-size: clamp(0.5rem, 2.1vw, 0.61rem);
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+}
+
+@media (max-width: 350px) {
+  .legal-bar {
+    white-space: normal;
+  }
 }
 </style>
