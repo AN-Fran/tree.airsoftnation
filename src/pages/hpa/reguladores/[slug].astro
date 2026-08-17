@@ -78,7 +78,7 @@ const breadcrumbSchema = {
     <section class="evidence">
       <h2>Estado de la evidencia</h2>
       <p><strong>{evidenceLabels[regulator.evidenceStatus]}.</strong> {regulator.sourceNote} {regulator.evidenceStatus === "airsoftnation_tested" ? "Las afirmaciones propias se limitan a la experiencia y documentación de Airsoft Nation." : "La ficha no se marcará como airsoftnation_tested mientras no incorpore resultados propios repetibles."}</p>
-      <a href={regulator.sourceUrl} target="_blank" rel="noopener noreferrer">{regulator.evidenceStatus === "airsoftnation_tested" ? "Fuente de la ficha" : "Fuente técnica del fabricante"} ↗</a>
+      <p class="source-label">Documentación atribuida: {regulator.evidenceStatus === "airsoftnation_tested" ? "Airsoft Nation" : regulator.manufacturer}.</p>
     </section>
 
     <aside>El preset de la botella no sustituye al regulador secundario para airsoft. Respeta los límites de entrada y salida y cronografía cada ajuste.</aside>
