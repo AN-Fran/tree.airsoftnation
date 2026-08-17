@@ -57,7 +57,12 @@ const items = [
 }
 
 .bottom-nav {
+  position: static;
+  bottom: auto;
   display: flex;
+  width: 100%;
+  height: auto;
+  align-items: stretch;
   justify-content: space-around;
   padding: 7px 0 6px;
   border-top: 1px solid var(--border-soft);
@@ -66,6 +71,9 @@ const items = [
 
 .nav-item {
   flex: 1;
+  width: auto;
+  height: auto;
+  justify-content: center;
   text-align: center;
   text-decoration: none;
   color: var(--text-muted);
