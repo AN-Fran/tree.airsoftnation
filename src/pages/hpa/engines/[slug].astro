@@ -72,6 +72,13 @@ const breadcrumbSchema = {
       <ul>{engine.checkBeforeBuying.map((item) => <li>{item}</li>)}</ul>
     </section>
 
+    <section class="evidence valve">
+      <code>{engine.valveEvidenceStatus}</code>
+      <h2>Electroválvula y alimentación</h2>
+      <p>{engine.valveNote}</p>
+      <a href={engine.valveSourceUrl} target="_blank" rel="noopener noreferrer">Consultar la documentación utilizada ↗</a>
+    </section>
+
     <section class="evidence">
       <h2>Estado de la evidencia</h2>
       <p><strong>{evidenceLabels[engine.evidenceStatus]}.</strong> Esta ficha resume la página de producto, el manual o la ayuda oficial. No está marcada como <code>airsoftnation_tested</code> porque todavía no incorpora un protocolo propio de banco y cronógrafo.</p>

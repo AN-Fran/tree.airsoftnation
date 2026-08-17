@@ -33,9 +33,32 @@ export interface HpaEngine {
   destinationLabel: string;
   sourceUrl: string;
   evidenceStatus: "manufacturer_verified";
+  valveEvidenceStatus: EvidenceStatus;
+  valveNote: string;
+  valveSourceUrl: string;
   facts: HpaEngineFact[];
   whatItPrioritizes: string[];
   checkBeforeBuying: string[];
+}
+
+export interface HpaRegulator {
+  name: string;
+  manufacturer: "Wolverine Airsoft" | "PolarStar" | "SPEED Airsoft" | "Balystik";
+  slug: string;
+  route: string;
+  format: string;
+  summary: string;
+  imageUrl: string;
+  imageAlt: string;
+  destinationUrl: string;
+  destinationLabel: string;
+  sourceUrl: string;
+  evidenceStatus: EvidenceStatus;
+  sourceNote: string;
+  facts: HpaEngineFact[];
+  whatItPrioritizes: string[];
+  checkBeforeBuying: string[];
+  creepFocus: string;
 }
 
 export interface HpaFactoryReplica {
@@ -64,11 +87,11 @@ export const hpaProducts: HpaProduct[] = [
   { name: "Wolverine Inferno XTS", manufacturer: "Wolverine", category: "engine", slug: "wolverine-inferno-xts", route: "/hpa/engines/wolverine-inferno-xts/", publicationStatus: "published" },
   { name: "PolarStar JACK", manufacturer: "PolarStar", category: "engine", slug: "polarstar-jack", route: "/hpa/engines/polarstar-jack/", publicationStatus: "published" },
   { name: "PolarStar F2", manufacturer: "PolarStar", category: "engine", slug: "polarstar-f2", route: "/hpa/engines/polarstar-f2/", publicationStatus: "published" },
-  { name: "Wolverine STORM Category 5", manufacturer: "Wolverine", category: "regulator", slug: "wolverine-storm-category-5", route: "/hpa/reguladores/wolverine-storm-category-5/", publicationStatus: "planned" },
-  { name: "PolarStar Micro Reg Gen2", manufacturer: "PolarStar", category: "regulator", slug: "polarstar-micro-reg-gen2", route: "/hpa/reguladores/polarstar-micro-reg-gen2/", publicationStatus: "planned" },
-  { name: "SPEED Airsoft Sport", manufacturer: "SPEED Airsoft", category: "regulator", slug: "speed-airsoft-sport", route: "/hpa/reguladores/speed-airsoft-sport/", publicationStatus: "planned" },
-  { name: "SPEED Airsoft Ultra", manufacturer: "SPEED Airsoft", category: "regulator", slug: "speed-airsoft-ultra", route: "/hpa/reguladores/speed-airsoft-ultra/", publicationStatus: "planned" },
-  { name: "Balystik SMR200", manufacturer: "Balystik", category: "regulator", slug: "balystik-smr200", route: "/hpa/reguladores/balystik-smr200/", publicationStatus: "planned" },
+  { name: "Wolverine STORM Category 5", manufacturer: "Wolverine", category: "regulator", slug: "wolverine-storm-category-5", route: "/hpa/reguladores/wolverine-storm-category-5/", publicationStatus: "published" },
+  { name: "PolarStar Micro Reg Gen2", manufacturer: "PolarStar", category: "regulator", slug: "polarstar-micro-reg-gen2", route: "/hpa/reguladores/polarstar-micro-reg-gen2/", publicationStatus: "published" },
+  { name: "SPEED Airsoft Sport", manufacturer: "SPEED Airsoft", category: "regulator", slug: "speed-airsoft-sport", route: "/hpa/reguladores/speed-airsoft-sport/", publicationStatus: "published" },
+  { name: "SPEED Airsoft Ultra", manufacturer: "SPEED Airsoft", category: "regulator", slug: "speed-airsoft-ultra", route: "/hpa/reguladores/speed-airsoft-ultra/", publicationStatus: "published" },
+  { name: "Balystik SMR200", manufacturer: "Balystik", category: "regulator", slug: "balystik-smr200", route: "/hpa/reguladores/balystik-smr200/", publicationStatus: "published" },
 ];
 
 export const hpaEngines: HpaEngine[] = [
@@ -86,6 +109,9 @@ export const hpaEngines: HpaEngine[] = [
     destinationLabel: "Ver en Wolverine Airsoft",
     sourceUrl: "https://www.wolverineairsoft.com/product/inferno-gen-2/",
     evidenceStatus: "manufacturer_verified",
+    valveEvidenceStatus: "manufacturer_verified",
+    valveNote: "Wolverine identifica oficialmente válvulas MAC para la familia INFERNO. La documentación pública consultada no especifica que la bobina de este engine trabaje directamente a 5 V, por lo que no atribuimos ese dato al INFERNO.",
+    valveSourceUrl: "https://www.wolverineairsoft.com/product/o-ring-kit-for-mac-valves/",
     facts: [
       { label: "Presión de entrada", value: "60–140 PSI" },
       { label: "Energía publicada", value: "1–3 J, según la build" },
@@ -117,6 +143,9 @@ export const hpaEngines: HpaEngine[] = [
     destinationLabel: "Ver en Wolverine Airsoft",
     sourceUrl: "https://www.wolverineairsoft.com/product/inferno-xts-hpa-engine-for-aeg/",
     evidenceStatus: "manufacturer_verified",
+    valveEvidenceStatus: "manufacturer_verified",
+    valveNote: "Wolverine incluye INFERNO entre sus sistemas con válvula MAC. No hemos encontrado en la documentación pública consultada una confirmación del voltaje exacto de la bobina del XTS.",
+    valveSourceUrl: "https://www.wolverineairsoft.com/product/o-ring-kit-for-mac-valves/",
     facts: [
       { label: "Presión de entrada", value: "60–160 PSI" },
       { label: "Presión mínima de sellado", value: "30 PSI" },
@@ -148,6 +177,9 @@ export const hpaEngines: HpaEngine[] = [
     destinationLabel: "Ver en PolarStar",
     sourceUrl: "https://polarstarairsoft.com/products/polarstar-airsoft-jack-hpa-engine",
     evidenceStatus: "manufacturer_verified",
+    valveEvidenceStatus: "community_reported",
+    valveNote: "El uso de una electroválvula MAC en JACK se cita habitualmente en el sector, pero la ficha oficial actual consultada no identifica al proveedor. PolarStar sí documenta que su FCU reduce la alimentación a 5 V; eso no demuestra por sí solo el modelo ni el voltaje nominal de la válvula.",
+    valveSourceUrl: "https://polarstarairsoft.com/apps/help-center",
     facts: [
       { label: "Presión de entrada", value: "50–130 PSI" },
       { label: "Cadencia publicada", value: "Hasta 30 RPS en configuraciones estándar" },
@@ -179,6 +211,9 @@ export const hpaEngines: HpaEngine[] = [
     destinationLabel: "Ver en PolarStar",
     sourceUrl: "https://polarstarairsoft.com/products/polarstar-airsoft-f2-hpa-engine",
     evidenceStatus: "manufacturer_verified",
+    valveEvidenceStatus: "community_reported",
+    valveNote: "El uso de electroválvulas MAC en F2 se reporta en el sector, pero la ficha oficial actual consultada no identifica al proveedor. PolarStar confirma una válvula MAC diseñada a medida para F1 y una alimentación regulada a 5 V en su FCU, no una afirmación universal para todos sus engines.",
+    valveSourceUrl: "https://archived.polarstarairsoft.com/prod-f1.php",
     facts: [
       { label: "Presión de entrada", value: "45–145 PSI" },
       { label: "Cadencia publicada", value: "Hasta 30 RPS en configuraciones estándar" },
@@ -195,6 +230,169 @@ export const hpaEngines: HpaEngine[] = [
       "Ajustes de FCU coherentes con cargador, hop, presión y cañón.",
       "La botella, el regulador, la línea y la batería se adquieren por separado según PolarStar.",
     ],
+  },
+];
+
+export const hpaRegulators: HpaRegulator[] = [
+  {
+    name: "Wolverine STORM Category 5",
+    manufacturer: "Wolverine Airsoft",
+    slug: "wolverine-storm-category-5",
+    route: "/hpa/reguladores/wolverine-storm-category-5/",
+    format: "Regulador secundario en botella",
+    summary: "Regulador secundario dedicado a airsoft para presets de botella estándar o de baja presión. Wolverine amplía el área del pistón respecto al STORM clásico y publica un intervalo de salida que también cubre engines de presión elevada.",
+    imageUrl: "https://www.wolverineairsoft.com/wp-content/uploads/Storm-Category-5-with-Background-324x324.jpg",
+    imageAlt: "Wolverine STORM Category 5 HPA regulator",
+    destinationUrl: "https://www.wolverineairsoft.com/product/cat5/",
+    destinationLabel: "Ver en Wolverine Airsoft",
+    sourceUrl: "https://www.wolverineairsoft.com/product/cat5/",
+    evidenceStatus: "manufacturer_verified",
+    sourceNote: "Página de producto y manual oficial de Wolverine Airsoft.",
+    facts: [
+      { label: "Entrada publicada", value: "300–1000 PSI" },
+      { label: "Salida ajustable", value: "60–180 PSI" },
+      { label: "Altura publicada", value: "59,3 mm" },
+      { label: "Servicio recomendado", value: "100.000 disparos o 6 meses" },
+    ],
+    whatItPrioritizes: [
+      "Rango de salida amplio para diferentes engines HPA.",
+      "Bloqueo de torneo con brida y regulación mediante tornillo frontal.",
+      "Menos superficies de sellado y mayor área de pistón que el STORM clásico, según Wolverine.",
+    ],
+    checkBeforeBuying: [
+      "Que el preset entregue entre 300 y 1000 PSI y esté en buen estado.",
+      "Que el rango mínimo de 60 PSI sea compatible con la configuración buscada.",
+      "Si el paquete incluye línea y qué tipo de conectores utiliza.",
+    ],
+    creepFocus: "Registrar la presión al conectar, tras varios disparos y después de 1 y 5 minutos sin disparar. Wolverine no publica en la ficha una cifra de creep que sustituya esa prueba.",
+  },
+  {
+    name: "PolarStar Micro Reg Gen2",
+    manufacturer: "PolarStar",
+    slug: "polarstar-micro-reg-gen2",
+    route: "/hpa/reguladores/polarstar-micro-reg-gen2/",
+    format: "Regulador secundario compacto",
+    summary: "Regulador compacto para botella con componentes internos compartidos con UGS y CGS. PolarStar destaca su mantenimiento simplificado, cuerpo de dos piezas y un conjunto interno con dos juntas tóricas.",
+    imageUrl: "https://polarstarairsoft.com/cdn/shop/products/Micro_Reg_GEN2_Slider_1920x500.jpg?v=1564777667&width=1445",
+    imageAlt: "PolarStar Micro Reg Gen2 HPA regulator",
+    destinationUrl: "https://polarstarairsoft.com/products/micro-reg%E2%84%A2-gen2",
+    destinationLabel: "Ver en PolarStar",
+    sourceUrl: "https://polarstarairsoft.com/products/micro-reg%E2%84%A2-gen2",
+    evidenceStatus: "manufacturer_verified",
+    sourceNote: "Página de producto y documentación oficial de PolarStar.",
+    facts: [
+      { label: "Entrada máxima", value: "900 PSI" },
+      { label: "Salida estándar", value: "40–130 PSI" },
+      { label: "Con muelle HP opcional", value: "Hasta ~200 PSI" },
+      { label: "Salidas", value: "2 × 1/8 NPT" },
+    ],
+    whatItPrioritizes: [
+      "Tamaño reducido para bolsas compactas.",
+      "Compatibilidad declarada con presets estándar y SLP.",
+      "Bloqueo de torneo integrado y mantenimiento con pocas juntas.",
+    ],
+    checkBeforeBuying: [
+      "El regulador solo no incluye necesariamente línea, QD ni filter fitting.",
+      "No instalar el muelle HP salvo que el engine y el uso requieran ese intervalo.",
+      "Confirmar que el preset no supera los 900 PSI de entrada publicados.",
+    ],
+    creepFocus: "Separar creep de una lectura lenta del manómetro: medir siempre con el sistema presurizado, disparar para descargar y repetir la observación con botella alta, media y baja.",
+  },
+  {
+    name: "SPEED Airsoft Sport",
+    manufacturer: "SPEED Airsoft",
+    slug: "speed-airsoft-sport",
+    route: "/hpa/reguladores/speed-airsoft-sport/",
+    format: "Regulador secundario compacto",
+    summary: "Modelo compacto para montaje sobre botella, con dos puertos 1/8 NPT y salida ajustable. SPEED lo presenta como alternativa de acceso a la arquitectura de sus reguladores externos.",
+    imageUrl: "https://static.wixstatic.com/media/c1a799_c2d627e7c9c04d3a84f3e280f4908034~mv2.jpg/v1/fill/w_1920%2Ch_1920%2Cal_c%2Cq_90%2Cquality_auto/c1a799_c2d627e7c9c04d3a84f3e280f4908034~mv2.jpg",
+    imageAlt: "SPEED Airsoft HPA Sport regulator",
+    destinationUrl: "https://www.speedairsoft.com/product-page/hpa-sport-regulator",
+    destinationLabel: "Ver en SPEED Airsoft",
+    sourceUrl: "https://www.speedairsoft.com/product-page/hpa-sport-regulator",
+    evidenceStatus: "manufacturer_verified",
+    sourceNote: "Página de producto oficial de SPEED Airsoft.",
+    facts: [
+      { label: "Entrada máxima", value: "900 PSI" },
+      { label: "Salida publicada", value: "20–140 PSI" },
+      { label: "Preset indicado", value: "300–800 PSI de salida" },
+      { label: "Puertos", value: "2 × 1/8 NPT" },
+    ],
+    whatItPrioritizes: [
+      "Configuración flexible de línea y manómetro mediante dos puertos.",
+      "Bloqueo de torneo con brida.",
+      "Válvula de alivio ante sobrepresión, según SPEED.",
+    ],
+    checkBeforeBuying: [
+      "Comprobar qué línea, manómetro y conectores incluye la referencia concreta.",
+      "Usar grasa de silicona, que es el lubricante especificado por SPEED.",
+      "No confundir la presión de almacenamiento de la botella con la salida de su preset.",
+    ],
+    creepFocus: "El fabricante no publica una cifra de creep. La estabilidad debe verificarse tras cerrar una ráfaga y dejar el sistema en reposo, además de medir la recuperación entre disparos.",
+  },
+  {
+    name: "SPEED Airsoft Ultra",
+    manufacturer: "SPEED Airsoft",
+    slug: "speed-airsoft-ultra",
+    route: "/hpa/reguladores/speed-airsoft-ultra/",
+    format: "Sistema on-gun / hoseless",
+    summary: "Regulador integrado en un frame para M4 V2 compatible con Tokyo Marui. El aire circula por el propio frame, incorpora purga manual y deja espacio interior para FCU y batería; no es un regulador remoto directamente equivalente a los demás.",
+    imageUrl: "https://static.wixstatic.com/media/c1a799_abea992955164810b4f90c223bd2c71b~mv2.jpg/v1/fill/w_2080%2Ch_2080%2Cal_c%2Cq_90%2Cquality_auto/c1a799_abea992955164810b4f90c223bd2c71b~mv2.jpg",
+    imageAlt: "SPEED Airsoft HPA Ultra on-gun regulator",
+    destinationUrl: "https://www.speedairsoft.com/product-page/hpa-ultra-regulator",
+    destinationLabel: "Ver en SPEED Airsoft",
+    sourceUrl: "https://www.speedairsoft.com/product-page/hpa-ultra-regulator",
+    evidenceStatus: "manufacturer_verified",
+    sourceNote: "Página de producto oficial de SPEED Airsoft.",
+    facts: [
+      { label: "Entrada máxima", value: "900 PSI" },
+      { label: "Salida publicada", value: "20–140 PSI" },
+      { label: "Plataforma", value: "M4 V2 compatible TM" },
+      { label: "Batería indicada", value: "260 mAh o menor" },
+    ],
+    whatItPrioritizes: [
+      "Configuración sin línea externa entre botella y réplica.",
+      "Mando ON/OFF con purga y manómetro orientado hacia la parte posterior.",
+      "Frame, grips magnéticos y gatillo incluidos como sistema integrado.",
+    ],
+    checkBeforeBuying: [
+      "Compatibilidad real del receiver y gearbox M4 V2 de la build.",
+      "Espacio, conector y capacidad de la batería y la FCU.",
+      "No compararlo por tamaño o precio con un regulador remoto: sustituye también el frame y el circuito de aire.",
+    ],
+    creepFocus: "La prueba debe hacerse con el sistema montado: observar manómetro tras la purga, presurización y reposo, y comprobar que el mando ON/OFF descarga el tramo indicado antes de desmontar.",
+  },
+  {
+    name: "Balystik SMR200",
+    manufacturer: "Balystik",
+    slug: "balystik-smr200",
+    route: "/hpa/reguladores/balystik-smr200/",
+    format: "Regulador secundario compacto",
+    summary: "Regulador compacto para presets SLP y de alta presión, comercializado con muelle estándar y otro de mayor rango. La documentación pública localizada procede de distribuidores, no de una ficha oficial actual de Balystik.",
+    imageUrl: "https://airsoftyecla.es/19412-home_default/regulador-hpa-smr200-balystik-linea-de-aire.jpg",
+    imageAlt: "Balystik SMR200 HPA regulator con línea",
+    destinationUrl: "https://airsoftyecla.es/hpa/regulador-hpa-smr200-balystik-linea-de-aire.html",
+    destinationLabel: "Ver en distribuidor",
+    sourceUrl: "https://airsoftyecla.es/hpa/regulador-hpa-smr200-balystik-linea-de-aire.html",
+    evidenceStatus: "community_reported",
+    sourceNote: "Especificaciones coincidentes publicadas por varios distribuidores; falta una fuente primaria vigente de Balystik.",
+    facts: [
+      { label: "Entrada documentada", value: "200–1500 PSI" },
+      { label: "Salida con muelle instalado", value: "40–140 PSI" },
+      { label: "Muelle adicional", value: "80–210 PSI" },
+      { label: "Peso documentado", value: "120 g" },
+    ],
+    whatItPrioritizes: [
+      "Compatibilidad anunciada con presets SLP y HP.",
+      "Formato ligero con entrada ASA y salida 1/8 NPT.",
+      "Collar para bloquear el tornillo de ajuste.",
+    ],
+    checkBeforeBuying: [
+      "Confirmar con el vendedor qué línea y conectores incluye el kit.",
+      "Mantener el muelle estándar si la configuración trabaja por debajo de 140 PSI.",
+      "Solicitar manual, recambios y procedimiento de mantenimiento antes de comprar.",
+    ],
+    creepFocus: "No hay una cifra primaria de creep disponible. Conviene registrar presión en reposo y recuperación durante varios minutos y repetir la prueba antes de atribuir una desviación al engine o al manómetro.",
   },
 ];
 

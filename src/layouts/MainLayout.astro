@@ -19,7 +19,9 @@ const canonicalUrl = canonical
 const imageUrl = new URL(image, siteUrl).toString();
 const jsonLd = Array.isArray(structuredData) ? structuredData : [structuredData];
 const currentPath = Astro.url.pathname;
-const showHpaKnowledgeHeader = currentPath.startsWith("/hpa/") && currentPath !== "/hpa/";
+const showHpaKnowledgeHeader =
+  (currentPath.startsWith("/hpa/") && currentPath !== "/hpa/") ||
+  currentPath === "/saber/";
 ---
 
 <!DOCTYPE html>
