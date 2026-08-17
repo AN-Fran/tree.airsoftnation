@@ -11,7 +11,7 @@ export function getStaticPaths() {
 const { replica } = Astro.props as { replica: HpaFactoryReplica };
 const canonical = `https://tree.airsoftnation.eu${replica.route}`;
 const title = `${replica.name}: ficha HPA | Airsoft Nation`;
-const description = `${replica.summary} Ficha informativa con fuente oficial y enlace de compra o distribuidor.`;
+const description = `${replica.summary} Ficha informativa con datos atribuidos y enlace a Airsoft Nation Store.`;
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -66,10 +66,10 @@ const breadcrumbSchema = {
     <section class="source">
       <h2>Procedencia de la información</h2>
       <p><strong>{evidenceLabels[replica.evidenceStatus]}.</strong> La descripción anterior se limita a la información publicada por la marca. No es todavía una prueba de Airsoft Nation.</p>
-      <a href={replica.sourceUrl} target="_blank" rel="noopener noreferrer">Consultar fuente oficial ↗</a>
+      <p class="source-label">Datos atribuidos a la documentación oficial de {replica.manufacturer}; sin enlace externo.</p>
     </section>
 
-    <nav class="next"><a href="/hpa/fusiles/">‹ Volver a todos los fusiles HPA</a><a href="/contacto-form?motivo=upgrade_hpa">Pedir asesoramiento</a></nav>
+    <nav class="next"><a href="/hpa/fusiles/">‹ Volver a todos los fusiles HPA</a><a href="https://airsoftnation.store/shop/category/hpa-airsoft-espana-665" target="_blank" rel="noopener noreferrer">HPA en Airsoft Nation ↗</a></nav>
   </article>
 </MainLayout>
 
